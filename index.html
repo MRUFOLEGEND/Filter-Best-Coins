@@ -584,8 +584,9 @@ const COIN_DESCS = {
   'EGLD':'MultiversX (Elrond). High-throughput sharded blockchain for enterprise and DeFi.',
 };
 
-const descCache   = {};
-const klinesCache = {};
+const descCache       = {};
+const klinesCache     = {};
+const tradeLvlCache   = {};
 
 let rawLongs  = [], rawShorts  = [];
 let dispLongs = [], dispShorts = [];
@@ -1102,6 +1103,7 @@ function renderFocusLong() {
   document.getElementById('focus-grid-all').innerHTML = html;
   const needFetch = top5.filter(c => !SKIP_DESC.has(c.symbol) && !COIN_DESCS[c.symbol] && !descCache[c.id]);
   if (needFetch.length) fetchDescs(needFetch);
+  fetchTradeLevels(top5.slice(0,3), 'long');
 }
 
 function longFocusCard(c, i) {
@@ -1113,6 +1115,7 @@ function longFocusCard(c, i) {
   const knownDesc = COIN_DESCS[c.symbol]||descCache[c.id]||'';
   const showDesc  = !SKIP_DESC.has(c.symbol);
   const descHtml  = showDesc?`<div class="fc-desc" id="fc-desc-${c.id}">${knownDesc||'…'}</div>`:'';
+  const tlHtml    = i < 3 ? `<div class="fc-divider"></div><div data-tl="${c.id}-long" style="font-size:9px;color:var(--dim)">⏳ Fetching trade levels…</div>` : '';
   return `
     <div class="focus-card${i===0?' fc-top':''}" onclick="window.open('${tv}','_blank')">
       <div class="fc-header">
@@ -1142,6 +1145,7 @@ function longFocusCard(c, i) {
         <span style="color:var(--border)">·</span>
         <span style="color:var(--dim)">Hold:</span><b style="color:var(--text)">${tf.hold}</b>
       </div>
+      ${tlHtml}
       <div class="fc-bar"><div class="fc-fill" style="width:${c.score}%;background:${sc}"></div></div>
       <div class="fc-row">
         <span class="fc-meta">Scout Score</span>
@@ -1158,6 +1162,7 @@ function renderFocusShort() {
     : '<div style="color:var(--dim);font-size:11px;padding:8px 0">No short candidates found — market may be bullish or run a scan first.</div>';
   document.getElementById('short-grid').innerHTML     = html;
   document.getElementById('short-grid-all').innerHTML = html;
+  fetchTradeLevels(top5.slice(0,3), 'short');
 }
 
 function shortFocusCard(c, i) {
@@ -1170,6 +1175,7 @@ function shortFocusCard(c, i) {
   const showDesc  = !SKIP_DESC.has(c.symbol);
   const descHtml  = showDesc?`<div class="fc-desc" id="fs-desc-${c.id}">${knownDesc||'…'}</div>`:'';
   const emaTag = `<span class="ema-tag">${c.toEMAres.toFixed(1)}% to EMA resistance</span>`;
+  const tlHtml    = i < 3 ? `<div class="fc-divider"></div><div data-tl="${c.id}-short" style="font-size:9px;color:var(--dim)">⏳ Fetching trade levels…</div>` : '';
   return `
     <div class="focus-card-short${i===0?' fs-top':''}" onclick="window.open('${tv}','_blank')">
       <div class="fc-header">
@@ -1200,6 +1206,7 @@ function shortFocusCard(c, i) {
         <span style="color:var(--border)">·</span>
         <span style="color:var(--dim)">Hold:</span><b style="color:var(--text)">${tf.hold}</b>
       </div>
+      ${tlHtml}
       <div class="fc-bar"><div class="fc-fill" style="width:${c.score}%;background:${sc}"></div></div>
       <div class="fc-row">
         <span class="fc-meta">Short Score</span>
@@ -1306,6 +1313,63 @@ function shortRow(c, i) {
 
 function renderShortTable()    { const b=document.getElementById('body-short');    if(b) b.innerHTML=dispShorts.map((c,i)=>shortRow(c,i)).join(''); }
 function renderShortTableAll() { const b=document.getElementById('body-short-all');if(b) b.innerHTML=dispShorts.map((c,i)=>shortRow(c,i)).join(''); }
+
+// ── TRADE LEVEL FETCH ──────────────────────────────────────
+async function fetchTradeLevels(coins, type) {
+  for (const c of coins) {
+    const key = `${type}_${c.id}`;
+    if (tradeLvlCache[key]) { updateTL(c.id, type, tradeLvlCache[key]); continue; }
+    const tf = getTimeframes(c, type);
+    const interval = tf.entry.includes('15m') ? '15m'
+                   : tf.entry.includes('1H')  ? '1h'
+                   : tf.entry.includes('4H')  ? '4h'
+                   : '1d';
+    try {
+      const klines = await fetchJSON(`${BINANCE}/klines?symbol=${c.binanceSym}&interval=${interval}&limit=6`, 8000);
+      if (!Array.isArray(klines) || klines.length < 2) continue;
+      const last       = klines[klines.length - 2]; // last COMPLETED candle
+      const candleLow  = parseFloat(last[3]);
+      const candleHigh = parseFloat(last[2]);
+      let levels;
+      if (type === 'long') {
+        const entry = c.price * (1 + c.nearTrigger / 100);
+        const sl    = candleLow;
+        const risk  = entry > sl ? (entry - sl) / entry * 100 : 0;
+        levels = { entry, sl, interval, risk: Math.round(risk*10)/10 };
+      } else {
+        const entry = c.price * (1 + c.toEMAres / 100);
+        const sl    = candleHigh;
+        const risk  = sl > entry ? (sl - entry) / entry * 100 : 0;
+        levels = { entry, sl, interval, risk: Math.round(risk*10)/10 };
+      }
+      tradeLvlCache[key] = levels;
+      updateTL(c.id, type, levels);
+    } catch(e) {
+      document.querySelectorAll(`[data-tl="${c.id}-${type}"]`).forEach(el => el.innerHTML='');
+    }
+    await new Promise(r => setTimeout(r, 180));
+  }
+}
+
+function updateTL(coinId, type, lv) {
+  const isLong = type === 'long';
+  const ec = isLong ? 'var(--bull)' : 'var(--bear)';
+  const bc = isLong ? 'rgba(0,217,126,.18)' : 'rgba(255,61,90,.18)';
+  const arrow = isLong ? '▲ BUY' : '▼ SELL';
+  const html = `
+    <div style="background:var(--surface2);border:1px solid ${bc};border-radius:5px;padding:7px 9px">
+      <div style="font-size:8px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px">📐 Trade Levels · ${lv.interval.toUpperCase()} chart</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+        <span style="font-size:9px;color:var(--dim)">${arrow}</span>
+        <span style="font-size:11px;font-weight:700;color:${ec}">${fmtP(lv.entry)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:9px;color:var(--dim)">Stop Loss</span>
+        <span style="font-size:11px;font-weight:700;color:var(--bear)">${fmtP(lv.sl)}<span style="font-size:8px;font-weight:400;color:var(--dim)"> · ${lv.risk}% risk</span></span>
+      </div>
+    </div>`;
+  document.querySelectorAll(`[data-tl="${coinId}-${type}"]`).forEach(el => el.innerHTML = html);
+}
 
 // ── DESCRIPTION FETCH ──────────────────────────────────────
 async function fetchDescs(coins) {
