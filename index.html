@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crypto Scout — UFO Breakout Strategy</title>
+<title>Crypto Scout — Breakout Strategy</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -21,8 +21,10 @@ body{background:var(--bg);color:var(--text);font-family:'SF Mono','Fira Code','C
 
 /* ── HEADER ─────────────────────────────────────────────── */
 header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;flex-wrap:wrap}
-.brand-title{font-size:17px;font-weight:700;color:#fff;letter-spacing:1px;flex-shrink:0}
-.brand-sub{font-size:9px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.brand-block{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.brand-ape{width:48px;height:48px;border-radius:50%;border:2px solid var(--accent);object-fit:cover;object-position:top;box-shadow:0 0 12px rgba(78,127,255,.35);flex-shrink:0}
+.brand-title{font-size:17px;font-weight:700;color:#fff;letter-spacing:1px}
+.brand-sub{font-size:13px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;font-weight:600}
 .mkt-block{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;text-align:center;flex-shrink:0}
 .mkt-lbl{font-size:9px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
 .ema-pips{display:flex;gap:3px;justify-content:center;margin-bottom:4px}
@@ -42,6 +44,18 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .scan-btn:hover{background:#3d85ff;box-shadow:0 0 20px rgba(78,127,255,.7)}
 .scan-btn:disabled{opacity:.5;cursor:not-allowed}
 .scan-meta{font-size:9px;color:var(--dim);text-align:right}
+
+/* ── PAGE TABS ───────────────────────────────────────────── */
+.tab-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;gap:0;position:sticky;top:73px;z-index:99}
+.tab{padding:10px 22px;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;color:var(--dim);text-transform:uppercase;user-select:none}
+.tab:hover{color:var(--text)}
+.tab.tab-active-long{color:var(--bull);border-bottom-color:var(--bull)}
+.tab.tab-active-short{color:var(--bear);border-bottom-color:var(--bear)}
+.tab.tab-active-all{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ── PAGES ───────────────────────────────────────────────── */
+.page{display:none}
+.page.active{display:flex;flex-direction:column;gap:16px}
 
 /* ── MAIN ────────────────────────────────────────────────── */
 .main{padding:14px;display:flex;flex-direction:column;gap:16px;max-width:1800px;margin:0 auto}
@@ -72,7 +86,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .lc-name{font-size:9px;color:var(--dim)}
 .lc-rank{font-size:10px;color:var(--dim);font-weight:700}
 .lc-rs{display:inline-block;padding:3px 7px;border-radius:4px;font-size:11px;font-weight:700;background:var(--gold-bg);color:var(--gold);border:1px solid rgba(245,200,66,.3)}
-.lc-rs-bear{display:inline-block;padding:3px 7px;border-radius:4px;font-size:11px;font-weight:700;background:var(--bear-bg);color:var(--bear);border:1px solid rgba(255,61,90,.3)}
 .lc-price{font-size:15px;font-weight:700;color:#fff}
 .lc-row{display:flex;justify-content:space-between;align-items:center;gap:6px}
 .lc-meta{font-size:9px;color:var(--dim);display:flex;gap:8px}
@@ -102,8 +115,10 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .fc-bar{height:3px;background:var(--border);border-radius:2px;margin-top:3px}
 .fc-fill{height:100%;border-radius:2px;transition:width .4s}
 .fc-score{font-size:12px;font-weight:700}
-.near-tag{font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px;background:var(--bull-bg);color:var(--bull);border:1px solid rgba(0,217,126,.3)}
 .ema-tag{font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px;background:var(--bear-bg);color:var(--bear);border:1px solid rgba(255,61,90,.3)}
+
+/* ── DIVIDER ─────────────────────────────────────────────── */
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:4px 0}
 
 /* ── FILTERS ─────────────────────────────────────────────── */
 .filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
@@ -115,9 +130,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .apply-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:5px;cursor:pointer;font-size:11px;font-family:inherit;transition:all .15s}
 .apply-btn:hover{border-color:var(--accent);color:var(--accent)}
 .filter-note{font-size:9px;color:var(--dim);line-height:1.6;margin-left:auto;text-align:right;max-width:240px}
-
-/* ── DIVIDER ─────────────────────────────────────────────── */
-.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:4px 0}
 
 /* ── TABLE ───────────────────────────────────────────────── */
 .table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
@@ -166,15 +178,19 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
 .leg-title{color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
 .leg-title-bear{color:var(--bear);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
 
-@media(max-width:700px){.leader-card,.focus-card,.focus-card-short{min-width:140px}.header{gap:10px}}
+@media(max-width:700px){.leader-card,.focus-card,.focus-card-short{min-width:140px}.tab{padding:8px 14px;font-size:10px}}
 </style>
 </head>
 <body>
 
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
 <header>
-  <div style="flex-shrink:0">
-    <div class="brand-title">🛸 CRYPTO SCOUT</div>
-    <div class="brand-sub">UFO Breakout Strategy · Top 100</div>
+  <div class="brand-block">
+    <img class="brand-ape" src="BASC.png" alt="BASC" onerror="this.style.display='none'">
+    <div>
+      <div class="brand-title">CRYPTO SCOUT</div>
+      <div class="brand-sub">Breakout Strategy · Top 100</div>
+    </div>
   </div>
   <div class="mkt-block">
     <div class="mkt-lbl">BTC — Market Proxy</div>
@@ -201,8 +217,16 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
   </div>
 </header>
 
+<!-- ══ PAGE TABS ════════════════════════════════════════════ -->
+<div class="tab-bar">
+  <div class="tab tab-active-long" id="tab-longs"  onclick="setPage('longs')">📈 Longs</div>
+  <div class="tab"                  id="tab-shorts" onclick="setPage('shorts')">📉 Shorts</div>
+  <div class="tab"                  id="tab-all"    onclick="setPage('all')">📊 All</div>
+</div>
+
 <div class="main">
 
+  <!-- ── STRATEGY BAR (always visible) ──────────────────── -->
   <div class="strategy-bar">
     <div class="sb"><span class="sb-l">Universe</span><span class="sb-v">Top 100 by Market Cap</span></div>
     <div class="sb"><span class="sb-l">Longs</span><span class="sb-v">Above 21+50 EMA · RS vs BTC positive</span></div>
@@ -212,45 +236,194 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
     <div class="sb"><span class="sb-l">Scale</span><span class="sb-v">25% at target → trail 8 → trail 21 EMA</span></div>
   </div>
 
-  <!-- ⚡ UFO LEADERS -->
-  <div>
-    <div class="sec-header">
-      <div class="sec-label">⚡ UFO Leaders — This Week's Strongest Coins</div>
-      <div class="sec-sub">Outperforming BTC · Above all 3 EMAs · $1B+ market cap</div>
-    </div>
-    <div class="leaders-grid" id="leaders-grid">
-      <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan to see this week's leaders</div>
-    </div>
-  </div>
+  <!-- ══ PAGE: LONGS ════════════════════════════════════════ -->
+  <div class="page active" id="page-longs">
 
-  <!-- 🎯 UFO FOCUS LIST (LONGS) -->
-  <div>
-    <div class="sec-header">
-      <div class="sec-label">🎯 UFO Focus List — Best Long Setups</div>
-      <div class="sec-sub">Highest scout score · Tightest base · Closest to breakout · Click to open TradingView</div>
+    <!-- Leaders -->
+    <div>
+      <div class="sec-header">
+        <div class="sec-label">⚡ Leaders — This Week's Strongest Coins</div>
+        <div class="sec-sub">Outperforming BTC · Above all 3 EMAs · $1B+ market cap</div>
+      </div>
+      <div class="leaders-grid" id="leaders-grid">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan to see this week's leaders</div>
+      </div>
     </div>
-    <div class="focus-grid" id="focus-grid">
-      <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan to see today's top setups</div>
+
+    <!-- Focus List -->
+    <div>
+      <div class="sec-header">
+        <div class="sec-label">🎯 Focus List — Best Long Setups</div>
+        <div class="sec-sub">Highest scout score · Tightest base · Closest to breakout · Click to open TradingView</div>
+      </div>
+      <div class="focus-grid" id="focus-grid">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan to see today's top setups</div>
+      </div>
     </div>
-  </div>
 
-  <div class="section-divider"></div>
-
-  <!-- 🔴 UFO SHORTS -->
-  <div>
-    <div class="sec-header">
-      <div class="sec-label-bear">🔴 UFO Shorts — Best Short Setups</div>
-      <div class="sec-sub">Below 21/50 EMA · Underperforming BTC · Bouncing into resistance · Futures only</div>
-      <span class="short-warning" id="short-warning">Checking market bias…</span>
+    <!-- Load progress (inside longs page) -->
+    <div class="load-wrap" id="load-block" style="display:none">
+      <div class="spinner"></div>
+      <div class="load-text" id="load-text">Initialising…</div>
+      <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
     </div>
-    <div class="focus-grid" id="short-grid">
-      <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan to see short candidates</div>
+
+    <!-- Long Table -->
+    <div>
+      <div class="sec-label" id="res-label" style="margin-bottom:8px">RANKED BY OPPORTUNITY — LONGS</div>
+      <div class="empty" id="empty-long">Press <strong>⟳ Run Scan</strong> to find today's breakout candidates.</div>
+      <div class="table-wrap" id="table-long" style="display:none">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th onclick="longSortBy('symbol',event)">COIN</th>
+              <th onclick="longSortBy('price',event)">PRICE</th>
+              <th onclick="longSortBy('change24h',event)">24H %</th>
+              <th onclick="longSortBy('change7d',event)">7D %</th>
+              <th onclick="longSortBy('rsBTC',event)">RS vs BTC</th>
+              <th onclick="longSortBy('mcap',event)">MKT CAP</th>
+              <th onclick="longSortBy('volMcapRatio',event)">VOL/MCAP</th>
+              <th onclick="longSortBy('adr',event)">ADR %</th>
+              <th>8/21/50</th>
+              <th onclick="longSortBy('tightness',event)">BASE %</th>
+              <th onclick="longSortBy('volComp',event)">VOL TREND</th>
+              <th onclick="longSortBy('nearTrigger',event)">→ TRIGGER</th>
+              <th onclick="longSortBy('score',event)" class="sorted">SCORE ▼</th>
+              <th>TIMEFRAME</th>
+              <th>CHART</th>
+            </tr>
+          </thead>
+          <tbody id="body-long"></tbody>
+        </table>
+      </div>
     </div>
-  </div>
 
-  <div class="section-divider"></div>
+  </div><!-- /page-longs -->
 
-  <!-- FILTERS -->
+  <!-- ══ PAGE: SHORTS ═══════════════════════════════════════ -->
+  <div class="page" id="page-shorts">
+
+    <div>
+      <div class="sec-header">
+        <div class="sec-label-bear">🔴 Shorts — Best Short Setups</div>
+        <div class="sec-sub">Below 21/50 EMA · Underperforming BTC · Bouncing into resistance · Futures only</div>
+        <span class="short-warning" id="short-warning">Checking market bias…</span>
+      </div>
+      <div class="focus-grid" id="short-grid">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan to see short candidates</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-label-bear" id="res-label-short" style="margin-bottom:8px">RANKED BY SHORT OPPORTUNITY</div>
+      <div class="empty" id="empty-short" style="display:none">No short candidates found with current filters.</div>
+      <div class="table-wrap-bear" id="table-short" style="display:none">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th onclick="shortSortBy('symbol',event)">COIN</th>
+              <th onclick="shortSortBy('price',event)">PRICE</th>
+              <th onclick="shortSortBy('change24h',event)">24H %</th>
+              <th onclick="shortSortBy('change7d',event)">7D %</th>
+              <th onclick="shortSortBy('rsBTC',event)">RS vs BTC</th>
+              <th onclick="shortSortBy('mcap',event)">MKT CAP</th>
+              <th onclick="shortSortBy('adr',event)">ADR %</th>
+              <th>8/21/50</th>
+              <th onclick="shortSortBy('toEMAres',event)">TO EMA RES</th>
+              <th onclick="shortSortBy('volComp',event)">VOL TREND</th>
+              <th onclick="shortSortBy('score',event)" class="sorted-bear">SHORT SCORE ▼</th>
+              <th>TIMEFRAME</th>
+              <th>CHART</th>
+            </tr>
+          </thead>
+          <tbody id="body-short"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /page-shorts -->
+
+  <!-- ══ PAGE: ALL ══════════════════════════════════════════ -->
+  <div class="page" id="page-all">
+
+    <div>
+      <div class="sec-header">
+        <div class="sec-label">⚡ Leaders — This Week's Strongest Coins</div>
+        <div class="sec-sub">Outperforming BTC · Above all 3 EMAs · $1B+ market cap</div>
+      </div>
+      <div class="leaders-grid" id="leaders-grid-all">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan first</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-header">
+        <div class="sec-label">🎯 Focus List — Best Long Setups</div>
+        <div class="sec-sub">Click to open TradingView</div>
+      </div>
+      <div class="focus-grid" id="focus-grid-all">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan first</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div>
+      <div class="sec-header">
+        <div class="sec-label-bear">🔴 Shorts — Best Short Setups</div>
+        <div class="sec-sub">Futures only</div>
+        <span class="short-warning" id="short-warning-all">—</span>
+      </div>
+      <div class="focus-grid" id="short-grid-all">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan first</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div>
+      <div class="sec-label" id="res-label-all" style="margin-bottom:8px">LONGS</div>
+      <div class="empty" id="empty-long-all">Run a scan first.</div>
+      <div class="table-wrap" id="table-long-all" style="display:none">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>COIN</th><th>PRICE</th><th>24H %</th><th>7D %</th>
+              <th>RS vs BTC</th><th>MKT CAP</th><th>ADR %</th><th>8/21/50</th>
+              <th>BASE %</th><th>VOL TREND</th><th>→ TRIGGER</th><th>SCORE</th>
+              <th>TIMEFRAME</th><th>CHART</th>
+            </tr>
+          </thead>
+          <tbody id="body-long-all"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div>
+      <div class="sec-label-bear" id="res-label-short-all" style="margin-bottom:8px">SHORTS</div>
+      <div class="empty" id="empty-short-all">Run a scan first.</div>
+      <div class="table-wrap-bear" id="table-short-all" style="display:none">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>COIN</th><th>PRICE</th><th>24H %</th><th>7D %</th>
+              <th>RS vs BTC</th><th>MKT CAP</th><th>ADR %</th><th>8/21/50</th>
+              <th>TO EMA RES</th><th>VOL TREND</th><th>SHORT SCORE</th>
+              <th>TIMEFRAME</th><th>CHART</th>
+            </tr>
+          </thead>
+          <tbody id="body-short-all"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /page-all -->
+
+  <!-- ── FILTERS (always visible below pages) ────────────── -->
   <div class="filter-bar">
     <div class="fg">
       <div class="fl">Min Market Cap</div>
@@ -280,72 +453,7 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
     <div class="filter-note">Filters re-apply to stored results instantly.<br>Set RS vs BTC ≥ 0 to show only outperformers.</div>
   </div>
 
-  <!-- LONG RESULTS TABLE -->
-  <div>
-    <div class="sec-label" id="res-label" style="margin-bottom:8px">RANKED BY OPPORTUNITY — LONGS</div>
-    <div class="load-wrap" id="load-block" style="display:none">
-      <div class="spinner"></div>
-      <div class="load-text" id="load-text">Initialising…</div>
-      <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
-    </div>
-    <div class="empty" id="empty-long">Press <strong>⟳ Run Scan</strong> to find today's breakout candidates.</div>
-    <div class="table-wrap" id="table-long" style="display:none">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th onclick="longSortBy('symbol',event)">COIN</th>
-            <th onclick="longSortBy('price',event)">PRICE</th>
-            <th onclick="longSortBy('change24h',event)">24H %</th>
-            <th onclick="longSortBy('change7d',event)">7D %</th>
-            <th onclick="longSortBy('rsBTC',event)">RS vs BTC</th>
-            <th onclick="longSortBy('mcap',event)">MKT CAP</th>
-            <th onclick="longSortBy('volMcapRatio',event)">VOL/MCAP</th>
-            <th onclick="longSortBy('adr',event)">ADR %</th>
-            <th>8/21/50</th>
-            <th onclick="longSortBy('tightness',event)">BASE %</th>
-            <th onclick="longSortBy('volComp',event)">VOL TREND</th>
-            <th onclick="longSortBy('nearTrigger',event)">→ TRIGGER</th>
-            <th onclick="longSortBy('score',event)" class="sorted">SCORE ▼</th>
-            <th>TIMEFRAME</th>
-            <th>CHART</th>
-          </tr>
-        </thead>
-        <tbody id="body-long"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- SHORT RESULTS TABLE -->
-  <div>
-    <div class="sec-label-bear" id="res-label-short" style="margin-bottom:8px">RANKED BY SHORT OPPORTUNITY</div>
-    <div class="empty" id="empty-short" style="display:none">No short candidates found with current filters.</div>
-    <div class="table-wrap-bear" id="table-short" style="display:none">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th onclick="shortSortBy('symbol',event)">COIN</th>
-            <th onclick="shortSortBy('price',event)">PRICE</th>
-            <th onclick="shortSortBy('change24h',event)">24H %</th>
-            <th onclick="shortSortBy('change7d',event)">7D %</th>
-            <th onclick="shortSortBy('rsBTC',event)">RS vs BTC</th>
-            <th onclick="shortSortBy('mcap',event)">MKT CAP</th>
-            <th onclick="shortSortBy('adr',event)">ADR %</th>
-            <th>8/21/50</th>
-            <th onclick="shortSortBy('toEMAres',event)">TO EMA RES</th>
-            <th onclick="shortSortBy('volComp',event)">VOL TREND</th>
-            <th onclick="shortSortBy('score',event)" class="sorted-bear">SHORT SCORE ▼</th>
-            <th>TIMEFRAME</th>
-            <th>CHART</th>
-          </tr>
-        </thead>
-        <tbody id="body-short"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- LEGEND -->
+  <!-- ── LEGEND ───────────────────────────────────────────── -->
   <div class="legend">
     <div>
       <div class="leg-title">Scout Score (Longs)</div>
@@ -370,35 +478,28 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
       <div>Negative = underperforming = short bias</div>
     </div>
     <div>
-      <div class="leg-title-bear">To EMA Resistance</div>
+      <div class="leg-title-bear">To EMA Resistance (Shorts)</div>
       <div>% from price to nearest EMA above</div>
       <div>&lt;3% = at resistance = prime short entry</div>
       <div>Look for rejection here on low volume</div>
     </div>
     <div>
-      <div class="leg-title">Vol Trend (Longs)</div>
-      <div>↓ Decreasing = base coiling = bullish</div>
-      <div>Recent 5d avg vs prior 15d avg</div>
+      <div class="leg-title">Timeframe (Longs)</div>
+      <div>&lt;2% from trigger → 15m/1H entry</div>
+      <div>2–5% away → 1H/4H entry</div>
+      <div>5–12% away → 4H/Daily</div>
+      <div>&gt;12% away → Daily/Weekly</div>
     </div>
     <div>
-      <div class="leg-title-bear">Vol Trend (Shorts)</div>
-      <div>↑ Increasing = distribution = bearish</div>
-      <div>Expanding vol on down moves = sellers</div>
-    </div>
-    <div>
-      <div class="leg-title">Base % (Longs)</div>
-      <div>15-day price range ÷ close</div>
-      <div>&lt;15% = tight base, spring coiling</div>
-    </div>
-    <div>
-      <div class="leg-title-bear">Short Ideal Setup</div>
-      <div>Below all EMAs + bounce on low volume</div>
-      <div>Into EMA resistance + high RS weakness</div>
-      <div>Use Binance Perpetual Futures only</div>
+      <div class="leg-title-bear">Timeframe (Shorts)</div>
+      <div>&lt;2% to EMA → 15m/1H rejection entry</div>
+      <div>2–5% → 1H/4H, wait for bounce</div>
+      <div>5–12% → 4H/Daily, set alert</div>
+      <div>&gt;12% → Daily, wait for dead cat</div>
     </div>
   </div>
 
-</div>
+</div><!-- /main -->
 
 <script>
 const BINANCE = 'https://api.binance.com/api/v3';
@@ -418,7 +519,6 @@ const STABLES = new Set([
   'PAXG','XAUT','DGLD','PMGT',
 ]);
 
-// Coins famous enough to skip the description
 const SKIP_DESC = new Set([
   'BTC','ETH','BNB','SOL','XRP','DOGE','ADA','TRX','AVAX','SHIB',
   'TON','LTC','LINK','DOT','MATIC','PEPE','BONK','WIF'
@@ -484,16 +584,25 @@ const COIN_DESCS = {
   'EGLD':'MultiversX (Elrond). High-throughput sharded blockchain for enterprise and DeFi.',
 };
 
-const descCache = {};
+const descCache   = {};
 const klinesCache = {};
 
-let rawLongs  = [];
-let rawShorts = [];
-let dispLongs  = [];
-let dispShorts = [];
+let rawLongs  = [], rawShorts  = [];
+let dispLongs = [], dispShorts = [];
 let longSortKey  = 'score', longSortDir  = -1;
 let shortSortKey = 'score', shortSortDir = -1;
 let _btc7dChange = 0;
+let _currentPage = 'longs';
+
+// ── PAGE NAVIGATION ────────────────────────────────────────
+function setPage(page) {
+  _currentPage = page;
+  ['longs','shorts','all'].forEach(p => {
+    document.getElementById('page-'+p).classList.toggle('active', p===page);
+    const tab = document.getElementById('tab-'+p);
+    tab.className = 'tab' + (p===page ? ' tab-active-'+p : '');
+  });
+}
 
 // ── FETCH ──────────────────────────────────────────────────
 async function fetchJSON(url, ms = 12000) {
@@ -567,22 +676,42 @@ function longScore(tight, volC, near, rs, above8) {
 
 function calcShortScore(below8, below21, below50, rs, volC, toEMAres, adrV) {
   let s = 0;
-  // EMA breakdown depth 0-30
   if (below8 && below21 && below50) s += 30;
   else if (below21 && below50)      s += 20;
   else if (below50)                 s += 10;
-  // RS vs BTC weakness 0-25
   if      (rs < -20) s += 25; else if (rs < -10) s += 18;
   else if (rs <  -5) s += 10; else if (rs <  -2) s += 5;
-  // Volume expanding (distribution) 0-20
   if      (volC > 40) s += 20; else if (volC > 20) s += 14;
   else if (volC > 10) s += 8;  else if (volC >  0) s += 3;
-  // Near EMA resistance from below (ideal short entry) 0-15
   if      (toEMAres <  3)  s += 15; else if (toEMAres <  8) s += 11;
   else if (toEMAres < 15)  s += 6;  else if (toEMAres < 25) s += 2;
-  // ADR quality 0-10
   if (adrV > 6) s += 10; else if (adrV > 3) s += 5;
   return Math.min(100, Math.max(0, s));
+}
+
+// ── TIMEFRAMES ─────────────────────────────────────────────
+function getTimeframes(c, type) {
+  let entry, hold;
+  if (type === 'long') {
+    if      (c.nearTrigger <  2) entry = '15m / 1H';
+    else if (c.nearTrigger <  5) entry = '1H / 4H';
+    else if (c.nearTrigger < 12) entry = '4H / Daily';
+    else                         entry = 'Daily / Weekly';
+    if      (c.score >= 70 && c.tightness < 15) hold = '2–4 weeks';
+    else if (c.score >= 55)                      hold = '1–2 weeks';
+    else if (c.score >= 35)                      hold = '3–7 days';
+    else                                         hold = '1–3 days';
+  } else {
+    if      (c.toEMAres <  2) entry = '15m / 1H';
+    else if (c.toEMAres <  5) entry = '1H / 4H';
+    else if (c.toEMAres < 12) entry = '4H / Daily';
+    else                      entry = 'Daily (wait)';
+    const belowAll = !c.above8 && !c.above21 && !c.above50;
+    if      (c.score >= 65 && belowAll) hold = '1–2 weeks';
+    else if (c.score >= 50)             hold = '3–7 days';
+    else                                hold = '1–3 days';
+  }
+  return { entry, hold };
 }
 
 // ── FORMAT ─────────────────────────────────────────────────
@@ -612,7 +741,7 @@ function sparkline(prices, w = 80, h = 26) {
   const ys = prices.map(p => h - ((p - mn) / range) * h);
   const d  = xs.map((x, i) => `${i===0?'M':'L'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
   const col = prices[prices.length-1] >= prices[0] ? '#00d97e' : '#ff3d5a';
-  return `<svg class="spark" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
+  return `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
     <path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
 }
 
@@ -650,31 +779,6 @@ function generateShortSetup(c) {
   return s;
 }
 
-// ── TIMEFRAME RECOMMENDATION ───────────────────────────────
-function getTimeframes(c, type) {
-  let entry, hold;
-  if (type === 'long') {
-    if      (c.nearTrigger <  2) entry = '15m / 1H';
-    else if (c.nearTrigger <  5) entry = '1H / 4H';
-    else if (c.nearTrigger < 12) entry = '4H / Daily';
-    else                         entry = 'Daily / Weekly';
-    if      (c.score >= 70 && c.tightness < 15) hold = '2–4 weeks';
-    else if (c.score >= 55)                      hold = '1–2 weeks';
-    else if (c.score >= 35)                      hold = '3–7 days';
-    else                                         hold = '1–3 days';
-  } else {
-    if      (c.toEMAres <  2) entry = '15m / 1H';
-    else if (c.toEMAres <  5) entry = '1H / 4H';
-    else if (c.toEMAres < 12) entry = '4H / Daily';
-    else                      entry = 'Daily (wait)';
-    const belowAll = !c.above8 && !c.above21 && !c.above50;
-    if      (c.score >= 65 && belowAll) hold = '1–2 weeks';
-    else if (c.score >= 50)             hold = '3–7 days';
-    else                                hold = '1–3 days';
-  }
-  return { entry, hold };
-}
-
 // ── MARKET CONDITION ───────────────────────────────────────
 async function analyzeMarket() {
   let btcScore = 0, ethScore = 0;
@@ -694,9 +798,7 @@ async function analyzeMarket() {
         const c7 = closes[closes.length - 8] || closes[0];
         _btc7dChange = c7 > 0 ? (price - c7) / c7 * 100 : 0;
         btcScore = states.filter(Boolean).length;
-      } else {
-        ethScore = states.filter(Boolean).length;
-      }
+      } else { ethScore = states.filter(Boolean).length; }
       const pips = document.getElementById(pipsId);
       pips.querySelectorAll('.pip').forEach((el, i) => {
         el.className = 'pip ' + (states[i] ? 'pip-up' : 'pip-dn');
@@ -711,22 +813,21 @@ async function analyzeMarket() {
   const total = btcScore + ethScore;
   const badge = document.getElementById('mkt-badge');
   const adv   = document.getElementById('mkt-advice');
-  const sw    = document.getElementById('short-warning');
+  const setWarn = (txt, cls) => ['short-warning','short-warning-all'].forEach(id => {
+    const el = document.getElementById(id); if(el){el.textContent=txt;el.className='short-warning '+cls;}
+  });
   if (total >= 5) {
-    badge.textContent = '✓ FULL BULL'; badge.className = 'overall o-bull';
-    adv.textContent = 'Use full size — markets above all EMAs';
-    sw.textContent = '⚠ Bull market — shorts are counter-trend, use tight stops';
-    sw.className = 'short-warning sw-bull';
+    badge.textContent='✓ FULL BULL';badge.className='overall o-bull';
+    adv.textContent='Use full size — markets above all EMAs';
+    setWarn('⚠ Bull market — shorts are counter-trend, use tight stops','sw-bull');
   } else if (total >= 3) {
-    badge.textContent = '⚡ MODERATE'; badge.className = 'overall o-neut';
-    adv.textContent = 'Reduce size — mixed signals';
-    sw.textContent = '⚡ Mixed market — selective shorts possible with confirmation';
-    sw.className = 'short-warning sw-bull';
+    badge.textContent='⚡ MODERATE';badge.className='overall o-neut';
+    adv.textContent='Reduce size — mixed signals';
+    setWarn('⚡ Mixed market — selective shorts possible with confirmation','sw-bull');
   } else {
-    badge.textContent = '✗ AVOID LONGS'; badge.className = 'overall o-bear';
-    adv.textContent = 'Market below EMAs — shorts have tailwind';
-    sw.textContent = '✓ Bear market — shorts have market tailwind';
-    sw.className = 'short-warning sw-bear';
+    badge.textContent='✗ AVOID LONGS';badge.className='overall o-bear';
+    adv.textContent='Market below EMAs — shorts have tailwind';
+    setWarn('✓ Bear market — shorts have market tailwind','sw-bear');
   }
   return total;
 }
@@ -748,14 +849,12 @@ async function analyzeOneCoin(gecko) {
   const lows   = klines.map(k => parseFloat(k[3]));
   const closes = klines.map(k => parseFloat(k[4]));
   const vols   = klines.map(k => parseFloat(k[5]));
-
   const price = closes[closes.length - 1];
   const e8v   = calcEMA(closes, 8);
   const e21v  = calcEMA(closes, 21);
   const e50v  = calcEMA(closes, 50);
   if (!e21v || !e50v) return { long: null, short: null };
 
-  // Stablecoin catch-all
   const hi30 = Math.max(...highs.slice(-30));
   const lo30 = Math.min(...lows.slice(-30));
   if (price > 0.90 && price < 1.10 && (hi30 - lo30) / price < 0.15) return { long: null, short: null };
@@ -775,34 +874,31 @@ async function analyzeOneCoin(gecko) {
 
   const base = {
     id: gecko.id, name: gecko.name, symbol: sym,
-    binanceSym: sym + 'USDT', image: gecko.image || '',
+    binanceSym: sym+'USDT', image: gecko.image || '',
     price, change24h: gecko.price_change_percentage_24h || 0,
     mcap: gecko.market_cap || 0, vol24h: gecko.total_volume || 0,
-    volMcapRatio: Math.round(vmRatio * 10) / 10,
-    adr: Math.round(adrV * 10) / 10,
+    volMcapRatio: Math.round(vmRatio*10)/10,
+    adr: Math.round(adrV*10)/10,
     above8, above21, above50,
-    e8Pct:  e8v  ? (price/e8v  - 1)*100 : 0,
-    e21Pct: e21v ? (price/e21v - 1)*100 : 0,
-    e50Pct: e50v ? (price/e50v - 1)*100 : 0,
-    tightness:   Math.round(tightV * 10) / 10,
-    volComp:     Math.round(vcV   * 10) / 10,
-    change7d:    Math.round(chg7d  * 10) / 10,
-    rsBTC:       Math.round(rsBTC  * 10) / 10,
+    e8Pct:  e8v  ? (price/e8v  -1)*100 : 0,
+    e21Pct: e21v ? (price/e21v -1)*100 : 0,
+    e50Pct: e50v ? (price/e50v -1)*100 : 0,
+    tightness: Math.round(tightV*10)/10,
+    volComp:   Math.round(vcV*10)/10,
+    change7d:  Math.round(chg7d*10)/10,
+    rsBTC:     Math.round(rsBTC*10)/10,
     spark7d,
   };
 
   let longR = null, shortR = null;
 
-  // LONG: above 21+50 EMA, minimum ADR
   if (above21 && above50 && adrV >= 2) {
     const nearV = calcNearTrigger(highs, closes, 20);
     const sc = longScore(tightV, vcV, nearV, rsBTC, above8);
     longR = { ...base, nearTrigger: Math.round(nearV*10)/10, score: sc };
   }
 
-  // SHORT: below 21 OR 50 EMA, underperforming BTC, minimum ADR
   if ((!above21 || !above50) && adrV >= 2 && rsBTC < 0) {
-    // Find nearest EMA above price (resistance)
     const emasAbove = [
       above8  ? null : e8v,
       above21 ? null : e21v,
@@ -821,12 +917,9 @@ async function analyzeOneCoin(gecko) {
 async function runScan() {
   const btn = document.getElementById('scan-btn');
   btn.disabled = true; btn.textContent = '⟲ Scanning…';
-  document.getElementById('empty-long').style.display  = 'none';
-  document.getElementById('empty-short').style.display = 'none';
-  document.getElementById('table-long').style.display  = 'none';
-  document.getElementById('table-short').style.display = 'none';
-  document.getElementById('load-block').style.display  = 'block';
-  // Clear klines cache each scan for fresh data
+  ['empty-long','empty-short'].forEach(id => document.getElementById(id).style.display='none');
+  ['table-long','table-short'].forEach(id => document.getElementById(id).style.display='none');
+  document.getElementById('load-block').style.display = 'block';
   Object.keys(klinesCache).forEach(k => delete klinesCache[k]);
   setProgress(0, 'Fetching market condition…');
 
@@ -840,35 +933,35 @@ async function runScan() {
       20000
     );
   } catch(e) {
-    setProgress(100, '✗ CoinGecko unreachable — check connection and retry.');
-    btn.disabled = false; btn.textContent = '⟳ Run Scan'; return;
+    setProgress(100,'✗ CoinGecko unreachable — check connection and retry.');
+    btn.disabled=false; btn.textContent='⟳ Run Scan'; return;
   }
 
-  rawLongs = []; rawShorts = [];
-  const BATCH = 8; let done = 0;
+  rawLongs=[]; rawShorts=[];
+  const BATCH=8; let done=0;
 
-  for (let i = 0; i < top100.length; i += BATCH) {
-    const batch = top100.slice(i, i + BATCH);
-    const res   = await Promise.all(batch.map(c => analyzeOneCoin(c).catch(() => ({long:null,short:null}))));
-    res.forEach(({ long, short }) => {
+  for (let i=0; i<top100.length; i+=BATCH) {
+    const batch = top100.slice(i, i+BATCH);
+    const res   = await Promise.all(batch.map(c => analyzeOneCoin(c).catch(()=>({long:null,short:null}))));
+    res.forEach(({long,short}) => {
       if (long)  rawLongs.push(long);
       if (short) rawShorts.push(short);
     });
     done += batch.length;
-    const pct = 8 + Math.round((done / top100.length) * 87);
+    const pct = 8 + Math.round((done/top100.length)*87);
     setProgress(pct, `Scanned ${done}/${top100.length} — ${rawLongs.length} longs · ${rawShorts.length} shorts`);
   }
 
-  setProgress(98, 'Rendering…');
+  setProgress(98,'Rendering…');
   applyFilters();
-  document.getElementById('load-block').style.display = 'none';
+  document.getElementById('load-block').style.display='none';
   document.getElementById('scan-meta').textContent =
     `Last scan: ${new Date().toLocaleTimeString()} · ${rawLongs.length} longs · ${rawShorts.length} shorts found`;
-  btn.disabled = false; btn.textContent = '⟳ Run Scan';
+  btn.disabled=false; btn.textContent='⟳ Run Scan';
 }
 
 function setProgress(pct, text) {
-  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('prog').style.width = pct+'%';
   document.getElementById('load-text').textContent = text;
 }
 
@@ -879,40 +972,46 @@ function applyFilters() {
   const minADR   = parseFloat(document.getElementById('f-adr').value)    || 0;
   const minRS    = parseFloat(document.getElementById('f-rs').value)     || -999;
   const minScore = parseFloat(document.getElementById('f-score').value)  || 0;
-  const minSScore= parseFloat(document.getElementById('f-sscore').value) || 0;
+  const minSS    = parseFloat(document.getElementById('f-sscore').value) || 0;
 
   dispLongs  = rawLongs.filter(c  => c.mcap>=minMcap && c.vol24h>=minVol && c.adr>=minADR && c.rsBTC>=minRS  && c.score>=minScore);
-  dispShorts = rawShorts.filter(c => c.mcap>=minMcap && c.vol24h>=minVol && c.adr>=minADR && c.score>=minSScore);
+  dispShorts = rawShorts.filter(c => c.mcap>=minMcap && c.vol24h>=minVol && c.adr>=minADR && c.score>=minSS);
 
   sortLongs(); sortShorts();
   render();
 }
 
 function longSortBy(key, e) {
-  longSortDir = longSortKey === key ? longSortDir * -1 : -1;
+  longSortDir = longSortKey===key ? longSortDir*-1 : -1;
   longSortKey = key;
-  document.querySelectorAll('#table-long thead th').forEach(th => th.classList.remove('sorted'));
-  if (e && e.target) e.target.classList.add('sorted');
-  sortLongs(); renderTables();
-  document.getElementById('res-label').textContent = labelFor(key, dispLongs.length, 'LONGS');
+  document.querySelectorAll('#table-long thead th, #table-long-all thead th')
+    .forEach(th => th.classList.remove('sorted'));
+  if (e&&e.target) e.target.classList.add('sorted');
+  sortLongs(); renderLongTable(); renderLongTableAll();
+  const lbl = labelFor(key, dispLongs.length, 'LONGS');
+  document.getElementById('res-label').textContent = lbl;
+  document.getElementById('res-label-all').textContent = lbl;
 }
 function shortSortBy(key, e) {
-  shortSortDir = shortSortKey === key ? shortSortDir * -1 : -1;
+  shortSortDir = shortSortKey===key ? shortSortDir*-1 : -1;
   shortSortKey = key;
-  document.querySelectorAll('#table-short thead th').forEach(th => th.classList.remove('sorted-bear'));
-  if (e && e.target) e.target.classList.add('sorted-bear');
-  sortShorts(); renderShortTable();
-  document.getElementById('res-label-short').textContent = labelFor(key, dispShorts.length, 'SHORTS');
+  document.querySelectorAll('#table-short thead th, #table-short-all thead th')
+    .forEach(th => th.classList.remove('sorted-bear'));
+  if (e&&e.target) e.target.classList.add('sorted-bear');
+  sortShorts(); renderShortTable(); renderShortTableAll();
+  const lbl = labelFor(key, dispShorts.length, 'SHORTS');
+  document.getElementById('res-label-short').textContent = lbl;
+  document.getElementById('res-label-short-all').textContent = lbl;
 }
-function sortLongs()  { dispLongs.sort((a,b)  => sortDir(a,b,longSortKey,longSortDir)); }
-function sortShorts() { dispShorts.sort((a,b) => sortDir(a,b,shortSortKey,shortSortDir)); }
-function sortDir(a, b, key, dir) {
-  const av = a[key], bv = b[key];
-  if (typeof av === 'string') return dir * av.localeCompare(bv);
-  return dir * ((av||0) - (bv||0));
+function sortLongs()  { dispLongs.sort((a,b)  => sDir(a,b,longSortKey,longSortDir)); }
+function sortShorts() { dispShorts.sort((a,b) => sDir(a,b,shortSortKey,shortSortDir)); }
+function sDir(a,b,key,dir) {
+  const av=a[key],bv=b[key];
+  if (typeof av==='string') return dir*av.localeCompare(bv);
+  return dir*((av||0)-(bv||0));
 }
-function labelFor(key, n, side) {
-  const map = {score:'RANKED BY OPPORTUNITY',rsBTC:'RANKED BY RS vs BTC',tightness:'RANKED BY BASE TIGHTNESS',toEMAres:'RANKED BY PROXIMITY TO EMA RESISTANCE'};
+function labelFor(key,n,side) {
+  const map={score:'RANKED BY OPPORTUNITY',rsBTC:'RANKED BY RS vs BTC',tightness:'RANKED BY BASE TIGHTNESS',toEMAres:'RANKED BY PROXIMITY TO EMA RESISTANCE'};
   return `${map[key]||'RANKED BY '+key.toUpperCase()} — ${n} ${side}`;
 }
 
@@ -921,288 +1020,297 @@ function render() {
   renderLeaders();
   renderFocusLong();
   renderFocusShort();
-  renderTables();
-}
-
-function renderTables() {
   renderLongTable();
   renderShortTable();
-  document.getElementById('res-label').textContent = labelFor(longSortKey, dispLongs.length, 'LONGS');
-  document.getElementById('res-label-short').textContent = labelFor(shortSortKey, dispShorts.length, 'SHORTS');
+  renderLongTableAll();
+  renderShortTableAll();
 
-  const hasL = dispLongs.length > 0, hasS = dispShorts.length > 0;
-  document.getElementById('table-long').style.display  = hasL ? 'block' : 'none';
-  document.getElementById('empty-long').style.display  = hasL ? 'none'  : 'block';
-  document.getElementById('table-short').style.display = hasS ? 'block' : 'none';
-  document.getElementById('empty-short').style.display = hasS ? 'none'  : 'block';
-  if (!hasL) document.getElementById('empty-long').innerHTML  = rawLongs.length  ? 'No longs match filters.'  : 'Run a scan first.';
-  if (!hasS) document.getElementById('empty-short').innerHTML = rawShorts.length ? 'No shorts match filters.' : 'Run a scan first.';
+  const hasL = dispLongs.length>0, hasS = dispShorts.length>0;
+
+  ['table-long','table-long-all'].forEach(id =>
+    document.getElementById(id).style.display = hasL?'block':'none');
+  ['empty-long','empty-long-all'].forEach(id => {
+    const el=document.getElementById(id);
+    el.style.display=hasL?'none':'block';
+    if(!hasL) el.innerHTML=rawLongs.length?'No longs match filters.':'Run a scan first.';
+  });
+  ['table-short','table-short-all'].forEach(id =>
+    document.getElementById(id).style.display = hasS?'block':'none');
+  ['empty-short','empty-short-all'].forEach(id => {
+    const el=document.getElementById(id);
+    el.style.display=hasS?'none':'block';
+    if(!hasS) el.innerHTML=rawShorts.length?'No shorts match filters.':'Run a scan first.';
+  });
+
+  const lbl = labelFor(longSortKey, dispLongs.length, 'LONGS');
+  const slbl = labelFor(shortSortKey, dispShorts.length, 'SHORTS');
+  ['res-label','res-label-all'].forEach(id=>document.getElementById(id).textContent=lbl);
+  ['res-label-short','res-label-short-all'].forEach(id=>document.getElementById(id).textContent=slbl);
 }
 
 // ── LEADERS ────────────────────────────────────────────────
 function renderLeaders() {
   const leaders = [...rawLongs]
-    .filter(c => c.rsBTC > 0 && c.mcap >= 1_000_000_000)
-    .sort((a, b) => b.rsBTC - a.rsBTC).slice(0, 8);
-  const el = document.getElementById('leaders-grid');
-  if (!leaders.length) {
-    el.innerHTML = '<div style="color:var(--dim);font-size:11px;padding:8px 0">No leaders found — run a scan or market may be weak.</div>';
-    return;
-  }
-  el.innerHTML = leaders.map((c, i) => {
-    const cc = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
-    const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
-    const sp = sparkline(c.spark7d, 82, 24);
-    return `
-      <div class="leader-card" onclick="window.open('${tv}','_blank')">
-        <div class="lc-top">
-          <div class="lc-coin">
-            <img class="lc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
-            <div><div class="lc-sym">${c.symbol}</div><div class="lc-name">${c.name}</div></div>
-          </div>
-          <div class="lc-rank">#${i+1}</div>
-        </div>
-        <span class="lc-rs">+${c.rsBTC.toFixed(1)}% vs BTC</span>
-        ${sp ? `<div style="margin:-2px 0">${sp}</div>` : ''}
-        <div class="lc-row">
-          <div class="lc-price">${fmtP(c.price)}</div>
-          <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
-        </div>
-        <div class="lc-meta">
-          <span>7d: <b style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c.change7d)}</b></span>
-          <span>Cap: <b style="color:#fff">${fmtL(c.mcap)}</b></span>
-        </div>
-        <div class="lc-row">
-          <div class="lc-pip-row">
-            <div class="pip ${c.above8?'pip-up':'pip-dn'}" style="width:18px;height:14px;font-size:7px">8</div>
-            <div class="pip pip-up" style="width:18px;height:14px;font-size:7px">21</div>
-            <div class="pip pip-up" style="width:18px;height:14px;font-size:7px">50</div>
-          </div>
-          <span class="lc-score" style="color:${lColor(c.score)}">${c.score}</span>
-        </div>
-      </div>`;
-  }).join('');
+    .filter(c => c.rsBTC>0 && c.mcap>=1_000_000_000)
+    .sort((a,b) => b.rsBTC-a.rsBTC).slice(0,8);
+  const html = leaders.length
+    ? leaders.map((c,i) => {
+        const cc = c.change24h>=0?'var(--bull)':'var(--bear)';
+        const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
+        const sp = sparkline(c.spark7d,82,24);
+        return `
+          <div class="leader-card" onclick="window.open('${tv}','_blank')">
+            <div class="lc-top">
+              <div class="lc-coin">
+                <img class="lc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+                <div><div class="lc-sym">${c.symbol}</div><div class="lc-name">${c.name}</div></div>
+              </div>
+              <div class="lc-rank">#${i+1}</div>
+            </div>
+            <span class="lc-rs">+${c.rsBTC.toFixed(1)}% vs BTC</span>
+            ${sp?`<div style="margin:-2px 0">${sp}</div>`:''}
+            <div class="lc-row">
+              <div class="lc-price">${fmtP(c.price)}</div>
+              <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
+            </div>
+            <div class="lc-meta">
+              <span>7d: <b style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c.change7d)}</b></span>
+              <span>Cap: <b style="color:#fff">${fmtL(c.mcap)}</b></span>
+            </div>
+            <div class="lc-row">
+              <div class="lc-pip-row">
+                <div class="pip ${c.above8?'pip-up':'pip-dn'}" style="width:18px;height:14px;font-size:7px">8</div>
+                <div class="pip pip-up" style="width:18px;height:14px;font-size:7px">21</div>
+                <div class="pip pip-up" style="width:18px;height:14px;font-size:7px">50</div>
+              </div>
+              <span class="lc-score" style="color:${lColor(c.score)}">${c.score}</span>
+            </div>
+          </div>`;
+      }).join('')
+    : '<div style="color:var(--dim);font-size:11px;padding:8px 0">No leaders found — run a scan or market may be weak.</div>';
+  document.getElementById('leaders-grid').innerHTML     = html;
+  document.getElementById('leaders-grid-all').innerHTML = html;
 }
 
-// ── LONG FOCUS ─────────────────────────────────────────────
+// ── FOCUS CARDS LONG ───────────────────────────────────────
 function renderFocusLong() {
-  const top5 = [...dispLongs].sort((a,b) => b.score - a.score).slice(0, 5);
-  const el = document.getElementById('focus-grid');
-  if (!top5.length) {
-    el.innerHTML = '<div style="color:var(--dim);font-size:11px;padding:8px 0">No qualifying long setups found.</div>';
-    return;
-  }
-  el.innerHTML = top5.map((c, i) => {
-    const cc = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
-    const sc = lColor(c.score);
-    const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
-    const setup = generateLongSetup(c);
-    const tf = getTimeframes(c, 'long');
-    const knownDesc = COIN_DESCS[c.symbol] || descCache[c.id] || '';
-    const showDesc  = !SKIP_DESC.has(c.symbol);
-    const descHtml  = showDesc ? `<div class="fc-desc" id="fc-desc-${c.id}">${knownDesc || '…'}</div>` : '';
-    return `
-      <div class="focus-card${i===0?' fc-top':''}" onclick="window.open('${tv}','_blank')">
-        <div class="fc-header">
-          <img class="fc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
-          <div><div class="fc-sym">${c.symbol}</div><div class="fc-name">${c.name}</div></div>
-        </div>
-        <div class="fc-row">
-          <div class="fc-price">${fmtP(c.price)}</div>
-          <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
-        </div>
-        <div class="fc-row">
-          <span class="fc-mcap">Cap: <b style="color:var(--text)">${fmtL(c.mcap)}</b></span>
-          <span style="font-size:9px;font-weight:700;color:${c.rsBTC>=0?'var(--bull)':'var(--bear)'}">RS ${fmtPct(c.rsBTC,1)}</span>
-        </div>
-        <div style="font-size:9px;color:var(--dim);display:flex;gap:8px">
-          <span>ADR:<b style="color:#fff"> ${c.adr}%</b></span>
-          <span>Base:<b style="color:#fff"> ${c.tightness}%</b></span>
-          <span>Vol:<b style="color:${c.volComp<0?'var(--bull)':'var(--bear)'}"> ${c.volComp<0?'↓':'↑'}${Math.abs(c.volComp).toFixed(0)}%</b></span>
-        </div>
-        <div class="fc-divider"></div>
-        <div class="fc-setup">${setup}</div>
-        ${descHtml}
-        <div class="fc-divider"></div>
-        <div style="font-size:9px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-          <span style="color:var(--dim)">⏱</span>
-          <span style="color:var(--dim)">Entry:</span><b style="color:var(--accent)">${tf.entry}</b>
-          <span style="color:var(--border)">·</span>
-          <span style="color:var(--dim)">Hold:</span><b style="color:var(--text)">${tf.hold}</b>
-        </div>
-        <div class="fc-bar"><div class="fc-fill" style="width:${c.score}%;background:${sc}"></div></div>
-        <div class="fc-row">
-          <span class="fc-meta">Scout Score</span>
-          <span class="fc-score" style="color:${sc}">${c.score}</span>
-        </div>
-      </div>`;
-  }).join('');
+  const top5 = [...dispLongs].sort((a,b)=>b.score-a.score).slice(0,5);
+  const html = top5.length
+    ? top5.map((c,i) => longFocusCard(c,i)).join('')
+    : '<div style="color:var(--dim);font-size:11px;padding:8px 0">No qualifying long setups found.</div>';
+  document.getElementById('focus-grid').innerHTML     = html;
+  document.getElementById('focus-grid-all').innerHTML = html;
   const needFetch = top5.filter(c => !SKIP_DESC.has(c.symbol) && !COIN_DESCS[c.symbol] && !descCache[c.id]);
   if (needFetch.length) fetchDescs(needFetch);
 }
 
-// ── SHORT FOCUS ────────────────────────────────────────────
+function longFocusCard(c, i) {
+  const cc = c.change24h>=0?'var(--bull)':'var(--bear)';
+  const sc = lColor(c.score);
+  const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
+  const tf = getTimeframes(c,'long');
+  const setup = generateLongSetup(c);
+  const knownDesc = COIN_DESCS[c.symbol]||descCache[c.id]||'';
+  const showDesc  = !SKIP_DESC.has(c.symbol);
+  const descHtml  = showDesc?`<div class="fc-desc" id="fc-desc-${c.id}">${knownDesc||'…'}</div>`:'';
+  return `
+    <div class="focus-card${i===0?' fc-top':''}" onclick="window.open('${tv}','_blank')">
+      <div class="fc-header">
+        <img class="fc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+        <div><div class="fc-sym">${c.symbol}</div><div class="fc-name">${c.name}</div></div>
+      </div>
+      <div class="fc-row">
+        <div class="fc-price">${fmtP(c.price)}</div>
+        <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
+      </div>
+      <div class="fc-row">
+        <span class="fc-mcap">Cap: <b style="color:var(--text)">${fmtL(c.mcap)}</b></span>
+        <span style="font-size:9px;font-weight:700;color:${c.rsBTC>=0?'var(--bull)':'var(--bear)'}">RS ${fmtPct(c.rsBTC,1)}</span>
+      </div>
+      <div style="font-size:9px;color:var(--dim);display:flex;gap:8px">
+        <span>ADR:<b style="color:#fff"> ${c.adr}%</b></span>
+        <span>Base:<b style="color:#fff"> ${c.tightness}%</b></span>
+        <span>Vol:<b style="color:${c.volComp<0?'var(--bull)':'var(--bear)'}"> ${c.volComp<0?'↓':'↑'}${Math.abs(c.volComp).toFixed(0)}%</b></span>
+      </div>
+      <div class="fc-divider"></div>
+      <div class="fc-setup">${setup}</div>
+      ${descHtml}
+      <div class="fc-divider"></div>
+      <div style="font-size:9px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+        <span style="color:var(--dim)">⏱</span>
+        <span style="color:var(--dim)">Entry:</span><b style="color:var(--accent)">${tf.entry}</b>
+        <span style="color:var(--border)">·</span>
+        <span style="color:var(--dim)">Hold:</span><b style="color:var(--text)">${tf.hold}</b>
+      </div>
+      <div class="fc-bar"><div class="fc-fill" style="width:${c.score}%;background:${sc}"></div></div>
+      <div class="fc-row">
+        <span class="fc-meta">Scout Score</span>
+        <span class="fc-score" style="color:${sc}">${c.score}</span>
+      </div>
+    </div>`;
+}
+
+// ── FOCUS CARDS SHORT ──────────────────────────────────────
 function renderFocusShort() {
-  const top5 = [...dispShorts].sort((a,b) => b.score - a.score).slice(0, 5);
-  const el = document.getElementById('short-grid');
-  if (!top5.length) {
-    el.innerHTML = '<div style="color:var(--dim);font-size:11px;padding:8px 0">No short candidates found — market may be bullish or run a scan first.</div>';
-    return;
-  }
-  el.innerHTML = top5.map((c, i) => {
-    const cc = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
-    const sc = shColor(c.score);
-    const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
-    const setup = generateShortSetup(c);
-    const tf = getTimeframes(c, 'short');
-    const knownDesc = COIN_DESCS[c.symbol] || descCache[c.id] || '';
-    const showDesc  = !SKIP_DESC.has(c.symbol);
-    const descHtml  = showDesc ? `<div class="fc-desc" id="fs-desc-${c.id}">${knownDesc || '…'}</div>` : '';
-    const emaTag = `<span class="ema-tag">${c.toEMAres.toFixed(1)}% to EMA resistance</span>`;
-    return `
-      <div class="focus-card-short${i===0?' fs-top':''}" onclick="window.open('${tv}','_blank')">
-        <div class="fc-header">
-          <img class="fc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
-          <div><div class="fc-sym">${c.symbol}</div><div class="fc-name">${c.name}</div></div>
-        </div>
-        <div class="fc-row">
-          <div class="fc-price">${fmtP(c.price)}</div>
-          <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
-        </div>
-        <div class="fc-row">
-          <span class="fc-mcap">Cap: <b style="color:var(--text)">${fmtL(c.mcap)}</b></span>
-          <span style="font-size:9px;font-weight:700;color:var(--bear)">RS ${fmtPct(c.rsBTC,1)}</span>
-        </div>
-        <div style="font-size:9px;color:var(--dim);display:flex;gap:8px">
-          <span>ADR:<b style="color:#fff"> ${c.adr}%</b></span>
-          <span>7d:<b style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}"> ${fmtPct(c.change7d)}</b></span>
-          <span>Vol:<b style="color:${c.volComp>0?'var(--bear)':'var(--dim)'}"> ${c.volComp>0?'↑':'↓'}${Math.abs(c.volComp).toFixed(0)}%</b></span>
-        </div>
-        <div>${emaTag}</div>
-        <div class="fc-divider"></div>
-        <div class="fc-setup">${setup}</div>
-        ${descHtml}
-        <div class="fc-divider"></div>
-        <div style="font-size:9px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
-          <span style="color:var(--dim)">⏱</span>
-          <span style="color:var(--dim)">Entry:</span><b style="color:var(--bear)">${tf.entry}</b>
-          <span style="color:var(--border)">·</span>
-          <span style="color:var(--dim)">Hold:</span><b style="color:var(--text)">${tf.hold}</b>
-        </div>
-        <div class="fc-bar"><div class="fc-fill" style="width:${c.score}%;background:${sc}"></div></div>
-        <div class="fc-row">
-          <span class="fc-meta">Short Score</span>
-          <span class="fc-score" style="color:${sc}">${c.score}</span>
-        </div>
-      </div>`;
-  }).join('');
+  const top5 = [...dispShorts].sort((a,b)=>b.score-a.score).slice(0,5);
+  const html = top5.length
+    ? top5.map((c,i) => shortFocusCard(c,i)).join('')
+    : '<div style="color:var(--dim);font-size:11px;padding:8px 0">No short candidates found — market may be bullish or run a scan first.</div>';
+  document.getElementById('short-grid').innerHTML     = html;
+  document.getElementById('short-grid-all').innerHTML = html;
 }
 
-// ── LONG TABLE ─────────────────────────────────────────────
-function renderLongTable() {
-  const tbody = document.getElementById('body-long');
-  if (!dispLongs.length) { tbody.innerHTML = ''; return; }
-  tbody.innerHTML = dispLongs.map((c, i) => {
-    const cc  = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
-    const rsc = c.rsBTC >= 0 ? 'var(--bull)' : 'var(--bear)';
-    const sc  = lColor(c.score);
-    const fcls = c.score>=65?'s-hot':c.score>=42?'s-warm':'s-cold';
-    const tv  = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
-    const vcStr = c.volComp<0
-      ? `<span style="color:var(--bull)">↓ ${Math.abs(c.volComp).toFixed(1)}%</span>`
-      : `<span style="color:var(--bear)">↑ ${c.volComp.toFixed(1)}%</span>`;
-    const nearStr = c.nearTrigger<3
-      ? `<span style="color:var(--bull);font-weight:700">🔥 ${c.nearTrigger}%</span>`
-      : c.nearTrigger<8
-      ? `<span style="color:var(--neutral)">${c.nearTrigger}%</span>`
-      : `<span style="color:var(--dim)">${c.nearTrigger}%</span>`;
-    const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
-    const medalColor = i===0?'var(--gold)':i===1?'#b0b8c8':i===2?'#cd7f32':'var(--dim)';
-    const tightColor = c.tightness<15?'var(--bull)':c.tightness<25?'var(--neutral)':'var(--dim)';
-    const vmColor = c.volMcapRatio>10?'var(--bull)':c.volMcapRatio>5?'var(--neutral)':'var(--dim)';
-    return `<tr onclick="window.open('${tv}','_blank')">
-      <td style="font-weight:700;color:${medalColor}">${medal}</td>
-      <td><div class="coin-cell">
-        <img class="c-img" src="${c.image}" alt="" onerror="this.style.display='none'">
-        <div><div class="c-sym">${c.symbol}</div><div class="c-name">${c.name}</div></div>
-      </div></td>
-      <td style="color:#fff;font-weight:700">${fmtP(c.price)}</td>
-      <td style="color:${cc};font-weight:600">${fmtPct(c.change24h)}</td>
-      <td style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c.change7d,1)}</td>
-      <td style="color:${rsc};font-weight:700">${fmtPct(c.rsBTC,1)}</td>
-      <td style="color:var(--dim)">${fmtL(c.mcap)}</td>
-      <td style="color:${vmColor};font-weight:600">${c.volMcapRatio}%</td>
-      <td style="color:${c.adr>=6?'var(--bull)':c.adr>=3?'var(--neutral)':'var(--bear)'};font-weight:600">${c.adr}%</td>
-      <td><div class="ema-dots">
-        <div class="ed ${c.above8?'ed-up':'ed-dn'}" title="8 EMA ${c.e8Pct.toFixed(1)}%">8</div>
-        <div class="ed ed-up" title="21 EMA +${c.e21Pct.toFixed(1)}%">21</div>
-        <div class="ed ed-up" title="50 EMA +${c.e50Pct.toFixed(1)}%">50</div>
-      </div></td>
-      <td style="color:${tightColor};font-weight:${c.tightness<15?700:400}">${c.tightness}%</td>
-      <td>${vcStr}</td>
-      <td>${nearStr}</td>
-      <td><div class="score-cell">
-        <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
-        <span style="font-weight:700;color:${sc}">${c.score}</span>
-      </div></td>
-      <td style="white-space:nowrap">${(()=>{const tf=getTimeframes(c,'long');return`<span style="font-size:9px;color:var(--dim)">⏱</span> <b style="color:var(--accent)">${tf.entry}</b><br><span style="font-size:9px;color:var(--dim)">${tf.hold}</span>`;})()}</td>
-      <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
-    </tr>`;
-  }).join('');
+function shortFocusCard(c, i) {
+  const cc = c.change24h>=0?'var(--bull)':'var(--bear)';
+  const sc = shColor(c.score);
+  const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
+  const tf = getTimeframes(c,'short');
+  const setup = generateShortSetup(c);
+  const knownDesc = COIN_DESCS[c.symbol]||descCache[c.id]||'';
+  const showDesc  = !SKIP_DESC.has(c.symbol);
+  const descHtml  = showDesc?`<div class="fc-desc" id="fs-desc-${c.id}">${knownDesc||'…'}</div>`:'';
+  const emaTag = `<span class="ema-tag">${c.toEMAres.toFixed(1)}% to EMA resistance</span>`;
+  return `
+    <div class="focus-card-short${i===0?' fs-top':''}" onclick="window.open('${tv}','_blank')">
+      <div class="fc-header">
+        <img class="fc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+        <div><div class="fc-sym">${c.symbol}</div><div class="fc-name">${c.name}</div></div>
+      </div>
+      <div class="fc-row">
+        <div class="fc-price">${fmtP(c.price)}</div>
+        <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
+      </div>
+      <div class="fc-row">
+        <span class="fc-mcap">Cap: <b style="color:var(--text)">${fmtL(c.mcap)}</b></span>
+        <span style="font-size:9px;font-weight:700;color:var(--bear)">RS ${fmtPct(c.rsBTC,1)}</span>
+      </div>
+      <div style="font-size:9px;color:var(--dim);display:flex;gap:8px">
+        <span>ADR:<b style="color:#fff"> ${c.adr}%</b></span>
+        <span>7d:<b style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}"> ${fmtPct(c.change7d)}</b></span>
+        <span>Vol:<b style="color:${c.volComp>0?'var(--bear)':'var(--dim)'}"> ${c.volComp>0?'↑':'↓'}${Math.abs(c.volComp).toFixed(0)}%</b></span>
+      </div>
+      <div>${emaTag}</div>
+      <div class="fc-divider"></div>
+      <div class="fc-setup">${setup}</div>
+      ${descHtml}
+      <div class="fc-divider"></div>
+      <div style="font-size:9px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+        <span style="color:var(--dim)">⏱</span>
+        <span style="color:var(--dim)">Entry:</span><b style="color:var(--bear)">${tf.entry}</b>
+        <span style="color:var(--border)">·</span>
+        <span style="color:var(--dim)">Hold:</span><b style="color:var(--text)">${tf.hold}</b>
+      </div>
+      <div class="fc-bar"><div class="fc-fill" style="width:${c.score}%;background:${sc}"></div></div>
+      <div class="fc-row">
+        <span class="fc-meta">Short Score</span>
+        <span class="fc-score" style="color:${sc}">${c.score}</span>
+      </div>
+    </div>`;
 }
 
-// ── SHORT TABLE ────────────────────────────────────────────
-function renderShortTable() {
-  const tbody = document.getElementById('body-short');
-  if (!dispShorts.length) { tbody.innerHTML = ''; return; }
-  tbody.innerHTML = dispShorts.map((c, i) => {
-    const cc  = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
-    const sc  = shColor(c.score);
-    const fcls = c.score>=65?'s-short-hot':c.score>=42?'s-short-warm':'s-short-cold';
-    const tv  = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
-    const vcStr = c.volComp>0
-      ? `<span style="color:var(--bear);font-weight:600">↑ ${c.volComp.toFixed(1)}%</span>`
-      : `<span style="color:var(--dim)">↓ ${Math.abs(c.volComp).toFixed(1)}%</span>`;
-    const emaStr = c.toEMAres < 3
-      ? `<span style="color:var(--bear);font-weight:700">🔴 ${c.toEMAres}%</span>`
-      : c.toEMAres < 8
-      ? `<span style="color:var(--neutral)">${c.toEMAres}%</span>`
-      : `<span style="color:var(--dim)">${c.toEMAres}%</span>`;
-    const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
-    const medalColor = i===0?'var(--bear)':i===1?'#a06060':i===2?'#8a5a5a':'var(--dim)';
-    return `<tr class="short-row" onclick="window.open('${tv}','_blank')">
-      <td style="font-weight:700;color:${medalColor}">${medal}</td>
-      <td><div class="coin-cell">
-        <img class="c-img" src="${c.image}" alt="" onerror="this.style.display='none'">
-        <div><div class="c-sym">${c.symbol}</div><div class="c-name">${c.name}</div></div>
-      </div></td>
-      <td style="color:#fff;font-weight:700">${fmtP(c.price)}</td>
-      <td style="color:${cc};font-weight:600">${fmtPct(c.change24h)}</td>
-      <td style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c.change7d,1)}</td>
-      <td style="color:var(--bear);font-weight:700">${fmtPct(c.rsBTC,1)}</td>
-      <td style="color:var(--dim)">${fmtL(c.mcap)}</td>
-      <td style="color:${c.adr>=6?'var(--bull)':c.adr>=3?'var(--neutral)':'var(--bear)'};font-weight:600">${c.adr}%</td>
-      <td><div class="ema-dots">
-        <div class="ed ${c.above8?'ed-up':'ed-dn'}" title="8 EMA ${c.e8Pct.toFixed(1)}%">8</div>
-        <div class="ed ${c.above21?'ed-up':'ed-dn'}" title="21 EMA ${c.e21Pct.toFixed(1)}%">21</div>
-        <div class="ed ${c.above50?'ed-up':'ed-dn'}" title="50 EMA ${c.e50Pct.toFixed(1)}%">50</div>
-      </div></td>
-      <td>${emaStr}</td>
-      <td>${vcStr}</td>
-      <td><div class="score-cell">
-        <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
-        <span style="font-weight:700;color:${sc}">${c.score}</span>
-      </div></td>
-      <td style="white-space:nowrap">${(()=>{const tf=getTimeframes(c,'short');return`<span style="font-size:9px;color:var(--dim)">⏱</span> <b style="color:var(--bear)">${tf.entry}</b><br><span style="font-size:9px;color:var(--dim)">${tf.hold}</span>`;})()}</td>
-      <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
-    </tr>`;
-  }).join('');
+// ── LONG TABLE ROWS ────────────────────────────────────────
+function longRow(c, i) {
+  const cc  = c.change24h>=0?'var(--bull)':'var(--bear)';
+  const rsc = c.rsBTC>=0?'var(--bull)':'var(--bear)';
+  const sc  = lColor(c.score);
+  const fcls = c.score>=65?'s-hot':c.score>=42?'s-warm':'s-cold';
+  const tv  = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
+  const tf  = getTimeframes(c,'long');
+  const vcStr = c.volComp<0
+    ? `<span style="color:var(--bull)">↓ ${Math.abs(c.volComp).toFixed(1)}%</span>`
+    : `<span style="color:var(--bear)">↑ ${c.volComp.toFixed(1)}%</span>`;
+  const nearStr = c.nearTrigger<3
+    ? `<span style="color:var(--bull);font-weight:700">🔥 ${c.nearTrigger}%</span>`
+    : c.nearTrigger<8
+    ? `<span style="color:var(--neutral)">${c.nearTrigger}%</span>`
+    : `<span style="color:var(--dim)">${c.nearTrigger}%</span>`;
+  const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+  const medalColor = i===0?'var(--gold)':i===1?'#b0b8c8':i===2?'#cd7f32':'var(--dim)';
+  return `<tr onclick="window.open('${tv}','_blank')">
+    <td style="font-weight:700;color:${medalColor}">${medal}</td>
+    <td><div class="coin-cell">
+      <img class="c-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+      <div><div class="c-sym">${c.symbol}</div><div class="c-name">${c.name}</div></div>
+    </div></td>
+    <td style="color:#fff;font-weight:700">${fmtP(c.price)}</td>
+    <td style="color:${cc};font-weight:600">${fmtPct(c.change24h)}</td>
+    <td style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c.change7d,1)}</td>
+    <td style="color:${rsc};font-weight:700">${fmtPct(c.rsBTC,1)}</td>
+    <td style="color:var(--dim)">${fmtL(c.mcap)}</td>
+    <td style="color:${c.volMcapRatio>10?'var(--bull)':c.volMcapRatio>5?'var(--neutral)':'var(--dim)'};font-weight:600">${c.volMcapRatio}%</td>
+    <td style="color:${c.adr>=6?'var(--bull)':c.adr>=3?'var(--neutral)':'var(--bear)'};font-weight:600">${c.adr}%</td>
+    <td><div class="ema-dots">
+      <div class="ed ${c.above8?'ed-up':'ed-dn'}" title="8 EMA ${c.e8Pct.toFixed(1)}%">8</div>
+      <div class="ed ed-up" title="21 EMA +${c.e21Pct.toFixed(1)}%">21</div>
+      <div class="ed ed-up" title="50 EMA +${c.e50Pct.toFixed(1)}%">50</div>
+    </div></td>
+    <td style="color:${c.tightness<15?'var(--bull)':c.tightness<25?'var(--neutral)':'var(--dim)'};font-weight:${c.tightness<15?700:400}">${c.tightness}%</td>
+    <td>${vcStr}</td>
+    <td>${nearStr}</td>
+    <td><div class="score-cell">
+      <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
+      <span style="font-weight:700;color:${sc}">${c.score}</span>
+    </div></td>
+    <td style="white-space:nowrap"><b style="color:var(--accent)">${tf.entry}</b><br><span style="font-size:9px;color:var(--dim)">${tf.hold}</span></td>
+    <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
+  </tr>`;
 }
+
+function renderLongTable()    { const b=document.getElementById('body-long');    if(b) b.innerHTML=dispLongs.map((c,i)=>longRow(c,i)).join(''); }
+function renderLongTableAll() { const b=document.getElementById('body-long-all');if(b) b.innerHTML=dispLongs.map((c,i)=>longRow(c,i)).join(''); }
+
+// ── SHORT TABLE ROWS ───────────────────────────────────────
+function shortRow(c, i) {
+  const cc  = c.change24h>=0?'var(--bull)':'var(--bear)';
+  const sc  = shColor(c.score);
+  const fcls = c.score>=65?'s-short-hot':c.score>=42?'s-short-warm':'s-short-cold';
+  const tv  = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
+  const tf  = getTimeframes(c,'short');
+  const vcStr = c.volComp>0
+    ? `<span style="color:var(--bear);font-weight:600">↑ ${c.volComp.toFixed(1)}%</span>`
+    : `<span style="color:var(--dim)">↓ ${Math.abs(c.volComp).toFixed(1)}%</span>`;
+  const emaStr = c.toEMAres<3
+    ? `<span style="color:var(--bear);font-weight:700">🔴 ${c.toEMAres}%</span>`
+    : c.toEMAres<8
+    ? `<span style="color:var(--neutral)">${c.toEMAres}%</span>`
+    : `<span style="color:var(--dim)">${c.toEMAres}%</span>`;
+  const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+  const medalColor = i===0?'var(--bear)':i===1?'#a06060':i===2?'#8a5a5a':'var(--dim)';
+  return `<tr class="short-row" onclick="window.open('${tv}','_blank')">
+    <td style="font-weight:700;color:${medalColor}">${medal}</td>
+    <td><div class="coin-cell">
+      <img class="c-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+      <div><div class="c-sym">${c.symbol}</div><div class="c-name">${c.name}</div></div>
+    </div></td>
+    <td style="color:#fff;font-weight:700">${fmtP(c.price)}</td>
+    <td style="color:${cc};font-weight:600">${fmtPct(c.change24h)}</td>
+    <td style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c.change7d,1)}</td>
+    <td style="color:var(--bear);font-weight:700">${fmtPct(c.rsBTC,1)}</td>
+    <td style="color:var(--dim)">${fmtL(c.mcap)}</td>
+    <td style="color:${c.adr>=6?'var(--bull)':c.adr>=3?'var(--neutral)':'var(--bear)'};font-weight:600">${c.adr}%</td>
+    <td><div class="ema-dots">
+      <div class="ed ${c.above8?'ed-up':'ed-dn'}">8</div>
+      <div class="ed ${c.above21?'ed-up':'ed-dn'}">21</div>
+      <div class="ed ${c.above50?'ed-up':'ed-dn'}">50</div>
+    </div></td>
+    <td>${emaStr}</td>
+    <td>${vcStr}</td>
+    <td><div class="score-cell">
+      <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
+      <span style="font-weight:700;color:${sc}">${c.score}</span>
+    </div></td>
+    <td style="white-space:nowrap"><b style="color:var(--bear)">${tf.entry}</b><br><span style="font-size:9px;color:var(--dim)">${tf.hold}</span></td>
+    <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
+  </tr>`;
+}
+
+function renderShortTable()    { const b=document.getElementById('body-short');    if(b) b.innerHTML=dispShorts.map((c,i)=>shortRow(c,i)).join(''); }
+function renderShortTableAll() { const b=document.getElementById('body-short-all');if(b) b.innerHTML=dispShorts.map((c,i)=>shortRow(c,i)).join(''); }
 
 // ── DESCRIPTION FETCH ──────────────────────────────────────
 async function fetchDescs(coins) {
   for (const c of coins) {
-    if (SKIP_DESC.has(c.symbol) || COIN_DESCS[c.symbol] || descCache[c.id]) continue;
+    if (SKIP_DESC.has(c.symbol)||COIN_DESCS[c.symbol]||descCache[c.id]) continue;
     try {
       const data = await fetchJSON(
         `${CG}/coins/${c.id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false`,
@@ -1210,12 +1318,14 @@ async function fetchDescs(coins) {
       );
       const raw = (data?.description?.en||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
       if (raw) {
-        descCache[c.id] = raw.length > 130 ? raw.slice(0,127)+'…' : raw;
-        const el = document.getElementById('fc-desc-' + c.id) || document.getElementById('fs-desc-' + c.id);
-        if (el) el.textContent = descCache[c.id];
+        descCache[c.id] = raw.length>130 ? raw.slice(0,127)+'…' : raw;
+        ['fc-desc-','fs-desc-'].forEach(pfx => {
+          const el = document.getElementById(pfx+c.id);
+          if (el) el.textContent = descCache[c.id];
+        });
       }
     } catch(e) {}
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise(r => setTimeout(r,300));
   }
 }
 
