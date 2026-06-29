@@ -20,19 +20,10 @@ body{background:var(--bg);color:var(--text);font-family:'SF Mono','Fira Code','C
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
 /* ── HEADER ─────────────────────────────────────────────── */
-header{
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:12px 20px;display:flex;align-items:center;gap:14px;
-  position:sticky;top:0;z-index:100;flex-wrap:wrap;
-}
-.brand{flex-shrink:0}
-.brand-title{font-size:17px;font-weight:700;color:#fff;letter-spacing:1px}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;flex-wrap:wrap}
+.brand-title{font-size:17px;font-weight:700;color:#fff;letter-spacing:1px;flex-shrink:0}
 .brand-sub{font-size:9px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
-
-.mkt-block{
-  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
-  padding:7px 12px;text-align:center;flex-shrink:0;
-}
+.mkt-block{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;text-align:center;flex-shrink:0}
 .mkt-lbl{font-size:9px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
 .ema-pips{display:flex;gap:3px;justify-content:center;margin-bottom:4px}
 .pip{width:22px;height:16px;border-radius:3px;font-size:7.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -40,25 +31,14 @@ header{
 .pip-dn{background:var(--bear-bg);color:var(--bear);border:1px solid var(--bear)}
 .pip-ld{background:var(--surface);color:var(--dim);border:1px solid var(--border)}
 .mkt-verdict{font-size:10px;font-weight:700}
-
-.overall{
-  padding:7px 15px;border-radius:6px;font-weight:700;font-size:12px;
-  letter-spacing:1.5px;flex-shrink:0;white-space:nowrap;
-}
+.overall{padding:7px 15px;border-radius:6px;font-weight:700;font-size:12px;letter-spacing:1.5px;flex-shrink:0;white-space:nowrap}
 .o-bull{background:var(--bull-bg);color:var(--bull);border:1px solid var(--bull)}
 .o-bear{background:var(--bear-bg);color:var(--bear);border:1px solid var(--bear)}
 .o-neut{background:var(--neutral-bg);color:var(--neutral);border:1px solid var(--neutral)}
 .o-load{background:var(--surface2);color:var(--dim);border:1px solid var(--border)}
-
 .hdr-advice{font-size:9px;color:var(--dim);max-width:140px;text-align:center;line-height:1.4}
-
 .scan-area{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
-.scan-btn{
-  background:var(--accent);border:none;color:#fff;padding:10px 22px;
-  border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;
-  font-family:inherit;box-shadow:0 0 12px rgba(78,127,255,.4);
-  letter-spacing:.5px;transition:all .15s;
-}
+.scan-btn{background:var(--accent);border:none;color:#fff;padding:10px 22px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;box-shadow:0 0 12px rgba(78,127,255,.4);letter-spacing:.5px;transition:all .15s}
 .scan-btn:hover{background:#3d85ff;box-shadow:0 0 20px rgba(78,127,255,.7)}
 .scan-btn:disabled{opacity:.5;cursor:not-allowed}
 .scan-meta{font-size:9px;color:var(--dim);text-align:right}
@@ -67,27 +47,23 @@ header{
 .main{padding:14px;display:flex;flex-direction:column;gap:16px;max-width:1800px;margin:0 auto}
 
 /* ── STRATEGY BAR ──────────────────────────────────────── */
-.strategy-bar{
-  background:var(--surface2);border:1px solid var(--border);
-  border-left:3px solid var(--accent);border-radius:6px;
-  padding:9px 14px;display:flex;gap:22px;flex-wrap:wrap;align-items:center;
-}
+.strategy-bar{background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:6px;padding:9px 14px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
 .sb{font-size:10px;display:flex;gap:5px}
 .sb-l{color:var(--dim);text-transform:uppercase;letter-spacing:1px}
 .sb-v{color:#fff;font-weight:600}
 
-/* ── SECTION HEADER ──────────────────────────────────────── */
+/* ── SECTION HEADERS ──────────────────────────────────────── */
 .sec-header{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
 .sec-label{font-size:9px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase}
+.sec-label-bear{font-size:9px;font-weight:700;color:var(--bear);letter-spacing:2px;text-transform:uppercase}
 .sec-sub{font-size:9px;color:var(--dim)}
+.short-warning{font-size:9px;padding:3px 8px;border-radius:4px;margin-left:4px}
+.sw-bull{background:var(--neutral-bg);color:var(--neutral);border:1px solid var(--neutral)}
+.sw-bear{background:var(--bull-bg);color:var(--bull);border:1px solid var(--bull)}
 
-/* ── UFO LEADERS CARDS ───────────────────────────────────── */
+/* ── LEADER CARDS ─────────────────────────────────────────── */
 .leaders-grid{display:flex;gap:10px;flex-wrap:wrap}
-.leader-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  padding:13px 14px;min-width:175px;max-width:220px;flex:1;
-  cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:6px;
-}
+.leader-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 14px;min-width:175px;max-width:220px;flex:1;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:6px}
 .leader-card:hover{border-color:var(--gold);box-shadow:0 0 16px rgba(245,200,66,.18);transform:translateY(-2px)}
 .lc-top{display:flex;justify-content:space-between;align-items:flex-start}
 .lc-coin{display:flex;align-items:center;gap:7px}
@@ -95,28 +71,23 @@ header{
 .lc-sym{font-size:14px;font-weight:700;color:#fff}
 .lc-name{font-size:9px;color:var(--dim)}
 .lc-rank{font-size:10px;color:var(--dim);font-weight:700}
-.lc-rs{
-  display:inline-block;padding:3px 7px;border-radius:4px;
-  font-size:11px;font-weight:700;letter-spacing:.5px;
-  background:var(--gold-bg);color:var(--gold);border:1px solid rgba(245,200,66,.3);
-}
+.lc-rs{display:inline-block;padding:3px 7px;border-radius:4px;font-size:11px;font-weight:700;background:var(--gold-bg);color:var(--gold);border:1px solid rgba(245,200,66,.3)}
+.lc-rs-bear{display:inline-block;padding:3px 7px;border-radius:4px;font-size:11px;font-weight:700;background:var(--bear-bg);color:var(--bear);border:1px solid rgba(255,61,90,.3)}
 .lc-price{font-size:15px;font-weight:700;color:#fff}
 .lc-row{display:flex;justify-content:space-between;align-items:center;gap:6px}
-.lc-chg{font-size:11px;font-weight:600}
 .lc-meta{font-size:9px;color:var(--dim);display:flex;gap:8px}
 .lc-pip-row{display:flex;gap:3px;align-items:center}
 .spark{display:block}
 .lc-score{font-size:11px;font-weight:700}
 
-/* ── FOCUS CARDS ─────────────────────────────────────────── */
+/* ── FOCUS CARDS (LONG + SHORT) ──────────────────────────── */
 .focus-grid{display:flex;gap:10px;flex-wrap:wrap}
-.focus-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  padding:12px 14px;min-width:200px;max-width:260px;flex:1;
-  cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:5px;
-}
+.focus-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;min-width:200px;max-width:260px;flex:1;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:5px}
 .focus-card:hover{border-color:var(--accent);box-shadow:0 0 13px rgba(78,127,255,.2);transform:translateY(-1px)}
 .focus-card.fc-top{border-color:var(--bull)}
+.focus-card-short{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;min-width:200px;max-width:260px;flex:1;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:5px}
+.focus-card-short:hover{border-color:var(--bear);box-shadow:0 0 13px rgba(255,61,90,.2);transform:translateY(-1px)}
+.focus-card-short.fs-top{border-color:var(--bear)}
 .fc-header{display:flex;align-items:center;gap:7px}
 .fc-img{width:26px;height:26px;border-radius:50%;background:var(--surface2);flex-shrink:0}
 .fc-sym{font-size:13px;font-weight:700;color:#fff}
@@ -126,116 +97,85 @@ header{
 .fc-meta{font-size:9px;color:var(--dim)}
 .fc-mcap{font-size:9px;color:var(--dim)}
 .fc-divider{height:1px;background:var(--border);margin:2px 0}
-.fc-setup{font-size:9px;color:var(--text);line-height:1.5;opacity:.8}
-.fc-desc{
-  font-size:9px;color:var(--dim);line-height:1.5;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-  font-style:italic;
-}
+.fc-setup{font-size:9px;color:var(--text);line-height:1.5;opacity:.85}
+.fc-desc{font-size:9px;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-style:italic}
 .fc-bar{height:3px;background:var(--border);border-radius:2px;margin-top:3px}
 .fc-fill{height:100%;border-radius:2px;transition:width .4s}
 .fc-score{font-size:12px;font-weight:700}
-.near-tag{
-  font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px;
-  background:var(--bull-bg);color:var(--bull);border:1px solid rgba(0,217,126,.3);
-}
+.near-tag{font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px;background:var(--bull-bg);color:var(--bull);border:1px solid rgba(0,217,126,.3)}
+.ema-tag{font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px;background:var(--bear-bg);color:var(--bear);border:1px solid rgba(255,61,90,.3)}
 
 /* ── FILTERS ─────────────────────────────────────────────── */
-.filter-bar{
-  background:var(--surface);border:1px solid var(--border);border-radius:8px;
-  padding:10px 14px;display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;
-}
+.filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
 .fg{display:flex;flex-direction:column;gap:4px}
 .fl{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
-.fi{
-  background:var(--surface2);border:1px solid var(--border);color:var(--text);
-  padding:5px 8px;border-radius:5px;font-size:11px;font-family:inherit;width:115px;
-}
+.fi{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 8px;border-radius:5px;font-size:11px;font-family:inherit;width:115px}
 .fi:focus{outline:none;border-color:var(--accent)}
 .fi.narrow{width:75px}
-.apply-btn{
-  background:var(--surface2);border:1px solid var(--border);color:var(--text);
-  padding:6px 14px;border-radius:5px;cursor:pointer;font-size:11px;
-  font-family:inherit;transition:all .15s;
-}
+.apply-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:5px;cursor:pointer;font-size:11px;font-family:inherit;transition:all .15s}
 .apply-btn:hover{border-color:var(--accent);color:var(--accent)}
 .filter-note{font-size:9px;color:var(--dim);line-height:1.6;margin-left:auto;text-align:right;max-width:240px}
 
+/* ── DIVIDER ─────────────────────────────────────────────── */
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:4px 0}
+
 /* ── TABLE ───────────────────────────────────────────────── */
 .table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+.table-wrap-bear{overflow-x:auto;border-radius:8px;border:1px solid rgba(255,61,90,.25)}
 table{width:100%;border-collapse:collapse}
-thead th{
-  background:var(--surface2);padding:8px 9px;text-align:left;
-  font-size:9px;font-weight:700;color:var(--dim);letter-spacing:1.5px;
-  text-transform:uppercase;border-bottom:1px solid var(--border);
-  white-space:nowrap;cursor:pointer;user-select:none;
-}
+thead th{background:var(--surface2);padding:8px 9px;text-align:left;font-size:9px;font-weight:700;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
 thead th:hover{color:var(--text)}
 thead th.sorted{color:var(--accent)}
+thead th.sorted-bear{color:var(--bear)}
 tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .08s}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:rgba(78,127,255,.05)}
+tbody tr.short-row:hover{background:rgba(255,61,90,.05)}
 td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
-
 .coin-cell{display:flex;align-items:center;gap:8px}
 .c-img{width:22px;height:22px;border-radius:50%;background:var(--surface2);flex-shrink:0}
 .c-sym{font-size:11px;font-weight:700;color:#fff}
 .c-name{font-size:9px;color:var(--dim)}
-
 .ema-dots{display:flex;gap:2px}
 .ed{width:16px;height:14px;border-radius:3px;font-size:7px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .ed-up{background:var(--bull-bg);color:var(--bull)}
 .ed-dn{background:var(--bear-bg);color:var(--bear)}
-
 .score-cell{display:flex;align-items:center;gap:6px}
 .score-bar{width:42px;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
 .score-fill{height:100%;border-radius:3px}
 .s-hot{background:var(--bull)}
 .s-warm{background:var(--neutral)}
 .s-cold{background:var(--bear)}
-
-.tv-btn{
-  display:inline-flex;align-items:center;gap:3px;color:var(--accent);
-  text-decoration:none;font-size:10px;padding:3px 7px;border-radius:4px;
-  border:1px solid transparent;transition:border-color .1s;
-}
+.s-short-hot{background:var(--bear)}
+.s-short-warm{background:var(--neutral)}
+.s-short-cold{background:var(--dim)}
+.tv-btn{display:inline-flex;align-items:center;gap:3px;color:var(--accent);text-decoration:none;font-size:10px;padding:3px 7px;border-radius:4px;border:1px solid transparent;transition:border-color .1s}
 .tv-btn:hover{border-color:var(--accent)}
 
 /* ── LOADING ─────────────────────────────────────────────── */
 .load-wrap{text-align:center;padding:60px 20px}
-.spinner{
-  width:30px;height:30px;border:3px solid var(--border);
-  border-top-color:var(--accent);border-radius:50%;
-  animation:spin .7s linear infinite;margin:0 auto 12px;
-}
+.spinner{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .prog-track{width:280px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 0}
 .prog-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .25s}
 .load-text{font-size:11px;color:var(--dim);margin-top:8px}
-
 .empty{text-align:center;padding:40px;color:var(--dim);font-size:12px}
 
 /* ── LEGEND ─────────────────────────────────────────────── */
-.legend{
-  background:var(--surface2);border:1px solid var(--border);border-radius:6px;
-  padding:10px 14px;font-size:9px;color:var(--dim);display:flex;gap:24px;flex-wrap:wrap;
-}
+.legend{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:9px;color:var(--dim);display:flex;gap:24px;flex-wrap:wrap}
 .leg-title{color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.leg-title-bear{color:var(--bear);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
 
-@media(max-width:700px){
-  .leader-card,.focus-card{min-width:140px}
-  header{gap:10px}
-}
+@media(max-width:700px){.leader-card,.focus-card,.focus-card-short{min-width:140px}.header{gap:10px}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="brand">
+  <div style="flex-shrink:0">
     <div class="brand-title">🛸 CRYPTO SCOUT</div>
     <div class="brand-sub">UFO Breakout Strategy · Top 100</div>
   </div>
-
   <div class="mkt-block">
     <div class="mkt-lbl">BTC — Market Proxy</div>
     <div class="ema-pips" id="btc-pips">
@@ -243,7 +183,6 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
     </div>
     <div class="mkt-verdict" id="btc-verdict" style="color:var(--dim)">—</div>
   </div>
-
   <div class="mkt-block">
     <div class="mkt-lbl">ETH — Alt Proxy</div>
     <div class="ema-pips" id="eth-pips">
@@ -251,13 +190,11 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
     </div>
     <div class="mkt-verdict" id="eth-verdict" style="color:var(--dim)">—</div>
   </div>
-
   <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
     <div style="font-size:9px;color:var(--dim);letter-spacing:1px">MARKET BIAS</div>
     <div class="overall o-load" id="mkt-badge">LOADING…</div>
   </div>
   <div class="hdr-advice" id="mkt-advice"> </div>
-
   <div class="scan-area">
     <button class="scan-btn" id="scan-btn" onclick="runScan()">⟳ Run Scan</button>
     <div class="scan-meta" id="scan-meta">Not scanned yet</div>
@@ -266,40 +203,54 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
 
 <div class="main">
 
-  <!-- Strategy bar -->
   <div class="strategy-bar">
     <div class="sb"><span class="sb-l">Universe</span><span class="sb-v">Top 100 by Market Cap</span></div>
-    <div class="sb"><span class="sb-l">Filter</span><span class="sb-v">Price above 21 + 50 EMA</span></div>
-    <div class="sb"><span class="sb-l">Leaders</span><span class="sb-v">Outperforming BTC (7d RS)</span></div>
-    <div class="sb"><span class="sb-l">Setup</span><span class="sb-v">Tight base + volume compression</span></div>
-    <div class="sb"><span class="sb-l">Entry</span><span class="sb-v">Break above resistance on volume</span></div>
-    <div class="sb"><span class="sb-l">Stop</span><span class="sb-v">Low of breakout candle</span></div>
-    <div class="sb"><span class="sb-l">Scale</span><span class="sb-v">25% at res → trail 8 EMA → trail 21 EMA</span></div>
+    <div class="sb"><span class="sb-l">Longs</span><span class="sb-v">Above 21+50 EMA · RS vs BTC positive</span></div>
+    <div class="sb"><span class="sb-l">Shorts</span><span class="sb-v">Below 21/50 EMA · RS vs BTC negative · bounce into resistance</span></div>
+    <div class="sb"><span class="sb-l">Entry</span><span class="sb-v">Break of trigger level on volume</span></div>
+    <div class="sb"><span class="sb-l">Stop</span><span class="sb-v">Low of entry candle (long) · High of entry candle (short)</span></div>
+    <div class="sb"><span class="sb-l">Scale</span><span class="sb-v">25% at target → trail 8 → trail 21 EMA</span></div>
   </div>
 
-  <!-- UFO LEADERS -->
+  <!-- ⚡ UFO LEADERS -->
   <div>
     <div class="sec-header">
       <div class="sec-label">⚡ UFO Leaders — This Week's Strongest Coins</div>
-      <div class="sec-sub">Outperforming BTC · Above all 3 EMAs · Institutional size</div>
+      <div class="sec-sub">Outperforming BTC · Above all 3 EMAs · $1B+ market cap</div>
     </div>
     <div class="leaders-grid" id="leaders-grid">
       <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan to see this week's leaders</div>
     </div>
   </div>
 
-  <!-- UFO FOCUS LIST -->
+  <!-- 🎯 UFO FOCUS LIST (LONGS) -->
   <div>
     <div class="sec-header">
-      <div class="sec-label">🎯 UFO Focus List — Best Setups Today</div>
-      <div class="sec-sub">Highest scout score · Tightest base · Closest to breakout</div>
+      <div class="sec-label">🎯 UFO Focus List — Best Long Setups</div>
+      <div class="sec-sub">Highest scout score · Tightest base · Closest to breakout · Click to open TradingView</div>
     </div>
     <div class="focus-grid" id="focus-grid">
       <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan to see today's top setups</div>
     </div>
   </div>
 
-  <!-- Filters -->
+  <div class="section-divider"></div>
+
+  <!-- 🔴 UFO SHORTS -->
+  <div>
+    <div class="sec-header">
+      <div class="sec-label-bear">🔴 UFO Shorts — Best Short Setups</div>
+      <div class="sec-sub">Below 21/50 EMA · Underperforming BTC · Bouncing into resistance · Futures only</div>
+      <span class="short-warning" id="short-warning">Checking market bias…</span>
+    </div>
+    <div class="focus-grid" id="short-grid">
+      <div style="color:var(--dim);font-size:11px;padding:8px 0">Run a scan to see short candidates</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- FILTERS -->
   <div class="filter-bar">
     <div class="fg">
       <div class="fl">Min Market Cap</div>
@@ -314,106 +265,134 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
       <input type="number" class="fi narrow" id="f-adr" value="3" step="0.5">
     </div>
     <div class="fg">
-      <div class="fl">Min RS vs BTC 7d %</div>
+      <div class="fl">Min RS vs BTC (long)</div>
       <input type="number" class="fi narrow" id="f-rs" value="0" step="1">
     </div>
     <div class="fg">
-      <div class="fl">Min Scout Score</div>
+      <div class="fl">Min Long Score</div>
       <input type="number" class="fi narrow" id="f-score" value="25" step="5">
     </div>
-    <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
-    <div class="filter-note">
-      Filters re-apply instantly — no re-scan needed.<br>
-      Set RS vs BTC to 0 to show only outperformers.
+    <div class="fg">
+      <div class="fl">Min Short Score</div>
+      <input type="number" class="fi narrow" id="f-sscore" value="25" step="5">
     </div>
+    <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
+    <div class="filter-note">Filters re-apply to stored results instantly.<br>Set RS vs BTC ≥ 0 to show only outperformers.</div>
   </div>
 
-  <!-- Results table -->
+  <!-- LONG RESULTS TABLE -->
   <div>
-    <div class="sec-label" id="res-label" style="margin-bottom:8px">ALL QUALIFYING COINS</div>
+    <div class="sec-label" id="res-label" style="margin-bottom:8px">RANKED BY OPPORTUNITY — LONGS</div>
     <div class="load-wrap" id="load-block" style="display:none">
       <div class="spinner"></div>
       <div class="load-text" id="load-text">Initialising…</div>
       <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
     </div>
-    <div class="empty" id="empty-state">Press <strong>⟳ Run Scan</strong> to find today's breakout candidates.</div>
-    <div class="table-wrap" id="table-wrap" style="display:none">
+    <div class="empty" id="empty-long">Press <strong>⟳ Run Scan</strong> to find today's breakout candidates.</div>
+    <div class="table-wrap" id="table-long" style="display:none">
       <table>
         <thead>
           <tr>
             <th>#</th>
-            <th onclick="sortBy('symbol',event)">COIN</th>
-            <th onclick="sortBy('price',event)">PRICE</th>
-            <th onclick="sortBy('change24h',event)">24H %</th>
-            <th onclick="sortBy('change7d',event)">7D %</th>
-            <th onclick="sortBy('rsBTC',event)">RS vs BTC</th>
-            <th onclick="sortBy('mcap',event)">MKT CAP</th>
-            <th onclick="sortBy('volMcapRatio',event)">VOL/MCAP</th>
-            <th onclick="sortBy('adr',event)">ADR %</th>
-            <th>8 / 21 / 50</th>
-            <th onclick="sortBy('tightness',event)" title="15-day price range ÷ price. Lower = tighter base.">BASE %</th>
-            <th onclick="sortBy('volComp',event)" title="Recent 5d avg vol vs prior 15d avg. Negative = compression.">VOL TREND</th>
-            <th onclick="sortBy('nearTrigger',event)" title="% below 20-day high (resistance). Lower = closer to break.">→ TRIGGER</th>
-            <th onclick="sortBy('score',event)" class="sorted">SCORE ▼</th>
+            <th onclick="longSortBy('symbol',event)">COIN</th>
+            <th onclick="longSortBy('price',event)">PRICE</th>
+            <th onclick="longSortBy('change24h',event)">24H %</th>
+            <th onclick="longSortBy('change7d',event)">7D %</th>
+            <th onclick="longSortBy('rsBTC',event)">RS vs BTC</th>
+            <th onclick="longSortBy('mcap',event)">MKT CAP</th>
+            <th onclick="longSortBy('volMcapRatio',event)">VOL/MCAP</th>
+            <th onclick="longSortBy('adr',event)">ADR %</th>
+            <th>8/21/50</th>
+            <th onclick="longSortBy('tightness',event)">BASE %</th>
+            <th onclick="longSortBy('volComp',event)">VOL TREND</th>
+            <th onclick="longSortBy('nearTrigger',event)">→ TRIGGER</th>
+            <th onclick="longSortBy('score',event)" class="sorted">SCORE ▼</th>
             <th>CHART</th>
           </tr>
         </thead>
-        <tbody id="res-body"></tbody>
+        <tbody id="body-long"></tbody>
       </table>
     </div>
   </div>
 
-  <!-- Legend -->
+  <!-- SHORT RESULTS TABLE -->
+  <div>
+    <div class="sec-label-bear" id="res-label-short" style="margin-bottom:8px">RANKED BY SHORT OPPORTUNITY</div>
+    <div class="empty" id="empty-short" style="display:none">No short candidates found with current filters.</div>
+    <div class="table-wrap-bear" id="table-short" style="display:none">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th onclick="shortSortBy('symbol',event)">COIN</th>
+            <th onclick="shortSortBy('price',event)">PRICE</th>
+            <th onclick="shortSortBy('change24h',event)">24H %</th>
+            <th onclick="shortSortBy('change7d',event)">7D %</th>
+            <th onclick="shortSortBy('rsBTC',event)">RS vs BTC</th>
+            <th onclick="shortSortBy('mcap',event)">MKT CAP</th>
+            <th onclick="shortSortBy('adr',event)">ADR %</th>
+            <th>8/21/50</th>
+            <th onclick="shortSortBy('toEMAres',event)">TO EMA RES</th>
+            <th onclick="shortSortBy('volComp',event)">VOL TREND</th>
+            <th onclick="shortSortBy('score',event)" class="sorted-bear">SHORT SCORE ▼</th>
+            <th>CHART</th>
+          </tr>
+        </thead>
+        <tbody id="body-short"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
   <div class="legend">
     <div>
-      <div class="leg-title">UFO Leaders</div>
-      <div>Top coins outperforming BTC over 7 days</div>
-      <div>These are the coins institutions are loading</div>
-      <div>Min $1B market cap · Above all EMAs</div>
-    </div>
-    <div>
-      <div class="leg-title">RS vs BTC (7d)</div>
-      <div>Coin 7d change minus BTC 7d change</div>
-      <div>Positive = outperforming BTC = 🟢</div>
-      <div>Negative = underperforming = 🔴</div>
-    </div>
-    <div>
-      <div class="leg-title">Vol/MCap %</div>
-      <div>Daily volume ÷ market cap</div>
-      <div>&gt;10% = very elevated activity</div>
-      <div>&gt;5% = elevated · &lt;2% = quiet</div>
-    </div>
-    <div>
-      <div class="leg-title">ADR %</div>
-      <div>14-day avg daily range</div>
-      <div>Strategy requires &gt;3%</div>
-      <div>&gt;6% = high conviction moves</div>
-    </div>
-    <div>
-      <div class="leg-title">Base %</div>
-      <div>15-day price range ÷ close</div>
-      <div>&lt;15% = tight base (coiling spring)</div>
-      <div>Lower = better setup quality</div>
-    </div>
-    <div>
-      <div class="leg-title">Vol Trend</div>
-      <div>Recent 5d avg vs prior 15d avg</div>
-      <div>↓ Negative = compression = ✓</div>
-      <div>Contracting vol = setup building</div>
-    </div>
-    <div>
-      <div class="leg-title">→ Trigger</div>
-      <div>Distance to 20-day resistance</div>
-      <div>🔥 &lt;3% = near breakout entry</div>
-      <div>Lower = closer to trigger</div>
-    </div>
-    <div>
-      <div class="leg-title">Scout Score (0–100)</div>
+      <div class="leg-title">Scout Score (Longs)</div>
       <div>Base tightness: 0–35 pts</div>
       <div>Vol compression: 0–20 pts</div>
       <div>Near trigger: 0–20 pts</div>
       <div>RS vs BTC: 0–15 pts</div>
       <div>Above 8 EMA: 0–10 pts</div>
+    </div>
+    <div>
+      <div class="leg-title-bear">Short Score</div>
+      <div>EMA breakdown depth: 0–30 pts</div>
+      <div>RS vs BTC (negative): 0–25 pts</div>
+      <div>Volume expanding: 0–20 pts</div>
+      <div>Near EMA resistance: 0–15 pts</div>
+      <div>ADR quality: 0–10 pts</div>
+    </div>
+    <div>
+      <div class="leg-title">RS vs BTC (7d)</div>
+      <div>Coin 7d change minus BTC 7d change</div>
+      <div>Positive = outperforming = long bias</div>
+      <div>Negative = underperforming = short bias</div>
+    </div>
+    <div>
+      <div class="leg-title-bear">To EMA Resistance</div>
+      <div>% from price to nearest EMA above</div>
+      <div>&lt;3% = at resistance = prime short entry</div>
+      <div>Look for rejection here on low volume</div>
+    </div>
+    <div>
+      <div class="leg-title">Vol Trend (Longs)</div>
+      <div>↓ Decreasing = base coiling = bullish</div>
+      <div>Recent 5d avg vs prior 15d avg</div>
+    </div>
+    <div>
+      <div class="leg-title-bear">Vol Trend (Shorts)</div>
+      <div>↑ Increasing = distribution = bearish</div>
+      <div>Expanding vol on down moves = sellers</div>
+    </div>
+    <div>
+      <div class="leg-title">Base % (Longs)</div>
+      <div>15-day price range ÷ close</div>
+      <div>&lt;15% = tight base, spring coiling</div>
+    </div>
+    <div>
+      <div class="leg-title-bear">Short Ideal Setup</div>
+      <div>Below all EMAs + bounce on low volume</div>
+      <div>Into EMA resistance + high RS weakness</div>
+      <div>Use Binance Perpetual Futures only</div>
     </div>
   </div>
 
@@ -423,31 +402,95 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
 const BINANCE = 'https://api.binance.com/api/v3';
 const CG      = 'https://api.coingecko.com/api/v3';
 
-// Stablecoins, wrapped tokens, LSTs, gold-backed — skip all of these
 const STABLES = new Set([
-  // USD stablecoins
   'USDT','USDC','BUSD','DAI','TUSD','USDD','FDUSD','FRAX','USDP',
   'PYUSD','USDE','USDS','USDB','CRVUSD','GUSD','LUSD','SUSD','USDM',
   'USDY','USDX','USDN','OUSD','ALUSD','DOLA','BFDUSD','USDQ','ZUSD',
-  'USDK','USDJ','USDT2','MUSD','HUSD','CUSD','USDH','USDV','USD0',
-  // EUR and other fiat stablecoins
+  'USDK','USDJ','MUSD','HUSD','CUSD','USDH','USDV','USD0',
   'EURC','EURS','AGEUR','EURT','EUROC',
-  // Wrapped BTC variants
   'WBTC','CBBTC','BTCB','SOLVBTC','RENBTC','HBTC','TBTC','OBTC','FBTC',
-  // Wrapped/staked ETH variants
   'WETH','STETH','WSTETH','RETH','WEETH','WBETH','BETH','METH',
   'EETH','RSETH','EZETH','PUFETH','SWETH','FRXETH','SFRXETH','OETH',
-  'FRXETH','ANKRETH','CBETH','LSETH','UNIETH','OSETH','YETH',
-  // Wrapped other assets
-  'WBNB','WAVAX','WSOL','WMATIC','WFTM','WONE','WCELO','WARB',
-  // Gold-backed
+  'ANKRETH','CBETH','LSETH','UNIETH','OSETH','YETH',
+  'WBNB','WAVAX','WSOL','WMATIC','WFTM','WONE','WCELO',
   'PAXG','XAUT','DGLD','PMGT',
 ]);
 
-let rawResults = [];
-let displayResults = [];
-let sortKey = 'score';
-let sortDir = -1;
+// Coins famous enough to skip the description
+const SKIP_DESC = new Set([
+  'BTC','ETH','BNB','SOL','XRP','DOGE','ADA','TRX','AVAX','SHIB',
+  'TON','LTC','LINK','DOT','MATIC','PEPE','BONK','WIF'
+]);
+
+const COIN_DESCS = {
+  'UNI':'Uniswap governance token. Powers the largest decentralized exchange on Ethereum.',
+  'ICP':'Internet Computer Protocol. Decentralized cloud computing and web hosting on-chain.',
+  'ATOM':'Cosmos Hub. Internet of Blockchains connecting chains via IBC cross-chain protocol.',
+  'XLM':'Stellar. Fast cross-border payments focused on financial inclusion and remittances.',
+  'ETC':'Ethereum Classic. Original Ethereum chain preserved after the 2016 DAO hack fork.',
+  'HBAR':'Hedera Hashgraph. Enterprise-grade DLT using hashgraph consensus. Very fast, low fees.',
+  'FIL':'Filecoin. Decentralized storage network built on IPFS. Store data without servers.',
+  'VET':'VeChain. Enterprise supply chain blockchain tracking real-world goods on-chain.',
+  'ALGO':'Algorand. Pure proof-of-stake Layer 1 with instant finality. Carbon negative.',
+  'MANA':'Decentraland. Browser-based virtual world where users own and trade land as NFTs.',
+  'SAND':'The Sandbox. Metaverse gaming platform with user-created content and virtual land.',
+  'AXS':'Axie Infinity. Pioneering play-to-earn game with its own breeding and battle economy.',
+  'CRV':'Curve Finance. DEX optimized for stablecoin and pegged-asset swaps with low slippage.',
+  'AAVE':'Decentralized lending market. Borrow and lend crypto assets without a bank.',
+  'MKR':'MakerDAO governance token. Controls DAI stablecoin parameters and lending.',
+  'COMP':'Compound Finance. Algorithmic money market — earn interest by supplying liquidity.',
+  'SNX':'Synthetix. Protocol for synthetic assets — trade stocks, forex, commodities on-chain.',
+  'RUNE':'THORChain. Cross-chain DEX enabling native BTC and ETH swaps without wrapping.',
+  'INJ':'Injective Protocol. DeFi Layer 1 built for derivatives, perps and on-chain finance apps.',
+  'ARB':'Arbitrum. Leading Ethereum Layer 2 rollup reducing fees and congestion.',
+  'OP':'Optimism. Ethereum Layer 2 rollup with retroactive public goods funding model.',
+  'APT':'Aptos. High-performance Layer 1 from ex-Meta team. Move language, parallel execution.',
+  'SUI':'Sui. Next-gen Layer 1 from Mysten Labs. Object-centric model, sub-second finality.',
+  'SEI':'Sei Network. Layer 1 built for trading. Has a built-in on-chain order book DEX.',
+  'TIA':'Celestia. Modular blockchain providing data availability layer for rollups and L2s.',
+  'IMX':'Immutable X. Ethereum Layer 2 for NFT gaming with zero gas fees on minting/trading.',
+  'BLUR':'Blur. NFT marketplace aggregator and NFT-backed lending protocol on Ethereum.',
+  'ENS':'Ethereum Name Service. Decentralized domain names that resolve to wallet addresses.',
+  'GRT':'The Graph. Indexing protocol for blockchain data — often called the Google of Web3.',
+  'LDO':'Lido DAO. Largest liquid staking protocol. Stake ETH, receive stETH and stay liquid.',
+  'RPL':'Rocket Pool. Decentralized ETH staking — run a node with just 8 ETH collateral.',
+  'PENDLE':'Pendle Finance. Yield tokenization protocol. Split and trade future DeFi yield.',
+  'ENA':'Ethena. USDe synthetic dollar backed by delta-neutral ETH and BTC positions.',
+  'ONDO':'Ondo Finance. Tokenizes US Treasuries and real-world assets for use in DeFi.',
+  'JUP':'Jupiter. Largest DEX aggregator on Solana. Finds the best swap route across all DEXs.',
+  'STX':'Stacks. Bitcoin Layer 2 bringing Clarity smart contracts and DeFi to Bitcoin.',
+  'STRK':'Starknet. Ethereum Layer 2 using ZK-STARK proofs for scalability and low fees.',
+  'ZK':'zkSync Era. Ethereum Layer 2 using ZK rollup tech for cheap, fast transactions.',
+  'W':'Wormhole. Cross-chain messaging protocol and one of the largest bridge infrastructures.',
+  'PYTH':'Pyth Network. High-frequency oracle providing real-time price feeds for DeFi.',
+  'MANTA':'Manta Network. Privacy Layer 2 using zero-knowledge proofs on Ethereum.',
+  'KAVA':'Kava. Cross-chain DeFi platform combining Cosmos SDK and EVM in one network.',
+  'FLOW':'Flow blockchain. Designed for NFTs and consumer apps — home of NBA Top Shot.',
+  'NEAR':'NEAR Protocol. Sharded Layer 1 optimized for developers. Fast, cheap, Aurora EVM.',
+  'RENDER':'Render Network. Decentralized GPU rendering marketplace for 3D and AI workloads.',
+  'RNDR':'Render Network. Decentralized GPU rendering marketplace for 3D and AI workloads.',
+  'FET':'Fetch.ai. Autonomous AI agents on blockchain — decentralized machine learning.',
+  'TAO':'Bittensor. Decentralized machine learning network rewarding AI model contributions.',
+  'WLD':'Worldcoin. Iris-scanning for universal digital identity, backed by Sam Altman.',
+  'AR':'Arweave. Permanent decentralized storage protocol. Store data forever for one fee.',
+  'KAS':'Kaspa. High-speed proof-of-work blockDAG with parallel block processing.',
+  'CORE':'Core blockchain. Bitcoin-secured EVM chain using Satoshi Plus consensus.',
+  'JASMY':'JasmyCoin. Japanese IoT data monetization platform built on Ethereum.',
+  'FLOKI':'Floki. Meme coin with a gaming and DeFi ecosystem built around Viking branding.',
+  'NOT':'Notcoin. Telegram tap-to-earn game token with a massive early user base.',
+  'DOGS':'Dogs. Telegram-native meme coin airdropped to Telegram users via TON blockchain.',
+  'EGLD':'MultiversX (Elrond). High-throughput sharded blockchain for enterprise and DeFi.',
+};
+
+const descCache = {};
+const klinesCache = {};
+
+let rawLongs  = [];
+let rawShorts = [];
+let dispLongs  = [];
+let dispShorts = [];
+let longSortKey  = 'score', longSortDir  = -1;
+let shortSortKey = 'score', shortSortDir = -1;
 let _btc7dChange = 0;
 
 // ── FETCH ──────────────────────────────────────────────────
@@ -462,24 +505,29 @@ async function fetchJSON(url, ms = 12000) {
   } catch(e) { clearTimeout(t); throw e; }
 }
 
+async function getKlines(sym) {
+  if (klinesCache[sym]) return klinesCache[sym];
+  const data = await fetchJSON(`${BINANCE}/klines?symbol=${sym}USDT&interval=1d&limit=100`);
+  klinesCache[sym] = data;
+  return data;
+}
+
 // ── INDICATORS ─────────────────────────────────────────────
-function ema(closes, p) {
+function calcEMA(closes, p) {
   if (!closes || closes.length < p) return null;
   const k = 2 / (p + 1);
   let v = closes.slice(0, p).reduce((a, b) => a + b, 0) / p;
   for (let i = p; i < closes.length; i++) v = closes[i] * k + v * (1 - k);
   return v;
 }
-
-function adr(highs, lows, closes, n = 14) {
+function calcADR(highs, lows, closes, n = 14) {
   const len = Math.min(n, highs.length);
   let sum = 0;
   for (let i = closes.length - len; i < closes.length; i++)
     if (closes[i] > 0) sum += (highs[i] - lows[i]) / closes[i] * 100;
   return len > 0 ? sum / len : 0;
 }
-
-function tightness(highs, lows, closes, n = 15) {
+function calcTightness(highs, lows, closes, n = 15) {
   const len = Math.min(n, highs.length);
   if (len < 3) return 999;
   const hi = Math.max(...highs.slice(-len));
@@ -487,48 +535,51 @@ function tightness(highs, lows, closes, n = 15) {
   const c  = closes[closes.length - 1];
   return c > 0 ? (hi - lo) / c * 100 : 999;
 }
-
-function volComp(vols, rN = 5, pN = 15) {
+function calcVolComp(vols, rN = 5, pN = 15) {
   if (vols.length < rN + pN) return 0;
   const r = vols.slice(-rN).reduce((a, b) => a + b, 0) / rN;
   const p = vols.slice(-(rN + pN), -rN).reduce((a, b) => a + b, 0) / pN;
   return p > 0 ? (r / p - 1) * 100 : 0;
 }
-
-function nearTrigger(highs, closes, n = 20) {
+function calcNearTrigger(highs, closes, n = 20) {
   const len = Math.min(n, highs.length);
   const res = Math.max(...highs.slice(-len));
   const c   = closes[closes.length - 1];
   return c > 0 ? (res - c) / c * 100 : 999;
 }
 
-function score(tight, volC, near, rs, above8) {
+// ── SCORING ────────────────────────────────────────────────
+function longScore(tight, volC, near, rs, above8) {
   let s = 0;
-  // Tightness 0-35
-  if      (tight < 10) s += 35;
-  else if (tight < 15) s += 28;
-  else if (tight < 20) s += 19;
-  else if (tight < 30) s += 10;
-  else if (tight < 45) s += 4;
-  // Vol compression 0-20
-  if      (volC < -40) s += 20;
-  else if (volC < -25) s += 16;
-  else if (volC < -15) s += 11;
-  else if (volC <  -5) s += 6;
-  else if (volC <   5) s += 2;
-  // Near trigger 0-20
-  if      (near <  2) s += 20;
-  else if (near <  5) s += 16;
-  else if (near <  8) s += 11;
-  else if (near < 12) s += 6;
-  else if (near < 20) s += 2;
-  // RS vs BTC 0-15
-  if      (rs > 20) s += 15;
-  else if (rs > 10) s += 12;
-  else if (rs >  5) s += 8;
-  else if (rs >  0) s += 4;
-  // Above 8 EMA 0-10
+  if      (tight < 10) s += 35; else if (tight < 15) s += 28;
+  else if (tight < 20) s += 19; else if (tight < 30) s += 10; else if (tight < 45) s += 4;
+  if      (volC < -40) s += 20; else if (volC < -25) s += 16;
+  else if (volC < -15) s += 11; else if (volC <  -5) s += 6; else if (volC < 5) s += 2;
+  if      (near <  2)  s += 20; else if (near <  5)  s += 16;
+  else if (near <  8)  s += 11; else if (near < 12)  s += 6; else if (near < 20) s += 2;
+  if (rs > 20) s += 15; else if (rs > 10) s += 12;
+  else if (rs > 5) s += 8; else if (rs > 0) s += 4;
   if (above8) s += 10;
+  return Math.min(100, Math.max(0, s));
+}
+
+function calcShortScore(below8, below21, below50, rs, volC, toEMAres, adrV) {
+  let s = 0;
+  // EMA breakdown depth 0-30
+  if (below8 && below21 && below50) s += 30;
+  else if (below21 && below50)      s += 20;
+  else if (below50)                 s += 10;
+  // RS vs BTC weakness 0-25
+  if      (rs < -20) s += 25; else if (rs < -10) s += 18;
+  else if (rs <  -5) s += 10; else if (rs <  -2) s += 5;
+  // Volume expanding (distribution) 0-20
+  if      (volC > 40) s += 20; else if (volC > 20) s += 14;
+  else if (volC > 10) s += 8;  else if (volC >  0) s += 3;
+  // Near EMA resistance from below (ideal short entry) 0-15
+  if      (toEMAres <  3)  s += 15; else if (toEMAres <  8) s += 11;
+  else if (toEMAres < 15)  s += 6;  else if (toEMAres < 25) s += 2;
+  // ADR quality 0-10
+  if (adrV > 6) s += 10; else if (adrV > 3) s += 5;
   return Math.min(100, Math.max(0, s));
 }
 
@@ -548,25 +599,58 @@ function fmtL(n) {
   return '$' + n.toLocaleString();
 }
 function fmtPct(n, dp = 2) { return (n >= 0 ? '+' : '') + n.toFixed(dp) + '%'; }
-function sColor(s) { return s >= 65 ? 'var(--bull)' : s >= 42 ? 'var(--neutral)' : 'var(--bear)'; }
+function lColor(s)  { return s >= 65 ? 'var(--bull)' : s >= 42 ? 'var(--neutral)' : 'var(--bear)'; }
+function shColor(s) { return s >= 65 ? 'var(--bear)' : s >= 42 ? 'var(--neutral)' : 'var(--dim)'; }
 
 // ── SPARKLINE ──────────────────────────────────────────────
-function sparkline(prices, w = 80, h = 28) {
+function sparkline(prices, w = 80, h = 26) {
   if (!prices || prices.length < 2) return '';
-  const mn = Math.min(...prices), mx = Math.max(...prices);
-  const range = mx - mn || 1;
+  const mn = Math.min(...prices), mx = Math.max(...prices), range = mx - mn || 1;
   const xs = prices.map((_, i) => (i / (prices.length - 1)) * w);
   const ys = prices.map(p => h - ((p - mn) / range) * h);
-  const d  = xs.map((x, i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
-  const isUp = prices[prices.length - 1] >= prices[0];
-  const col  = isUp ? '#00d97e' : '#ff3d5a';
-  return `<svg class="spark" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
-    <path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
-  </svg>`;
+  const d  = xs.map((x, i) => `${i===0?'M':'L'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
+  const col = prices[prices.length-1] >= prices[0] ? '#00d97e' : '#ff3d5a';
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
+    <path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+}
+
+// ── SETUP DESCRIPTIONS ─────────────────────────────────────
+function generateLongSetup(c) {
+  const base = c.tightness < 12 ? 'Very tight base'
+             : c.tightness < 18 ? 'Tight consolidation'
+             : c.tightness < 28 ? 'Base building'
+             : 'Wide consolidation';
+  const emas = c.above8 ? 'above full 8/21/50 EMA stack' : 'above 21/50 EMA (below 8)';
+  let s = `${base} ${emas}.`;
+  if      (c.volComp < -25) s += ' Volume drying up — spring coiling.';
+  else if (c.volComp < -10) s += ' Volume decreasing in base.';
+  if      (c.nearTrigger < 2)  s += ' 🔥 AT resistance trigger — watch for entry.';
+  else if (c.nearTrigger < 5)  s += ` ${c.nearTrigger}% from breakout trigger.`;
+  else if (c.nearTrigger < 10) s += ` ${c.nearTrigger}% to resistance.`;
+  if      (c.rsBTC > 10)  s += ' Leading BTC strongly.';
+  else if (c.rsBTC >  3)  s += ' Outperforming BTC.';
+  return s;
+}
+
+function generateShortSetup(c) {
+  let s = '';
+  if (!c.above8 && !c.above21 && !c.above50) s = 'Full EMA breakdown — 8/21/50 all overhead as resistance.';
+  else if (!c.above21) s = 'Below 21/50 EMA — downtrend confirmed.';
+  else s = 'Below 50 EMA — trend weakening, watch 21 EMA.';
+  if      (c.toEMAres < 3)  s += ` ${c.toEMAres}% to EMA resistance — potential rejection entry.`;
+  else if (c.toEMAres < 8)  s += ` ${c.toEMAres}% below EMA resistance (overhead ceiling).`;
+  if      (c.volComp > 25)  s += ' Volume expanding — active distribution by sellers.';
+  else if (c.volComp > 10)  s += ' Volume increasing — sellers in control.';
+  else if (c.volComp < -15) s += ' Low-volume bounce — weak buying, ideal short into strength.';
+  if      (c.rsBTC < -15)   s += ` Severely underperforming BTC (${c.rsBTC.toFixed(1)}%).`;
+  else if (c.rsBTC < -5)    s += ' Significantly underperforming BTC.';
+  else                      s += ` Lagging BTC by ${Math.abs(c.rsBTC).toFixed(1)}%.`;
+  return s;
 }
 
 // ── MARKET CONDITION ───────────────────────────────────────
 async function analyzeMarket() {
+  let btcScore = 0, ethScore = 0;
   for (const [sym, pipsId, verdictId] of [
     ['BTCUSDT','btc-pips','btc-verdict'],
     ['ETHUSDT','eth-pips','eth-verdict']
@@ -575,16 +659,17 @@ async function analyzeMarket() {
       const klines = await fetchJSON(`${BINANCE}/klines?symbol=${sym}&interval=1d&limit=60`);
       const closes = klines.map(k => parseFloat(k[4]));
       const price  = closes[closes.length - 1];
-      const e8     = ema(closes, 8);
-      const e21    = ema(closes, 21);
-      const e50    = ema(closes, 50);
+      const e8     = calcEMA(closes, 8);
+      const e21    = calcEMA(closes, 21);
+      const e50    = calcEMA(closes, 50);
       const states = [price > e8, price > e21, price > e50];
-
       if (sym === 'BTCUSDT') {
-        const c7ago = closes[closes.length - 8] || closes[0];
-        _btc7dChange = c7ago > 0 ? (price - c7ago) / c7ago * 100 : 0;
+        const c7 = closes[closes.length - 8] || closes[0];
+        _btc7dChange = c7 > 0 ? (price - c7) / c7 * 100 : 0;
+        btcScore = states.filter(Boolean).length;
+      } else {
+        ethScore = states.filter(Boolean).length;
       }
-
       const pips = document.getElementById(pipsId);
       pips.querySelectorAll('.pip').forEach((el, i) => {
         el.className = 'pip ' + (states[i] ? 'pip-up' : 'pip-dn');
@@ -592,47 +677,45 @@ async function analyzeMarket() {
       });
       const n = states.filter(Boolean).length;
       const vEl = document.getElementById(verdictId);
-      vEl.textContent = n === 3 ? 'ALL ABOVE' : n === 2 ? '2/3 ABOVE' : n === 1 ? '1/3 ABOVE' : 'ALL BELOW';
-      vEl.style.color = n >= 3 ? 'var(--bull)' : n >= 2 ? 'var(--neutral)' : 'var(--bear)';
-    } catch(e) {
-      document.getElementById(verdictId).textContent = 'ERROR';
-    }
+      vEl.textContent = n===3?'ALL ABOVE':n===2?'2/3 ABOVE':n===1?'1/3 ABOVE':'ALL BELOW';
+      vEl.style.color = n>=3?'var(--bull)':n>=2?'var(--neutral)':'var(--bear)';
+    } catch(e) { document.getElementById(verdictId).textContent = 'ERROR'; }
   }
-
-  // Overall badge
-  const btcT = document.getElementById('btc-verdict').textContent;
-  const ethT = document.getElementById('eth-verdict').textContent;
-  const n = t => t === 'ALL ABOVE' ? 3 : t === '2/3 ABOVE' ? 2 : t === '1/3 ABOVE' ? 1 : 0;
-  const total = n(btcT) + n(ethT);
+  const total = btcScore + ethScore;
   const badge = document.getElementById('mkt-badge');
   const adv   = document.getElementById('mkt-advice');
+  const sw    = document.getElementById('short-warning');
   if (total >= 5) {
-    badge.textContent = '✓ FULL BULL';
-    badge.className = 'overall o-bull';
+    badge.textContent = '✓ FULL BULL'; badge.className = 'overall o-bull';
     adv.textContent = 'Use full size — markets above all EMAs';
+    sw.textContent = '⚠ Bull market — shorts are counter-trend, use tight stops';
+    sw.className = 'short-warning sw-bull';
   } else if (total >= 3) {
-    badge.textContent = '⚡ MODERATE';
-    badge.className = 'overall o-neut';
+    badge.textContent = '⚡ MODERATE'; badge.className = 'overall o-neut';
     adv.textContent = 'Reduce size — mixed signals';
+    sw.textContent = '⚡ Mixed market — selective shorts possible with confirmation';
+    sw.className = 'short-warning sw-bull';
   } else {
-    badge.textContent = '✗ AVOID';
-    badge.className = 'overall o-bear';
-    adv.textContent = 'Stay in cash — below key EMAs';
+    badge.textContent = '✗ AVOID LONGS'; badge.className = 'overall o-bear';
+    adv.textContent = 'Market below EMAs — shorts have tailwind';
+    sw.textContent = '✓ Bear market — shorts have market tailwind';
+    sw.className = 'short-warning sw-bear';
   }
+  return total;
 }
 
-// ── COIN ANALYSIS ──────────────────────────────────────────
-async function analyzeCoin(gecko) {
+// ── UNIFIED COIN ANALYSIS ──────────────────────────────────
+async function analyzeOneCoin(gecko) {
   const sym = gecko.symbol.toUpperCase();
-  if (STABLES.has(sym)) return null;
-  if ((gecko.market_cap || 0)    < 200_000_000) return null;
-  if ((gecko.total_volume || 0)  < 2_000_000)   return null;
+  if (STABLES.has(sym)) return { long: null, short: null };
+  if ((gecko.market_cap  || 0) < 200_000_000) return { long: null, short: null };
+  if ((gecko.total_volume|| 0) < 2_000_000)   return { long: null, short: null };
 
   let klines;
   try {
-    klines = await fetchJSON(`${BINANCE}/klines?symbol=${sym}USDT&interval=1d&limit=100`);
-    if (!Array.isArray(klines) || klines.length < 55) return null;
-  } catch(e) { return null; }
+    klines = await getKlines(sym);
+    if (!Array.isArray(klines) || klines.length < 55) return { long: null, short: null };
+  } catch(e) { return { long: null, short: null }; }
 
   const highs  = klines.map(k => parseFloat(k[2]));
   const lows   = klines.map(k => parseFloat(k[3]));
@@ -640,70 +723,88 @@ async function analyzeCoin(gecko) {
   const vols   = klines.map(k => parseFloat(k[5]));
 
   const price = closes[closes.length - 1];
-  const e8v   = ema(closes, 8);
-  const e21v  = ema(closes, 21);
-  const e50v  = ema(closes, 50);
+  const e8v   = calcEMA(closes, 8);
+  const e21v  = calcEMA(closes, 21);
+  const e50v  = calcEMA(closes, 50);
+  if (!e21v || !e50v) return { long: null, short: null };
 
-  if (!e21v || !e50v) return null;
-  if (price <= e21v || price <= e50v) return null;
-
-  // Catch-all: skip anything that behaves like a stablecoin or pegged asset —
-  // near $1 with a tiny 30-day range means it's pegged, not trending
+  // Stablecoin catch-all
   const hi30 = Math.max(...highs.slice(-30));
   const lo30 = Math.min(...lows.slice(-30));
-  if (price > 0.90 && price < 1.10 && (hi30 - lo30) / price < 0.15) return null;
+  if (price > 0.90 && price < 1.10 && (hi30 - lo30) / price < 0.15) return { long: null, short: null };
 
-  const c7ago   = closes[closes.length - 8] || closes[0];
-  const change7d = c7ago > 0 ? (price - c7ago) / c7ago * 100 : 0;
-  const rsBTC    = change7d - _btc7dChange;
-
-  const adrV   = adr(highs, lows, closes, 14);
-  const tightV = tightness(highs, lows, closes, 15);
-  const vcV    = volComp(vols, 5, 15);
-  const nearV  = nearTrigger(highs, closes, 20);
-  const above8 = price > e8v;
-  const sc     = score(tightV, vcV, nearV, rsBTC, above8);
-
-  const volMcapR = gecko.market_cap > 0
-    ? (gecko.total_volume / gecko.market_cap) * 100
-    : 0;
-
-  // Sparkline from gecko sparkline data (7d hourly)
+  const adrV   = calcADR(highs, lows, closes, 14);
+  const tightV = calcTightness(highs, lows, closes, 15);
+  const vcV    = calcVolComp(vols, 5, 15);
+  const c7ago  = closes[closes.length - 8] || closes[0];
+  const chg7d  = c7ago > 0 ? (price - c7ago) / c7ago * 100 : 0;
+  const rsBTC  = chg7d - _btc7dChange;
+  const above8  = price > e8v;
+  const above21 = price > e21v;
+  const above50 = price > e50v;
+  const vmRatio = gecko.market_cap > 0 ? (gecko.total_volume / gecko.market_cap) * 100 : 0;
   const spark7d = gecko.sparkline_in_7d
-    ? gecko.sparkline_in_7d.price.filter((_, i) => i % 6 === 0)
-    : [];
+    ? gecko.sparkline_in_7d.price.filter((_, i) => i % 6 === 0) : [];
 
-  return {
+  const base = {
     id: gecko.id, name: gecko.name, symbol: sym,
     binanceSym: sym + 'USDT', image: gecko.image || '',
     price, change24h: gecko.price_change_percentage_24h || 0,
     mcap: gecko.market_cap || 0, vol24h: gecko.total_volume || 0,
-    volMcapRatio: Math.round(volMcapR * 10) / 10,
+    volMcapRatio: Math.round(vmRatio * 10) / 10,
     adr: Math.round(adrV * 10) / 10,
-    above8, above21: true, above50: true,
-    e8Pct:  e8v  ? (price / e8v  - 1) * 100 : 0,
-    e21Pct: e21v ? (price / e21v - 1) * 100 : 0,
-    e50Pct: e50v ? (price / e50v - 1) * 100 : 0,
-    tightness: Math.round(tightV * 10) / 10,
-    volComp:   Math.round(vcV   * 10) / 10,
-    nearTrigger: Math.round(nearV * 10) / 10,
-    change7d: Math.round(change7d * 10) / 10,
-    rsBTC:    Math.round(rsBTC   * 10) / 10,
-    score: sc, spark7d,
+    above8, above21, above50,
+    e8Pct:  e8v  ? (price/e8v  - 1)*100 : 0,
+    e21Pct: e21v ? (price/e21v - 1)*100 : 0,
+    e50Pct: e50v ? (price/e50v - 1)*100 : 0,
+    tightness:   Math.round(tightV * 10) / 10,
+    volComp:     Math.round(vcV   * 10) / 10,
+    change7d:    Math.round(chg7d  * 10) / 10,
+    rsBTC:       Math.round(rsBTC  * 10) / 10,
+    spark7d,
   };
+
+  let longR = null, shortR = null;
+
+  // LONG: above 21+50 EMA, minimum ADR
+  if (above21 && above50 && adrV >= 2) {
+    const nearV = calcNearTrigger(highs, closes, 20);
+    const sc = longScore(tightV, vcV, nearV, rsBTC, above8);
+    longR = { ...base, nearTrigger: Math.round(nearV*10)/10, score: sc };
+  }
+
+  // SHORT: below 21 OR 50 EMA, underperforming BTC, minimum ADR
+  if ((!above21 || !above50) && adrV >= 2 && rsBTC < 0) {
+    // Find nearest EMA above price (resistance)
+    const emasAbove = [
+      above8  ? null : e8v,
+      above21 ? null : e21v,
+      above50 ? null : e50v,
+    ].filter(v => v !== null && v > price);
+    const nearestEMA = emasAbove.length ? Math.min(...emasAbove) : e21v;
+    const toEMAres = nearestEMA > 0 ? (nearestEMA - price) / price * 100 : 999;
+    const sc = calcShortScore(!above8, !above21, !above50, rsBTC, vcV, toEMAres, adrV);
+    shortR = { ...base, toEMAres: Math.round(toEMAres*10)/10, score: sc };
+  }
+
+  return { long: longR, short: shortR };
 }
 
 // ── MAIN SCAN ──────────────────────────────────────────────
 async function runScan() {
   const btn = document.getElementById('scan-btn');
   btn.disabled = true; btn.textContent = '⟲ Scanning…';
-  document.getElementById('empty-state').style.display  = 'none';
-  document.getElementById('table-wrap').style.display   = 'none';
-  document.getElementById('load-block').style.display   = 'block';
-  setProgress(0, 'Fetching market condition (BTC/ETH EMAs)…');
+  document.getElementById('empty-long').style.display  = 'none';
+  document.getElementById('empty-short').style.display = 'none';
+  document.getElementById('table-long').style.display  = 'none';
+  document.getElementById('table-short').style.display = 'none';
+  document.getElementById('load-block').style.display  = 'block';
+  // Clear klines cache each scan for fresh data
+  Object.keys(klinesCache).forEach(k => delete klinesCache[k]);
+  setProgress(0, 'Fetching market condition…');
 
   await analyzeMarket().catch(e => console.warn('market', e));
-  setProgress(6, 'Loading top 100 coins from CoinGecko…');
+  setProgress(6, 'Loading top 100 from CoinGecko…');
 
   let top100 = [];
   try {
@@ -716,24 +817,26 @@ async function runScan() {
     btn.disabled = false; btn.textContent = '⟳ Run Scan'; return;
   }
 
-  rawResults = [];
-  const BATCH = 8;
-  let done = 0;
+  rawLongs = []; rawShorts = [];
+  const BATCH = 8; let done = 0;
 
   for (let i = 0; i < top100.length; i += BATCH) {
     const batch = top100.slice(i, i + BATCH);
-    const res   = await Promise.all(batch.map(c => analyzeCoin(c).catch(() => null)));
-    res.forEach(r => { if (r) rawResults.push(r); });
+    const res   = await Promise.all(batch.map(c => analyzeOneCoin(c).catch(() => ({long:null,short:null}))));
+    res.forEach(({ long, short }) => {
+      if (long)  rawLongs.push(long);
+      if (short) rawShorts.push(short);
+    });
     done += batch.length;
     const pct = 8 + Math.round((done / top100.length) * 87);
-    setProgress(pct, `Analysed ${done} / ${top100.length} — ${rawResults.length} qualify so far…`);
+    setProgress(pct, `Scanned ${done}/${top100.length} — ${rawLongs.length} longs · ${rawShorts.length} shorts`);
   }
 
-  setProgress(98, 'Rendering results…');
+  setProgress(98, 'Rendering…');
   applyFilters();
   document.getElementById('load-block').style.display = 'none';
   document.getElementById('scan-meta').textContent =
-    `Last scan: ${new Date().toLocaleTimeString()} · ${rawResults.length} pass EMA filter`;
+    `Last scan: ${new Date().toLocaleTimeString()} · ${rawLongs.length} longs · ${rawShorts.length} shorts found`;
   btn.disabled = false; btn.textContent = '⟳ Run Scan';
 }
 
@@ -742,103 +845,105 @@ function setProgress(pct, text) {
   document.getElementById('load-text').textContent = text;
 }
 
-// ── FILTER + SORT ──────────────────────────────────────────
+// ── FILTERS ────────────────────────────────────────────────
 function applyFilters() {
-  const minMcap  = parseFloat(document.getElementById('f-mcap').value)  || 0;
-  const minVol   = parseFloat(document.getElementById('f-vol').value)   || 0;
-  const minADR   = parseFloat(document.getElementById('f-adr').value)   || 0;
-  const minRS    = parseFloat(document.getElementById('f-rs').value)    || -999;
-  const minScore = parseFloat(document.getElementById('f-score').value) || 0;
+  const minMcap  = parseFloat(document.getElementById('f-mcap').value)   || 0;
+  const minVol   = parseFloat(document.getElementById('f-vol').value)    || 0;
+  const minADR   = parseFloat(document.getElementById('f-adr').value)    || 0;
+  const minRS    = parseFloat(document.getElementById('f-rs').value)     || -999;
+  const minScore = parseFloat(document.getElementById('f-score').value)  || 0;
+  const minSScore= parseFloat(document.getElementById('f-sscore').value) || 0;
 
-  displayResults = rawResults.filter(c =>
-    c.mcap   >= minMcap &&
-    c.vol24h >= minVol  &&
-    c.adr    >= minADR  &&
-    c.rsBTC  >= minRS   &&
-    c.score  >= minScore
-  );
+  dispLongs  = rawLongs.filter(c  => c.mcap>=minMcap && c.vol24h>=minVol && c.adr>=minADR && c.rsBTC>=minRS  && c.score>=minScore);
+  dispShorts = rawShorts.filter(c => c.mcap>=minMcap && c.vol24h>=minVol && c.adr>=minADR && c.score>=minSScore);
 
-  sortResults();
+  sortLongs(); sortShorts();
   render();
 }
 
-function sortBy(key, e) {
-  if (sortKey === key) sortDir *= -1;
-  else { sortKey = key; sortDir = -1; }
-  document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
+function longSortBy(key, e) {
+  longSortDir = longSortKey === key ? longSortDir * -1 : -1;
+  longSortKey = key;
+  document.querySelectorAll('#table-long thead th').forEach(th => th.classList.remove('sorted'));
   if (e && e.target) e.target.classList.add('sorted');
-  sortResults();
-  render();
+  sortLongs(); renderTables();
+  document.getElementById('res-label').textContent = labelFor(key, dispLongs.length, 'LONGS');
 }
-
-function sortResults() {
-  displayResults.sort((a, b) => {
-    const av = a[sortKey], bv = b[sortKey];
-    if (typeof av === 'string') return sortDir * av.localeCompare(bv);
-    return sortDir * ((av || 0) - (bv || 0));
-  });
+function shortSortBy(key, e) {
+  shortSortDir = shortSortKey === key ? shortSortDir * -1 : -1;
+  shortSortKey = key;
+  document.querySelectorAll('#table-short thead th').forEach(th => th.classList.remove('sorted-bear'));
+  if (e && e.target) e.target.classList.add('sorted-bear');
+  sortShorts(); renderShortTable();
+  document.getElementById('res-label-short').textContent = labelFor(key, dispShorts.length, 'SHORTS');
+}
+function sortLongs()  { dispLongs.sort((a,b)  => sortDir(a,b,longSortKey,longSortDir)); }
+function sortShorts() { dispShorts.sort((a,b) => sortDir(a,b,shortSortKey,shortSortDir)); }
+function sortDir(a, b, key, dir) {
+  const av = a[key], bv = b[key];
+  if (typeof av === 'string') return dir * av.localeCompare(bv);
+  return dir * ((av||0) - (bv||0));
+}
+function labelFor(key, n, side) {
+  const map = {score:'RANKED BY OPPORTUNITY',rsBTC:'RANKED BY RS vs BTC',tightness:'RANKED BY BASE TIGHTNESS',toEMAres:'RANKED BY PROXIMITY TO EMA RESISTANCE'};
+  return `${map[key]||'RANKED BY '+key.toUpperCase()} — ${n} ${side}`;
 }
 
 // ── RENDER ─────────────────────────────────────────────────
 function render() {
   renderLeaders();
-  renderFocus();
-  renderTable();
-  const sortLabel = sortKey === 'score' ? 'RANKED BY OPPORTUNITY'
-    : sortKey === 'rsBTC' ? 'RANKED BY RS vs BTC'
-    : sortKey === 'tightness' ? 'RANKED BY BASE TIGHTNESS'
-    : 'RANKED BY ' + sortKey.toUpperCase();
-  document.getElementById('res-label').textContent =
-    `${sortLabel} — ${displayResults.length} COINS`;
-  const hasData = displayResults.length > 0;
-  document.getElementById('table-wrap').style.display = hasData ? 'block' : 'none';
-  const empty = document.getElementById('empty-state');
-  empty.style.display = hasData ? 'none' : 'block';
-  empty.innerHTML = rawResults.length
-    ? 'No coins match current filters. Try lowering the thresholds.'
-    : 'Run a scan first.';
+  renderFocusLong();
+  renderFocusShort();
+  renderTables();
 }
 
-function renderLeaders() {
-  // Leaders: RS vs BTC > 0, mcap > $1B, above all EMAs, sort by RS
-  const leaders = [...rawResults]
-    .filter(c => c.rsBTC > 0 && c.mcap >= 1_000_000_000)
-    .sort((a, b) => b.rsBTC - a.rsBTC)
-    .slice(0, 8);
+function renderTables() {
+  renderLongTable();
+  renderShortTable();
+  document.getElementById('res-label').textContent = labelFor(longSortKey, dispLongs.length, 'LONGS');
+  document.getElementById('res-label-short').textContent = labelFor(shortSortKey, dispShorts.length, 'SHORTS');
 
+  const hasL = dispLongs.length > 0, hasS = dispShorts.length > 0;
+  document.getElementById('table-long').style.display  = hasL ? 'block' : 'none';
+  document.getElementById('empty-long').style.display  = hasL ? 'none'  : 'block';
+  document.getElementById('table-short').style.display = hasS ? 'block' : 'none';
+  document.getElementById('empty-short').style.display = hasS ? 'none'  : 'block';
+  if (!hasL) document.getElementById('empty-long').innerHTML  = rawLongs.length  ? 'No longs match filters.'  : 'Run a scan first.';
+  if (!hasS) document.getElementById('empty-short').innerHTML = rawShorts.length ? 'No shorts match filters.' : 'Run a scan first.';
+}
+
+// ── LEADERS ────────────────────────────────────────────────
+function renderLeaders() {
+  const leaders = [...rawLongs]
+    .filter(c => c.rsBTC > 0 && c.mcap >= 1_000_000_000)
+    .sort((a, b) => b.rsBTC - a.rsBTC).slice(0, 8);
   const el = document.getElementById('leaders-grid');
   if (!leaders.length) {
-    el.innerHTML = '<div style="color:var(--dim);font-size:11px;padding:8px 0">No leaders found — run a scan first or market may be weak.</div>';
+    el.innerHTML = '<div style="color:var(--dim);font-size:11px;padding:8px 0">No leaders found — run a scan or market may be weak.</div>';
     return;
   }
   el.innerHTML = leaders.map((c, i) => {
-    const chgColor = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
+    const cc = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
     const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
-    const sp = sparkline(c.spark7d, 82, 26);
-    const rsTag = c.rsBTC >= 0
-      ? `<span class="lc-rs">+${c.rsBTC.toFixed(1)}% vs BTC</span>`
-      : `<span class="lc-rs" style="background:var(--bear-bg);color:var(--bear);border-color:rgba(255,61,90,.3)">${c.rsBTC.toFixed(1)}% vs BTC</span>`;
+    const sp = sparkline(c.spark7d, 82, 24);
     return `
       <div class="leader-card" onclick="window.open('${tv}','_blank')">
         <div class="lc-top">
           <div class="lc-coin">
             <img class="lc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
-            <div>
-              <div class="lc-sym">${c.symbol}</div>
-              <div class="lc-name">${c.name}</div>
-            </div>
+            <div><div class="lc-sym">${c.symbol}</div><div class="lc-name">${c.name}</div></div>
           </div>
           <div class="lc-rank">#${i+1}</div>
         </div>
-        ${rsTag}
+        <span class="lc-rs">+${c.rsBTC.toFixed(1)}% vs BTC</span>
         ${sp ? `<div style="margin:-2px 0">${sp}</div>` : ''}
         <div class="lc-row">
           <div class="lc-price">${fmtP(c.price)}</div>
-          <div class="lc-chg" style="color:${chgColor}">${fmtPct(c.change24h)}</div>
+          <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
         </div>
         <div class="lc-meta">
           <span>7d: <b style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c.change7d)}</b></span>
-          <span>Vol/MC: <b style="color:#fff">${c.volMcapRatio}%</b></span>
+          <span>Cap: <b style="color:#fff">${fmtL(c.mcap)}</b></span>
         </div>
         <div class="lc-row">
           <div class="lc-pip-row">
@@ -846,143 +951,28 @@ function renderLeaders() {
             <div class="pip pip-up" style="width:18px;height:14px;font-size:7px">21</div>
             <div class="pip pip-up" style="width:18px;height:14px;font-size:7px">50</div>
           </div>
-          <span class="lc-score" style="color:${sColor(c.score)}">${c.score}</span>
+          <span class="lc-score" style="color:${lColor(c.score)}">${c.score}</span>
         </div>
       </div>`;
   }).join('');
 }
 
-// ── COIN DESCRIPTIONS ──────────────────────────────────────
-const SKIP_DESC = new Set([
-  'BTC','ETH','BNB','SOL','XRP','DOGE','ADA','TRX','AVAX','SHIB',
-  'TON','LTC','LINK','DOT','MATIC','PEPE','BONK','WIF'
-]);
-
-const COIN_DESCS = {
-  'UNI':    'Uniswap governance token. Powers the largest decentralized exchange on Ethereum.',
-  'ICP':    'Internet Computer Protocol. Decentralized cloud computing and web hosting on-chain.',
-  'ATOM':   'Cosmos Hub. Internet of Blockchains — connects chains via IBC cross-chain protocol.',
-  'XLM':    'Stellar. Fast cross-border payments focused on financial inclusion and remittances.',
-  'ETC':    'Ethereum Classic. Original Ethereum chain preserved after the 2016 DAO hack fork.',
-  'HBAR':   'Hedera Hashgraph. Enterprise-grade DLT using hashgraph consensus. Very fast, low fees.',
-  'FIL':    'Filecoin. Decentralized storage network built on IPFS. Store data without servers.',
-  'VET':    'VeChain. Enterprise supply chain blockchain that tracks real-world goods on-chain.',
-  'ALGO':   'Algorand. Pure proof-of-stake Layer 1 with instant finality. Carbon negative.',
-  'MANA':   'Decentraland. Browser-based virtual world where users own and trade land as NFTs.',
-  'SAND':   'The Sandbox. Metaverse gaming platform with user-created content and virtual land.',
-  'AXS':    'Axie Infinity. Pioneering play-to-earn game with its own breeding and battle economy.',
-  'CRV':    'Curve Finance. DEX optimized for stablecoin and pegged-asset swaps with low slippage.',
-  'AAVE':   'Decentralized lending market. Borrow and lend crypto assets without a bank.',
-  'MKR':    'MakerDAO governance token. Controls DAI stablecoin parameters and lending.',
-  'COMP':   'Compound Finance. Algorithmic money market — earn interest by supplying liquidity.',
-  'SNX':    'Synthetix. Protocol for synthetic assets — trade stocks, forex, commodities on-chain.',
-  'RUNE':   'THORChain. Cross-chain DEX enabling native BTC and ETH swaps without wrapping.',
-  'INJ':    'Injective Protocol. DeFi Layer 1 built for derivatives, perps and on-chain finance apps.',
-  'ARB':    'Arbitrum. Leading Ethereum Layer 2 rollup reducing fees and congestion.',
-  'OP':     'Optimism. Ethereum Layer 2 rollup with retroactive public goods funding model.',
-  'APT':    'Aptos. High-performance Layer 1 from ex-Meta team. Move language, parallel execution.',
-  'SUI':    'Sui. Next-gen Layer 1 from Mysten Labs. Object-centric model, sub-second finality.',
-  'SEI':    'Sei Network. Layer 1 built for trading. Has a built-in on-chain order book DEX.',
-  'TIA':    'Celestia. Modular blockchain providing data availability layer for rollups and L2s.',
-  'IMX':    'Immutable X. Ethereum Layer 2 for NFT gaming with zero gas fees on minting/trading.',
-  'BLUR':   'Blur. NFT marketplace aggregator and NFT-backed lending protocol on Ethereum.',
-  'ENS':    'Ethereum Name Service. Decentralized domain names that resolve to wallet addresses.',
-  'GRT':    'The Graph. Indexing protocol for blockchain data — often called the Google of Web3.',
-  'LDO':    'Lido DAO. Largest liquid staking protocol. Stake ETH, receive stETH and stay liquid.',
-  'RPL':    'Rocket Pool. Decentralized ETH staking — run a node with just 8 ETH collateral.',
-  'PENDLE': 'Pendle Finance. Yield tokenization protocol. Split and trade future DeFi yield.',
-  'ENA':    'Ethena. USDe synthetic dollar backed by delta-neutral ETH and BTC positions.',
-  'ONDO':   'Ondo Finance. Tokenizes US Treasuries and real-world assets for use in DeFi.',
-  'JUP':    'Jupiter. Largest DEX aggregator on Solana. Finds the best swap route across all DEXs.',
-  'STX':    'Stacks. Bitcoin Layer 2 bringing Clarity smart contracts and DeFi to Bitcoin.',
-  'STRK':   'Starknet. Ethereum Layer 2 using ZK-STARK proofs for scalability and low fees.',
-  'ZK':     'zkSync Era. Ethereum Layer 2 using ZK rollup tech for cheap, fast transactions.',
-  'W':      'Wormhole. Cross-chain messaging protocol and one of the largest bridge infrastructures.',
-  'PYTH':   'Pyth Network. High-frequency oracle providing real-time price feeds for DeFi.',
-  'MANTA':  'Manta Network. Privacy Layer 2 using zero-knowledge proofs on Ethereum.',
-  'KAVA':   'Kava. Cross-chain DeFi platform combining Cosmos SDK and EVM in one network.',
-  'FLOW':   'Flow blockchain. Designed for NFTs and consumer apps — home of NBA Top Shot.',
-  'EGLD':   'MultiversX (Elrond). High-throughput sharded blockchain for enterprise and DeFi.',
-  'NEAR':   'NEAR Protocol. Sharded Layer 1 optimized for developers. Fast, cheap, Aurora EVM.',
-  'FLOKI':  'Floki. Meme coin with a gaming and DeFi ecosystem built around Viking branding.',
-  'BRETT':  'Brett. Base chain meme coin inspired by the Pepe universe character.',
-  'POPCAT': 'Popcat. Solana meme coin based on the viral internet cat meme.',
-  'MEW':    'Cat in a dogs world. Solana meme coin — a cat navigating a dog-dominated crypto space.',
-  'DOGS':   'Dogs. Telegram-native meme coin airdropped to Telegram users via TON blockchain.',
-  'NOT':    'Notcoin. Telegram tap-to-earn game token with a massive early user base.',
-  'HMSTR':  'Hamster Kombat. Telegram mini-app game token — one of the largest crypto airdrops.',
-  'CATI':   'Catizen. Telegram cat-themed game token with millions of daily active players.',
-  'JASMY':  'JasmyCoin. Japanese IoT data monetization platform built on Ethereum.',
-  'RENDER': 'Render Network. Decentralized GPU rendering marketplace for 3D and AI workloads.',
-  'RNDR':   'Render Network. Decentralized GPU rendering marketplace for 3D and AI workloads.',
-  'FET':    'Fetch.ai. Autonomous AI agents on blockchain — decentralized machine learning.',
-  'OCEAN':  'Ocean Protocol. Decentralized data marketplace to buy, sell and monetize data.',
-  'AGIX':   'SingularityNET. Decentralized AI marketplace for buying and selling AI services.',
-  'TAO':    'Bittensor. Decentralized machine learning network rewarding AI model contributions.',
-  'WLD':    'Worldcoin. Sam Altman project — iris-scanning for universal digital identity.',
-  'AR':     'Arweave. Permanent decentralized storage protocol. Store data forever for one fee.',
-  'AKT':    'Akash Network. Decentralized cloud computing marketplace. Cheaper than AWS.',
-  'KAS':    'Kaspa. High-speed proof-of-work blockDAG. Fast block times, parallel processing.',
-  'CORE':   'Core blockchain. Bitcoin-secured EVM chain using Satoshi Plus consensus.',
-};
-
-const descCache = {};
-
-function generateSetup(c) {
-  const base = c.tightness < 12 ? 'Very tight base'
-             : c.tightness < 18 ? 'Tight consolidation'
-             : c.tightness < 28 ? 'Base building'
-             : 'Wide consolidation';
-  const emaStr = c.above8 ? 'above full 8/21/50 EMA stack' : 'above 21/50 EMA (below 8)';
-  let s = `${base} ${emaStr}.`;
-  if (c.volComp < -25)      s += ' Volume drying up — spring coiling.';
-  else if (c.volComp < -10) s += ' Volume decreasing in base.';
-  if (c.nearTrigger < 2)    s += ' 🔥 AT resistance trigger — watch for entry.';
-  else if (c.nearTrigger < 5)  s += ` ${c.nearTrigger}% from breakout trigger.`;
-  else if (c.nearTrigger < 10) s += ` ${c.nearTrigger}% to resistance.`;
-  if (c.rsBTC > 10)   s += ' Leading BTC strongly.';
-  else if (c.rsBTC > 3) s += ' Outperforming BTC.';
-  return s;
-}
-
-async function fetchDescForCoins(coins) {
-  for (const c of coins) {
-    const sym = c.symbol;
-    if (SKIP_DESC.has(sym) || COIN_DESCS[sym] || descCache[c.id]) continue;
-    try {
-      const data = await fetchJSON(
-        `${CG}/coins/${c.id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false`,
-        10000
-      );
-      const raw = (data?.description?.en || '')
-        .replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
-      if (raw) {
-        descCache[c.id] = raw.length > 130 ? raw.slice(0, 127) + '…' : raw;
-        const el = document.getElementById('fc-desc-' + c.id);
-        if (el) el.textContent = descCache[c.id];
-      }
-    } catch(e) {}
-    await new Promise(r => setTimeout(r, 300));
-  }
-}
-
-function renderFocus() {
-  const top5 = [...displayResults].sort((a, b) => b.score - a.score).slice(0, 5);
+// ── LONG FOCUS ─────────────────────────────────────────────
+function renderFocusLong() {
+  const top5 = [...dispLongs].sort((a,b) => b.score - a.score).slice(0, 5);
   const el = document.getElementById('focus-grid');
   if (!top5.length) {
-    el.innerHTML = '<div style="color:var(--dim);font-size:11px;padding:8px 0">No qualifying setups found.</div>';
+    el.innerHTML = '<div style="color:var(--dim);font-size:11px;padding:8px 0">No qualifying long setups found.</div>';
     return;
   }
   el.innerHTML = top5.map((c, i) => {
-    const chgColor = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
-    const sc = sColor(c.score);
+    const cc = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
+    const sc = lColor(c.score);
     const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
-    const setup = generateSetup(c);
+    const setup = generateLongSetup(c);
     const knownDesc = COIN_DESCS[c.symbol] || descCache[c.id] || '';
     const showDesc  = !SKIP_DESC.has(c.symbol);
-    const descHtml  = showDesc
-      ? `<div class="fc-desc" id="fc-desc-${c.id}">${knownDesc || '…'}</div>`
-      : '';
+    const descHtml  = showDesc ? `<div class="fc-desc" id="fc-desc-${c.id}">${knownDesc || '…'}</div>` : '';
     return `
       <div class="focus-card${i===0?' fc-top':''}" onclick="window.open('${tv}','_blank')">
         <div class="fc-header">
@@ -991,17 +981,16 @@ function renderFocus() {
         </div>
         <div class="fc-row">
           <div class="fc-price">${fmtP(c.price)}</div>
-          <div style="font-size:11px;font-weight:700;color:${chgColor}">${fmtPct(c.change24h)}</div>
+          <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
         </div>
         <div class="fc-row">
-          <span class="fc-mcap">Mkt Cap: <b style="color:var(--text)">${fmtL(c.mcap)}</b></span>
-          <span style="font-size:9px;color:${c.rsBTC>=0?'var(--bull)':'var(--bear)'}">RS ${fmtPct(c.rsBTC,1)}</span>
+          <span class="fc-mcap">Cap: <b style="color:var(--text)">${fmtL(c.mcap)}</b></span>
+          <span style="font-size:9px;font-weight:700;color:${c.rsBTC>=0?'var(--bull)':'var(--bear)'}">RS ${fmtPct(c.rsBTC,1)}</span>
         </div>
         <div style="font-size:9px;color:var(--dim);display:flex;gap:8px">
-          <span>ADR: <b style="color:#fff">${c.adr}%</b></span>
-          <span>Base: <b style="color:#fff">${c.tightness}%</b></span>
-          <span>Vol: <b style="color:${c.volComp<0?'var(--bull)':'var(--bear)'}">
-            ${c.volComp<0?'↓':'↑'}${Math.abs(c.volComp).toFixed(0)}%</b></span>
+          <span>ADR:<b style="color:#fff"> ${c.adr}%</b></span>
+          <span>Base:<b style="color:#fff"> ${c.tightness}%</b></span>
+          <span>Vol:<b style="color:${c.volComp<0?'var(--bull)':'var(--bear)'}"> ${c.volComp<0?'↓':'↑'}${Math.abs(c.volComp).toFixed(0)}%</b></span>
         </div>
         <div class="fc-divider"></div>
         <div class="fc-setup">${setup}</div>
@@ -1014,77 +1003,177 @@ function renderFocus() {
         </div>
       </div>`;
   }).join('');
-
-  // Async-fetch descriptions for less-known coins not in hardcoded list
   const needFetch = top5.filter(c => !SKIP_DESC.has(c.symbol) && !COIN_DESCS[c.symbol] && !descCache[c.id]);
-  if (needFetch.length) fetchDescForCoins(needFetch);
+  if (needFetch.length) fetchDescs(needFetch);
 }
 
-function renderTable() {
-  const tbody = document.getElementById('res-body');
-  if (!displayResults.length) { tbody.innerHTML = ''; return; }
-  tbody.innerHTML = displayResults.map((c, i) => {
-    const chgColor = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
-    const rs7Color = c.rsBTC >= 0 ? 'var(--bull)' : 'var(--bear)';
-    const sc = sColor(c.score);
-    const fillCls = c.score >= 65 ? 's-hot' : c.score >= 42 ? 's-warm' : 's-cold';
+// ── SHORT FOCUS ────────────────────────────────────────────
+function renderFocusShort() {
+  const top5 = [...dispShorts].sort((a,b) => b.score - a.score).slice(0, 5);
+  const el = document.getElementById('short-grid');
+  if (!top5.length) {
+    el.innerHTML = '<div style="color:var(--dim);font-size:11px;padding:8px 0">No short candidates found — market may be bullish or run a scan first.</div>';
+    return;
+  }
+  el.innerHTML = top5.map((c, i) => {
+    const cc = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
+    const sc = shColor(c.score);
     const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
+    const setup = generateShortSetup(c);
+    const knownDesc = COIN_DESCS[c.symbol] || descCache[c.id] || '';
+    const showDesc  = !SKIP_DESC.has(c.symbol);
+    const descHtml  = showDesc ? `<div class="fc-desc" id="fs-desc-${c.id}">${knownDesc || '…'}</div>` : '';
+    const emaTag = `<span class="ema-tag">${c.toEMAres.toFixed(1)}% to EMA resistance</span>`;
+    return `
+      <div class="focus-card-short${i===0?' fs-top':''}" onclick="window.open('${tv}','_blank')">
+        <div class="fc-header">
+          <img class="fc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+          <div><div class="fc-sym">${c.symbol}</div><div class="fc-name">${c.name}</div></div>
+        </div>
+        <div class="fc-row">
+          <div class="fc-price">${fmtP(c.price)}</div>
+          <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
+        </div>
+        <div class="fc-row">
+          <span class="fc-mcap">Cap: <b style="color:var(--text)">${fmtL(c.mcap)}</b></span>
+          <span style="font-size:9px;font-weight:700;color:var(--bear)">RS ${fmtPct(c.rsBTC,1)}</span>
+        </div>
+        <div style="font-size:9px;color:var(--dim);display:flex;gap:8px">
+          <span>ADR:<b style="color:#fff"> ${c.adr}%</b></span>
+          <span>7d:<b style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}"> ${fmtPct(c.change7d)}</b></span>
+          <span>Vol:<b style="color:${c.volComp>0?'var(--bear)':'var(--dim)'}"> ${c.volComp>0?'↑':'↓'}${Math.abs(c.volComp).toFixed(0)}%</b></span>
+        </div>
+        <div>${emaTag}</div>
+        <div class="fc-divider"></div>
+        <div class="fc-setup">${setup}</div>
+        ${descHtml}
+        <div class="fc-divider"></div>
+        <div class="fc-bar"><div class="fc-fill" style="width:${c.score}%;background:${sc}"></div></div>
+        <div class="fc-row">
+          <span class="fc-meta">Short Score</span>
+          <span class="fc-score" style="color:${sc}">${c.score}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
 
-    const vcStr = c.volComp < 0
+// ── LONG TABLE ─────────────────────────────────────────────
+function renderLongTable() {
+  const tbody = document.getElementById('body-long');
+  if (!dispLongs.length) { tbody.innerHTML = ''; return; }
+  tbody.innerHTML = dispLongs.map((c, i) => {
+    const cc  = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
+    const rsc = c.rsBTC >= 0 ? 'var(--bull)' : 'var(--bear)';
+    const sc  = lColor(c.score);
+    const fcls = c.score>=65?'s-hot':c.score>=42?'s-warm':'s-cold';
+    const tv  = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
+    const vcStr = c.volComp<0
       ? `<span style="color:var(--bull)">↓ ${Math.abs(c.volComp).toFixed(1)}%</span>`
       : `<span style="color:var(--bear)">↑ ${c.volComp.toFixed(1)}%</span>`;
-
-    const nearStr = c.nearTrigger < 3
+    const nearStr = c.nearTrigger<3
       ? `<span style="color:var(--bull);font-weight:700">🔥 ${c.nearTrigger}%</span>`
-      : c.nearTrigger < 8
+      : c.nearTrigger<8
       ? `<span style="color:var(--neutral)">${c.nearTrigger}%</span>`
       : `<span style="color:var(--dim)">${c.nearTrigger}%</span>`;
-
-    const tightColor = c.tightness < 15
-      ? 'var(--bull)' : c.tightness < 25
-      ? 'var(--neutral)' : 'var(--dim)';
-
-    const vmColor = c.volMcapRatio > 10
-      ? 'var(--bull)' : c.volMcapRatio > 5
-      ? 'var(--neutral)' : 'var(--dim)';
-
-    const adrColor = c.adr >= 6 ? 'var(--bull)' : c.adr >= 3 ? 'var(--neutral)' : 'var(--bear)';
-
+    const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+    const medalColor = i===0?'var(--gold)':i===1?'#b0b8c8':i===2?'#cd7f32':'var(--dim)';
+    const tightColor = c.tightness<15?'var(--bull)':c.tightness<25?'var(--neutral)':'var(--dim)';
+    const vmColor = c.volMcapRatio>10?'var(--bull)':c.volMcapRatio>5?'var(--neutral)':'var(--dim)';
     return `<tr onclick="window.open('${tv}','_blank')">
-      <td style="font-weight:700;color:${i===0?'var(--gold)':i===1?'#b0b8c8':i===2?'#cd7f32':'var(--dim)'}">
-        ${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</td>
-      <td>
-        <div class="coin-cell">
-          <img class="c-img" src="${c.image}" alt="" onerror="this.style.display='none'">
-          <div><div class="c-sym">${c.symbol}</div><div class="c-name">${c.name}</div></div>
-        </div>
-      </td>
+      <td style="font-weight:700;color:${medalColor}">${medal}</td>
+      <td><div class="coin-cell">
+        <img class="c-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+        <div><div class="c-sym">${c.symbol}</div><div class="c-name">${c.name}</div></div>
+      </div></td>
       <td style="color:#fff;font-weight:700">${fmtP(c.price)}</td>
-      <td style="color:${chgColor};font-weight:600">${fmtPct(c.change24h)}</td>
-      <td style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'};font-weight:600">${fmtPct(c.change7d,1)}</td>
-      <td style="color:${rs7Color};font-weight:700">${fmtPct(c.rsBTC,1)}</td>
+      <td style="color:${cc};font-weight:600">${fmtPct(c.change24h)}</td>
+      <td style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c.change7d,1)}</td>
+      <td style="color:${rsc};font-weight:700">${fmtPct(c.rsBTC,1)}</td>
       <td style="color:var(--dim)">${fmtL(c.mcap)}</td>
       <td style="color:${vmColor};font-weight:600">${c.volMcapRatio}%</td>
-      <td style="color:${adrColor};font-weight:600">${c.adr}%</td>
-      <td>
-        <div class="ema-dots">
-          <div class="ed ${c.above8?'ed-up':'ed-dn'}" title="8 EMA: ${c.e8Pct.toFixed(1)}%">8</div>
-          <div class="ed ed-up" title="21 EMA: ${c.e21Pct.toFixed(1)}%">21</div>
-          <div class="ed ed-up" title="50 EMA: ${c.e50Pct.toFixed(1)}%">50</div>
-        </div>
-      </td>
+      <td style="color:${c.adr>=6?'var(--bull)':c.adr>=3?'var(--neutral)':'var(--bear)'};font-weight:600">${c.adr}%</td>
+      <td><div class="ema-dots">
+        <div class="ed ${c.above8?'ed-up':'ed-dn'}" title="8 EMA ${c.e8Pct.toFixed(1)}%">8</div>
+        <div class="ed ed-up" title="21 EMA +${c.e21Pct.toFixed(1)}%">21</div>
+        <div class="ed ed-up" title="50 EMA +${c.e50Pct.toFixed(1)}%">50</div>
+      </div></td>
       <td style="color:${tightColor};font-weight:${c.tightness<15?700:400}">${c.tightness}%</td>
       <td>${vcStr}</td>
       <td>${nearStr}</td>
-      <td>
-        <div class="score-cell">
-          <div class="score-bar"><div class="score-fill ${fillCls}" style="width:${c.score}%"></div></div>
-          <span style="font-weight:700;color:${sc}">${c.score}</span>
-        </div>
-      </td>
+      <td><div class="score-cell">
+        <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
+        <span style="font-weight:700;color:${sc}">${c.score}</span>
+      </div></td>
       <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
     </tr>`;
   }).join('');
+}
+
+// ── SHORT TABLE ────────────────────────────────────────────
+function renderShortTable() {
+  const tbody = document.getElementById('body-short');
+  if (!dispShorts.length) { tbody.innerHTML = ''; return; }
+  tbody.innerHTML = dispShorts.map((c, i) => {
+    const cc  = c.change24h >= 0 ? 'var(--bull)' : 'var(--bear)';
+    const sc  = shColor(c.score);
+    const fcls = c.score>=65?'s-short-hot':c.score>=42?'s-short-warm':'s-short-cold';
+    const tv  = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
+    const vcStr = c.volComp>0
+      ? `<span style="color:var(--bear);font-weight:600">↑ ${c.volComp.toFixed(1)}%</span>`
+      : `<span style="color:var(--dim)">↓ ${Math.abs(c.volComp).toFixed(1)}%</span>`;
+    const emaStr = c.toEMAres < 3
+      ? `<span style="color:var(--bear);font-weight:700">🔴 ${c.toEMAres}%</span>`
+      : c.toEMAres < 8
+      ? `<span style="color:var(--neutral)">${c.toEMAres}%</span>`
+      : `<span style="color:var(--dim)">${c.toEMAres}%</span>`;
+    const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+    const medalColor = i===0?'var(--bear)':i===1?'#a06060':i===2?'#8a5a5a':'var(--dim)';
+    return `<tr class="short-row" onclick="window.open('${tv}','_blank')">
+      <td style="font-weight:700;color:${medalColor}">${medal}</td>
+      <td><div class="coin-cell">
+        <img class="c-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+        <div><div class="c-sym">${c.symbol}</div><div class="c-name">${c.name}</div></div>
+      </div></td>
+      <td style="color:#fff;font-weight:700">${fmtP(c.price)}</td>
+      <td style="color:${cc};font-weight:600">${fmtPct(c.change24h)}</td>
+      <td style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c.change7d,1)}</td>
+      <td style="color:var(--bear);font-weight:700">${fmtPct(c.rsBTC,1)}</td>
+      <td style="color:var(--dim)">${fmtL(c.mcap)}</td>
+      <td style="color:${c.adr>=6?'var(--bull)':c.adr>=3?'var(--neutral)':'var(--bear)'};font-weight:600">${c.adr}%</td>
+      <td><div class="ema-dots">
+        <div class="ed ${c.above8?'ed-up':'ed-dn'}" title="8 EMA ${c.e8Pct.toFixed(1)}%">8</div>
+        <div class="ed ${c.above21?'ed-up':'ed-dn'}" title="21 EMA ${c.e21Pct.toFixed(1)}%">21</div>
+        <div class="ed ${c.above50?'ed-up':'ed-dn'}" title="50 EMA ${c.e50Pct.toFixed(1)}%">50</div>
+      </div></td>
+      <td>${emaStr}</td>
+      <td>${vcStr}</td>
+      <td><div class="score-cell">
+        <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
+        <span style="font-weight:700;color:${sc}">${c.score}</span>
+      </div></td>
+      <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── DESCRIPTION FETCH ──────────────────────────────────────
+async function fetchDescs(coins) {
+  for (const c of coins) {
+    if (SKIP_DESC.has(c.symbol) || COIN_DESCS[c.symbol] || descCache[c.id]) continue;
+    try {
+      const data = await fetchJSON(
+        `${CG}/coins/${c.id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false`,
+        10000
+      );
+      const raw = (data?.description?.en||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+      if (raw) {
+        descCache[c.id] = raw.length > 130 ? raw.slice(0,127)+'…' : raw;
+        const el = document.getElementById('fc-desc-' + c.id) || document.getElementById('fs-desc-' + c.id);
+        if (el) el.textContent = descCache[c.id];
+      }
+    } catch(e) {}
+    await new Promise(r => setTimeout(r, 300));
+  }
 }
 
 // Auto-scan on load
