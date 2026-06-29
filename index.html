@@ -307,6 +307,7 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
             <th onclick="longSortBy('volComp',event)">VOL TREND</th>
             <th onclick="longSortBy('nearTrigger',event)">→ TRIGGER</th>
             <th onclick="longSortBy('score',event)" class="sorted">SCORE ▼</th>
+            <th>TIMEFRAME</th>
             <th>CHART</th>
           </tr>
         </thead>
@@ -335,6 +336,7 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
             <th onclick="shortSortBy('toEMAres',event)">TO EMA RES</th>
             <th onclick="shortSortBy('volComp',event)">VOL TREND</th>
             <th onclick="shortSortBy('score',event)" class="sorted-bear">SHORT SCORE ▼</th>
+            <th>TIMEFRAME</th>
             <th>CHART</th>
           </tr>
         </thead>
@@ -646,6 +648,31 @@ function generateShortSetup(c) {
   else if (c.rsBTC < -5)    s += ' Significantly underperforming BTC.';
   else                      s += ` Lagging BTC by ${Math.abs(c.rsBTC).toFixed(1)}%.`;
   return s;
+}
+
+// ── TIMEFRAME RECOMMENDATION ───────────────────────────────
+function getTimeframes(c, type) {
+  let entry, hold;
+  if (type === 'long') {
+    if      (c.nearTrigger <  2) entry = '15m / 1H';
+    else if (c.nearTrigger <  5) entry = '1H / 4H';
+    else if (c.nearTrigger < 12) entry = '4H / Daily';
+    else                         entry = 'Daily / Weekly';
+    if      (c.score >= 70 && c.tightness < 15) hold = '2–4 weeks';
+    else if (c.score >= 55)                      hold = '1–2 weeks';
+    else if (c.score >= 35)                      hold = '3–7 days';
+    else                                         hold = '1–3 days';
+  } else {
+    if      (c.toEMAres <  2) entry = '15m / 1H';
+    else if (c.toEMAres <  5) entry = '1H / 4H';
+    else if (c.toEMAres < 12) entry = '4H / Daily';
+    else                      entry = 'Daily (wait)';
+    const belowAll = !c.above8 && !c.above21 && !c.above50;
+    if      (c.score >= 65 && belowAll) hold = '1–2 weeks';
+    else if (c.score >= 50)             hold = '3–7 days';
+    else                                hold = '1–3 days';
+  }
+  return { entry, hold };
 }
 
 // ── MARKET CONDITION ───────────────────────────────────────
@@ -970,6 +997,7 @@ function renderFocusLong() {
     const sc = lColor(c.score);
     const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
     const setup = generateLongSetup(c);
+    const tf = getTimeframes(c, 'long');
     const knownDesc = COIN_DESCS[c.symbol] || descCache[c.id] || '';
     const showDesc  = !SKIP_DESC.has(c.symbol);
     const descHtml  = showDesc ? `<div class="fc-desc" id="fc-desc-${c.id}">${knownDesc || '…'}</div>` : '';
@@ -996,6 +1024,12 @@ function renderFocusLong() {
         <div class="fc-setup">${setup}</div>
         ${descHtml}
         <div class="fc-divider"></div>
+        <div style="font-size:9px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+          <span style="color:var(--dim)">⏱</span>
+          <span style="color:var(--dim)">Entry:</span><b style="color:var(--accent)">${tf.entry}</b>
+          <span style="color:var(--border)">·</span>
+          <span style="color:var(--dim)">Hold:</span><b style="color:var(--text)">${tf.hold}</b>
+        </div>
         <div class="fc-bar"><div class="fc-fill" style="width:${c.score}%;background:${sc}"></div></div>
         <div class="fc-row">
           <span class="fc-meta">Scout Score</span>
@@ -1020,6 +1054,7 @@ function renderFocusShort() {
     const sc = shColor(c.score);
     const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
     const setup = generateShortSetup(c);
+    const tf = getTimeframes(c, 'short');
     const knownDesc = COIN_DESCS[c.symbol] || descCache[c.id] || '';
     const showDesc  = !SKIP_DESC.has(c.symbol);
     const descHtml  = showDesc ? `<div class="fc-desc" id="fs-desc-${c.id}">${knownDesc || '…'}</div>` : '';
@@ -1048,6 +1083,12 @@ function renderFocusShort() {
         <div class="fc-setup">${setup}</div>
         ${descHtml}
         <div class="fc-divider"></div>
+        <div style="font-size:9px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+          <span style="color:var(--dim)">⏱</span>
+          <span style="color:var(--dim)">Entry:</span><b style="color:var(--bear)">${tf.entry}</b>
+          <span style="color:var(--border)">·</span>
+          <span style="color:var(--dim)">Hold:</span><b style="color:var(--text)">${tf.hold}</b>
+        </div>
         <div class="fc-bar"><div class="fc-fill" style="width:${c.score}%;background:${sc}"></div></div>
         <div class="fc-row">
           <span class="fc-meta">Short Score</span>
@@ -1104,6 +1145,7 @@ function renderLongTable() {
         <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
         <span style="font-weight:700;color:${sc}">${c.score}</span>
       </div></td>
+      <td style="white-space:nowrap">${(()=>{const tf=getTimeframes(c,'long');return`<span style="font-size:9px;color:var(--dim)">⏱</span> <b style="color:var(--accent)">${tf.entry}</b><br><span style="font-size:9px;color:var(--dim)">${tf.hold}</span>`;})()}</td>
       <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
     </tr>`;
   }).join('');
@@ -1151,6 +1193,7 @@ function renderShortTable() {
         <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
         <span style="font-weight:700;color:${sc}">${c.score}</span>
       </div></td>
+      <td style="white-space:nowrap">${(()=>{const tf=getTimeframes(c,'short');return`<span style="font-size:9px;color:var(--dim)">⏱</span> <b style="color:var(--bear)">${tf.entry}</b><br><span style="font-size:9px;color:var(--dim)">${tf.hold}</span>`;})()}</td>
       <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
     </tr>`;
   }).join('');
