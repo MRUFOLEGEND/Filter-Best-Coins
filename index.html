@@ -1125,6 +1125,8 @@ function longFocusCard(c, i) {
   const sc = lColor(c.score);
   const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
   const tf = getTimeframes(c,'long');
+  const sp = sparkline(c.spark7d, 220, 36);
+  const spHtml = sp ? `<div style="margin:4px -2px 2px">${sp.replace('width="220"','width="100%"')}</div>` : '';
   const setup = generateLongSetup(c);
   const knownDesc = COIN_DESCS[c.symbol]||descCache[c.id]||'';
   const showDesc  = !SKIP_DESC.has(c.symbol);
@@ -1136,6 +1138,7 @@ function longFocusCard(c, i) {
         <img class="fc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
         <div><div class="fc-sym">${c.symbol}</div><div class="fc-name">${c.name}</div></div>
       </div>
+      ${spHtml}
       <div class="fc-row">
         <div class="fc-price">${fmtP(c.price)}</div>
         <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
@@ -1190,6 +1193,8 @@ function shortFocusCard(c, i) {
   const sc = shColor(c.score);
   const tv = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.binanceSym}`;
   const tf = getTimeframes(c,'short');
+  const sp = sparkline(c.spark7d, 220, 36);
+  const spHtml = sp ? `<div style="margin:4px -2px 2px">${sp.replace('width="220"','width="100%"')}</div>` : '';
   const setup = generateShortSetup(c);
   const knownDesc = COIN_DESCS[c.symbol]||descCache[c.id]||'';
   const showDesc  = !SKIP_DESC.has(c.symbol);
@@ -1202,6 +1207,7 @@ function shortFocusCard(c, i) {
         <img class="fc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
         <div><div class="fc-sym">${c.symbol}</div><div class="fc-name">${c.name}</div></div>
       </div>
+      ${spHtml}
       <div class="fc-row">
         <div class="fc-price">${fmtP(c.price)}</div>
         <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
