@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100X Gems — Explosive Potential Scanner</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090f;--surface:#121218;--surface2:#1a1a2e;--border:#2a2a48;
+  --text:#e2e5f0;--dim:#8891b0;
+  --gold:#f5c842;--gold-bg:rgba(245,200,66,.12);--gold-br:rgba(245,200,66,.3);
+  --gem:#00e5ff;--gem-bg:rgba(0,229,255,.08);
+  --bull:#00d97e;--bear:#ff3d5a;--neutral:#f5a623;
+  --accent:#7c3aed;--accent2:#a855f7;
+  --bull-bg:rgba(0,217,126,.1);--bear-bg:rgba(255,61,90,.1);
+}
+body{background:var(--bg);color:var(--text);font-family:'SF Mono','Fira Code','Courier New',monospace;font-size:12px;min-height:100vh}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* ── HEADER ─────────────────────────────── */
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;flex-wrap:wrap}
+.brand-block{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.brand-ape{width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);object-fit:cover;object-position:top;box-shadow:0 0 12px rgba(245,200,66,.4);flex-shrink:0}
+.brand-title{font-size:17px;font-weight:700;color:var(--gold);letter-spacing:1px}
+.brand-sub{font-size:11px;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px}
+.hdr-stat{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 12px;text-align:center;flex-shrink:0}
+.hdr-stat-lbl{font-size:8px;color:var(--dim);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px}
+.hdr-stat-val{font-size:13px;font-weight:700;color:var(--gold)}
+.scan-area{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.scan-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:10px 22px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;box-shadow:0 0 16px rgba(124,58,237,.5);letter-spacing:.5px;transition:all .15s}
+.scan-btn:hover{box-shadow:0 0 28px rgba(168,85,247,.8)}
+.scan-btn:disabled{opacity:.5;cursor:not-allowed}
+.scan-meta{font-size:9px;color:var(--dim);text-align:right}
+
+/* ── TABS ───────────────────────────────── */
+.tab-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;position:sticky;top:73px;z-index:99}
+.tab{padding:10px 22px;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;color:var(--dim);text-transform:uppercase;user-select:none}
+.tab:hover{color:var(--text)}
+.tab-active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* ── PAGES ──────────────────────────────── */
+.page{display:none}.page.active{display:flex;flex-direction:column;gap:16px}
+.main{padding:14px;display:flex;flex-direction:column;gap:16px;max-width:1800px;margin:0 auto}
+
+/* ── INSIGHT BAR ────────────────────────── */
+.insight-bar{background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:6px;padding:9px 14px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.ib{font-size:10px;display:flex;gap:5px}
+.ib-l{color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.ib-v{color:#fff;font-weight:700}
+
+/* ── SECTION HEADERS ────────────────────── */
+.sec-header{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.sec-label{font-size:9px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+.sec-sub{font-size:9px;color:var(--dim)}
+
+/* ── MOONSHOT CARDS ─────────────────────── */
+.moonshot-grid{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.moonshot-card{background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);border:1px solid var(--gold-br);border-radius:12px;padding:16px;min-width:240px;max-width:370px;flex:1;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
+.moonshot-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.moonshot-card:hover{border-color:var(--gold);box-shadow:0 0 28px rgba(245,200,66,.22);transform:translateY(-2px)}
+.mc-rank{font-size:8px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.mc-header{display:flex;align-items:center;gap:9px}
+.mc-img{width:36px;height:36px;border-radius:50%;background:var(--surface2);flex-shrink:0}
+.mc-sym{font-size:16px;font-weight:700;color:#fff}
+.mc-name{font-size:9px;color:var(--dim)}
+.mc-desc{font-size:9px;color:var(--dim);line-height:1.55;font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:26px}
+.mc-price{font-size:16px;font-weight:700;color:#fff}
+.mc-row{display:flex;justify-content:space-between;align-items:center}
+.mc-meta{font-size:9px;color:var(--dim)}
+.mc-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:2px}
+.mc-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--gold))}
+.gem-score-big{font-size:20px;font-weight:700}
+.gem-tier-lbl{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
+.pot-x-row{display:flex;gap:10px;align-items:center;background:var(--gold-bg);border:1px solid var(--gold-br);border-radius:5px;padding:5px 9px;font-size:9px}
+.pot-x-ath{color:var(--neutral);font-weight:700}
+.pot-x-bull{color:var(--gold);font-weight:700}
+
+/* ── GEM CARDS (4-20) ───────────────────── */
+.gem-grid{display:flex;gap:10px;flex-wrap:wrap}
+.gem-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;min-width:175px;max-width:235px;flex:1;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:5px}
+.gem-card:hover{border-color:rgba(0,229,255,.4);box-shadow:0 0 13px var(--gem-bg);transform:translateY(-1px)}
+.gc-header{display:flex;align-items:center;gap:7px}
+.gc-img{width:26px;height:26px;border-radius:50%;background:var(--surface2);flex-shrink:0}
+.gc-sym{font-size:13px;font-weight:700;color:#fff}
+.gc-name{font-size:9px;color:var(--dim)}
+.gc-price{font-size:13px;font-weight:700;color:#fff}
+.gc-row{display:flex;justify-content:space-between;align-items:center}
+.gc-meta{font-size:9px;color:var(--dim)}
+.gc-score{font-size:13px;font-weight:700}
+.gc-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:2px}
+.gc-desc{font-size:9px;color:var(--dim);line-height:1.5;font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:24px}
+.gc-potx{font-size:9px;color:var(--gold);font-weight:700}
+
+/* ── TAGS ───────────────────────────────── */
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:2px}
+.tag{font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.5px;text-transform:uppercase}
+.tag-ai{background:rgba(0,229,255,.15);color:#00e5ff;border:1px solid rgba(0,229,255,.3)}
+.tag-l1{background:rgba(168,85,247,.15);color:#c084fc;border:1px solid rgba(168,85,247,.3)}
+.tag-l2{background:rgba(99,102,241,.15);color:#818cf8;border:1px solid rgba(99,102,241,.3)}
+.tag-defi{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
+.tag-rwa{background:rgba(245,200,66,.15);color:#f5c842;border:1px solid rgba(245,200,66,.3)}
+.tag-gaming{background:rgba(236,72,153,.15);color:#f472b6;border:1px solid rgba(236,72,153,.3)}
+.tag-meme{background:rgba(249,115,22,.15);color:#fb923c;border:1px solid rgba(249,115,22,.3)}
+.tag-oracle{background:rgba(234,179,8,.15);color:#fbbf24;border:1px solid rgba(234,179,8,.3)}
+.tag-infra{background:rgba(107,114,128,.15);color:#9ca3af;border:1px solid rgba(107,114,128,.3)}
+.tag-default{background:rgba(107,114,128,.1);color:var(--dim);border:1px solid var(--border)}
+
+/* ── TABLE ──────────────────────────────── */
+.table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--surface2);padding:8px 9px;text-align:left;font-size:9px;font-weight:700;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+thead th:hover{color:var(--text)}
+thead th.sorted{color:var(--gold)}
+tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .08s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(124,58,237,.07)}
+td{padding:7px 9px;white-space:nowrap;vertical-align:middle;font-size:11px}
+.coin-cell{display:flex;align-items:center;gap:8px}
+.c-img{width:22px;height:22px;border-radius:50%;background:var(--surface2);flex-shrink:0}
+.c-sym{font-size:12px;font-weight:700;color:#fff}
+.c-name{font-size:9px;color:var(--dim)}
+.c-desc-td{font-size:9px;color:var(--dim);font-style:italic;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.score-cell{display:flex;align-items:center;gap:6px}
+.score-bar{width:40px;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;border-radius:3px}
+.tv-btn{display:inline-flex;align-items:center;gap:3px;color:var(--accent2);text-decoration:none;font-size:10px;padding:3px 7px;border-radius:4px;border:1px solid transparent;transition:border-color .1s}
+.tv-btn:hover{border-color:var(--accent2)}
+
+/* ── NARRATIVE PAGE ─────────────────────── */
+.narr-section{margin-bottom:14px}
+.narr-hdr{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.narr-row{display:flex;gap:8px;flex-wrap:wrap}
+.narr-mini{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:8px;min-width:150px}
+.narr-mini:hover{border-color:rgba(0,229,255,.3);transform:translateY(-1px)}
+.nm-img{width:22px;height:22px;border-radius:50%;background:var(--surface2);flex-shrink:0}
+.nm-sym{font-size:11px;font-weight:700;color:#fff}
+
+/* ── LOADING ─────────────────────────────── */
+.load-wrap{text-align:center;padding:60px 20px}
+.spinner{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.prog-track{width:280px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 0}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:2px;transition:width .3s}
+.load-text{font-size:11px;color:var(--dim);margin-top:8px}
+.empty{text-align:center;padding:40px;color:var(--dim);font-size:12px}
+
+@media(max-width:700px){.moonshot-card,.gem-card{min-width:140px}.tab{padding:8px 14px;font-size:10px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand-block">
+    <img class="brand-ape" src="BASC.png" alt="BASC" onerror="this.style.display='none'">
+    <div>
+      <div class="brand-title">💎 100X GEMS</div>
+      <div class="brand-sub">Explosive Potential Scanner · Top 500</div>
+    </div>
+  </div>
+  <div class="hdr-stat"><div class="hdr-stat-lbl">Top Gem Score</div><div class="hdr-stat-val" id="stat-top">—</div></div>
+  <div class="hdr-stat"><div class="hdr-stat-lbl">Avg Score (50)</div><div class="hdr-stat-val" id="stat-avg">—</div></div>
+  <div class="hdr-stat"><div class="hdr-stat-lbl">Moonshots 🔥</div><div class="hdr-stat-val" id="stat-moon">—</div></div>
+  <div class="hdr-stat"><div class="hdr-stat-lbl">Best Bull X</div><div class="hdr-stat-val" id="stat-bestx">—</div></div>
+  <div class="scan-area">
+    <button class="scan-btn" id="scan-btn" onclick="runScan()">💎 Run Gem Scan</button>
+    <div class="scan-meta" id="scan-meta">Not scanned yet — click to find gems</div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab tab-active" id="tab-spotlight" onclick="setPage('spotlight')">🔥 Spotlight</div>
+  <div class="tab" id="tab-all"        onclick="setPage('all')">📊 All 50</div>
+  <div class="tab" id="tab-narr"       onclick="setPage('narr')">🏷 Narratives</div>
+</div>
+
+<div class="main">
+  <div class="insight-bar" id="insight-bar" style="display:none">
+    <div class="ib"><span class="ib-l">Scanned</span><span class="ib-v" id="ib-scan">—</span></div>
+    <div class="ib"><span class="ib-l">Top Narrative</span><span class="ib-v" id="ib-narr">—</span></div>
+    <div class="ib"><span class="ib-l">Avg Vol/MCap</span><span class="ib-v" id="ib-vol">—</span></div>
+    <div class="ib"><span class="ib-l">Momentum Signal</span><span class="ib-v" id="ib-phase">—</span></div>
+    <div class="ib"><span class="ib-l">Rank Range</span><span class="ib-v" id="ib-range">—</span></div>
+  </div>
+
+  <div class="page active" id="page-spotlight">
+    <div id="spotlight-content">
+      <div class="load-wrap">
+        <div style="font-size:40px;margin-bottom:14px">💎</div>
+        <div style="font-size:15px;font-weight:700;color:var(--gold);margin-bottom:8px">Find Your Next 100X</div>
+        <div style="font-size:11px;color:var(--dim);line-height:1.9">
+          Scans the top 500 coins · excludes blue chips (rank &lt;40) and stablecoins.<br>
+          Memes filtered to <b style="color:var(--text)">top-80 only</b> — only proven communities survive.<br>
+          Scores on <b style="color:var(--text)">momentum · volume surge · size · ATH room · narrative</b>.
+        </div>
+        <div style="margin-top:16px"><button class="scan-btn" onclick="runScan()">💎 Run Gem Scan</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-all">
+    <div id="all-content"><div class="empty">Run a scan to see all 50 gems.</div></div>
+  </div>
+
+  <div class="page" id="page-narr">
+    <div id="narr-content"><div class="empty">Run a scan to explore by narrative.</div></div>
+  </div>
+</div>
+
+<script>
+// ── NARRATIVE MAP ──────────────────────────────────────────────
+const NM = {
+  'render-token':['AI','GPU'],'fetch-ai':['AI','Agent'],'ocean-protocol':['AI','Data'],
+  'bittensor':['AI','Agent'],'singularitynet':['AI','Agent'],'akash-network':['AI','GPU'],
+  'near':['AI','L1'],'worldcoin-wld':['AI','Identity'],'grass':['AI','Data'],
+  'io-net':['AI','GPU'],'cookie-dao':['AI','Agent'],'virtual-protocol':['AI','Agent'],
+  'aixbt':['AI','Agent'],'nosana':['AI','GPU'],'hypercycle':['AI'],
+  'solana':['L1'],'avalanche-2':['L1'],'aptos':['L1'],'sui':['L1'],
+  'sei-network':['L1'],'injective-protocol':['L1','DeFi'],'hedera-hashgraph':['L1'],
+  'toncoin':['L1','Social'],'tron':['L1'],'cardano':['L1'],'algorand':['L1'],
+  'mantra-dao':['RWA','L1'],'berachain-bera':['L1','DeFi'],'sonic-3':['L1'],
+  'arbitrum':['L2'],'optimism':['L2'],'polygon':['L2'],
+  'immutable-x':['L2','Gaming'],'starknet':['L2','ZK'],'mantle':['L2'],
+  'blast':['L2'],'scroll':['L2','ZK'],'zksync':['L2','ZK'],'taiko':['L2','ZK'],
+  'uniswap':['DeFi','DEX'],'aave':['DeFi','Lending'],'curve-dao-token':['DeFi'],
+  'maker':['DeFi'],'pancakeswap-token':['DeFi','DEX'],'gmx':['DeFi','Perps'],
+  'dydx':['DeFi','Perps'],'hyperliquid':['DeFi','Perps'],
+  'jupiter-exchange-solana':['DeFi','DEX'],'raydium':['DeFi','DEX'],
+  'ondo-finance':['RWA','DeFi'],'ethena':['DeFi'],'pendle-finance':['DeFi','Yield'],
+  'usual':['RWA','DeFi'],'euler-finance':['DeFi','Lending'],
+  'chainlink':['Oracle','RWA'],'pyth-network':['Oracle'],'api3':['Oracle'],
+  'polkadot':['Infra','Interop'],'cosmos':['Infra','Interop'],
+  'celestia':['Infra','Modular'],'eigenlayer':['Infra','Restaking'],
+  'lido-dao':['Infra','Liquid Staking'],'rocket-pool':['Infra','Liquid Staking'],
+  'the-graph':['Infra'],
+  'axie-infinity':['Gaming'],'the-sandbox':['Gaming'],'decentraland':['Gaming'],
+  'gala':['Gaming'],'beam-2':['Gaming'],'pixels':['Gaming'],
+  'illuvium':['Gaming'],'ronin':['Gaming'],'treasure-dao':['Gaming'],
+  'dogecoin':['Meme'],'shiba-inu':['Meme'],'pepe':['Meme'],'dogwifcoin':['Meme'],
+  'bonk':['Meme'],'floki':['Meme'],'brett-based':['Meme'],'popcat':['Meme'],
+  'mog-coin':['Meme'],'baby-doge-coin':['Meme'],
+  'bitcoin':['Store of Value'],'ethereum':['L1','DeFi'],
+  'ripple':['Payments'],'stellar':['Payments'],'vechain':['Enterprise'],
+};
+
+// ── HARDCODED DESCRIPTIONS ─────────────────────────────────────
+const COIN_DESCS = {
+  'render-token':   'Decentralized GPU rendering network connecting artists with idle GPU providers for AI and 3D rendering at scale.',
+  'fetch-ai':       'Autonomous AI agents that automate complex tasks — DeFi, supply chain, mobility — using on-chain machine learning.',
+  'bittensor':      'Decentralized AI training network where nodes compete to produce the best machine learning models, rewarded in TAO.',
+  'singularitynet':  'Open marketplace for AI services — developers deploy and monetize AI algorithms on a decentralized protocol.',
+  'akash-network':  'Decentralized cloud compute marketplace offering GPU and CPU capacity at up to 80% below AWS and Google Cloud pricing.',
+  'ocean-protocol': 'Data marketplace letting providers monetize datasets privately using compute-to-data — purpose-built for AI training.',
+  'near':           'AI-focused Layer-1 with chain abstraction tech — lets users interact across chains without managing multiple wallets.',
+  'worldcoin-wld':  'Global identity and financial network using iris-based biometrics to verify proof-of-humanity and distinguish humans from AI.',
+  'grass':          'Decentralized data network where users share idle internet bandwidth to train AI models and earn GRASS rewards.',
+  'io-net':         'GPU computing network aggregating idle capacity from data centers and crypto miners into one AI compute marketplace.',
+  'virtual-protocol':'Decentralized protocol for creating, owning, and co-developing AI agents and virtual beings in gaming and entertainment.',
+  'solana':         'High-performance Layer-1 with 65,000 TPS and sub-cent fees — dominant chain for DeFi, memes, and consumer apps.',
+  'avalanche-2':    'Subnet architecture Layer-1 — enterprises deploy custom blockchains while sharing Avalanche security and interoperability.',
+  'aptos':          'Layer-1 from ex-Meta Diem engineers using parallel execution (Block-STM) and Move VM for developer safety.',
+  'sui':            'High-throughput Layer-1 using the Move VM and object-centric model — sub-second finality at very low cost.',
+  'sei-network':    'The fastest Layer-1 for trading — native order book, 400ms finality, built specifically for exchange applications.',
+  'injective-protocol': 'Cosmos-based Layer-1 built for DeFi — native on-chain order books, perpetuals, and cross-chain trading infrastructure.',
+  'toncoin':        'The official blockchain of Telegram — 900M+ potential users, built-in wallet, and mini-app ecosystem inside Telegram.',
+  'cardano':        'Research-driven Layer-1 using a peer-reviewed, formally verified development approach with Haskell smart contracts.',
+  'algorand':       'Pure proof-of-stake Layer-1 focused on government and enterprise use — carbon-negative, fast finality, low fees.',
+  'mantra-dao':     'RWA-focused Layer-1 with regulatory compliance built in — designed for tokenizing real world assets under financial regulation.',
+  'berachain-bera': 'Proof-of-Liquidity Layer-1 where validators must provide DeFi liquidity to earn block rewards — aligns incentives natively.',
+  'arbitrum':       'The largest Ethereum Layer-2 by TVL — optimistic rollups, home to GMX, Uniswap V3, and hundreds of DeFi protocols.',
+  'optimism':       'Ethereum L2 powering the OP Stack "Superchain" — Base, Zora, and 20+ chains share the same rollup framework.',
+  'polygon':        'Ethereum scaling network — CDK for custom ZK chains, AggLayer for interoperability, used by Starbucks and Nike.',
+  'immutable-x':    'Ethereum Layer-2 purpose-built for gaming and NFTs — gas-free minting, carbon-neutral, home to major game studios.',
+  'starknet':       'Ethereum ZK rollup using STARK proofs for cryptographic validity — near-unlimited scalability with trustless security.',
+  'mantle':         'Ethereum L2 backed by BitDAO treasury — offers developers institutional-grade infrastructure and deep liquidity access.',
+  'zksync':         'Ethereum ZK rollup from Matter Labs — account abstraction native, fast withdrawals, growing DeFi and gaming ecosystem.',
+  'celestia':       'Modular data availability layer — separates DA from execution so rollups can scale cheaply without compromising security.',
+  'eigenlayer':     'Ethereum restaking protocol — recycle staked ETH to secure new protocols (AVSs) without extra capital commitment.',
+  'lido-dao':       'Largest liquid staking protocol — stake ETH, receive stETH that earns yield while staying usable across DeFi.',
+  'rocket-pool':    'Decentralized ETH staking — permissionless node operators, governance-owned, the decentralized alternative to Lido.',
+  'the-graph':      'Indexing protocol for querying blockchain data with GraphQL — the "Google of Web3," used by Uniswap and Compound.',
+  'uniswap':        'The original decentralized exchange — AMM pioneer with $1T+ lifetime volume, now on 10+ chains with V4 hooks.',
+  'aave':           'Largest decentralized lending protocol with $10B+ TVL — supply assets to earn yield, borrow against crypto collateral.',
+  'curve-dao-token':'Stablecoin-focused DEX with the deepest liquidity for pegged assets — backbone of DeFi stablecoin infrastructure.',
+  'gmx':            'Decentralized perpetual exchange on Arbitrum and Avalanche — zero price impact trades, real yield for GLP providers.',
+  'dydx':           'Decentralized perpetuals exchange with its own Cosmos chain — orderbook model with CEX-grade speed for perp traders.',
+  'hyperliquid':    'Fully on-chain perpetual DEX running on its own Layer-1 — fastest DEX with $2B+ daily volume and native spot market.',
+  'pancakeswap-token':'BNB Chain\'s leading DEX and AMM — lottery, prediction markets, and launchpad alongside swap and farming features.',
+  'raydium':        'Primary AMM on Solana with concentrated liquidity — routes through Serum order book for best-in-class execution.',
+  'jupiter-exchange-solana': 'Solana\'s leading DEX aggregator — best swap prices across all Solana liquidity, plus perps and a launchpad.',
+  'ondo-finance':   'Tokenized US Treasuries and money market funds on-chain — bringing institutional-grade yield to DeFi protocols.',
+  'ethena':         'Synthetic dollar protocol generating yield from ETH delta-neutral strategies — issues USDe, a yield-bearing stablecoin.',
+  'pendle-finance': 'Yield tokenization protocol — split yield-bearing assets into principal and yield tokens for fixed-rate DeFi strategies.',
+  'chainlink':      'The dominant oracle network — provides real-world data to smart contracts, secures $15T+ in on-chain value across 900+ protocols.',
+  'pyth-network':   'High-frequency price oracle built on Solana — real-time feeds from 90+ institutions including Cboe and Two Sigma.',
+  'api3':           'First-party oracle network — data providers operate their own nodes, eliminating third-party oracle risk entirely.',
+  'polkadot':       'Multi-chain ecosystem where specialized "parachains" share security and communicate via XCM cross-chain messaging.',
+  'cosmos':         'Internet of Blockchains — IBC protocol connects 100+ sovereign chains into one interoperable, composable network.',
+  'axie-infinity':  'Pioneer of play-to-earn gaming on the Ronin sidechain — breed, battle, and trade NFT creatures called Axies.',
+  'the-sandbox':    'Voxel-based metaverse where users buy land, build games and experiences, and monetize content using SAND and NFTs.',
+  'decentraland':   'Browser-based 3D metaverse on Ethereum — users own LAND parcels and create interactive experiences and events.',
+  'gala':           'Gaming ecosystem with 40+ games in development — GALA token used for in-game purchases, governance, and node rewards.',
+  'beam-2':         'Gaming blockchain ecosystem — own chain, own game distribution platform, and SDK enabling AAA game integrations.',
+  'illuvium':       'AAA open-world RPG auto-battler on Immutable — high-quality graphics, land ownership, and ILV token staking rewards.',
+  'ronin':          'Ethereum sidechain built for gaming — powers Axie Infinity and expanding to other games with near-zero gas fees.',
+  'dogecoin':       'The original meme coin turned legitimate payment option — accepted by Tesla, AMC, and backed by Elon Musk\'s public support.',
+  'shiba-inu':      'Meme coin with a full ecosystem: ShibaSwap DEX, Shibarium L2, and BONE + LEASH companion tokens.',
+  'pepe':           'Largest "pure meme" coin after DOGE/SHIB — no utility, pure cultural narrative built on the Pepe the Frog internet icon.',
+  'dogwifcoin':     'Solana\'s top meme coin — a dog in a hat — with the most recognized meme brand and deepest liquidity on Solana.',
+  'bonk':           'The OG Solana community meme coin — airdropped to Solana users post-FTX, now deeply integrated in Solana DeFi.',
+  'floki':          'Meme coin with utility ambitions — Valhalla P2E game, FlokiFi DeFi suite, and strong Telegram/Twitter community.',
+};
+
+const descCache = {};
+
+// ── PREMIUM / SOLID / SPECULATIVE SETS ────────────────────────
+const PREMIUM_SET = new Set(['AI','Agent','GPU','RWA','Perps','ZK','Restaking','Modular','Liquid Staking','Identity']);
+const SOLID_SET   = new Set(['L1','L2','DeFi','DEX','Lending','Oracle','Infra','Interop','Yield']);
+const SPECUL_SET  = new Set(['Meme','Gaming','Social','Enterprise']);
+
+// ── TAG HELPERS ────────────────────────────────────────────────
+function tagClass(t) {
+  const k = t.toLowerCase();
+  if (['ai','agent','gpu','data','identity'].includes(k)) return 'tag-ai';
+  if (k==='l1') return 'tag-l1';
+  if (['l2','zk','modular'].includes(k)) return 'tag-l2';
+  if (['defi','dex','lending','perps','yield','liquid staking'].includes(k)) return 'tag-defi';
+  if (k==='rwa') return 'tag-rwa';
+  if (k==='gaming') return 'tag-gaming';
+  if (k==='meme') return 'tag-meme';
+  if (k==='oracle') return 'tag-oracle';
+  if (['infra','interop','restaking','enterprise','supply chain'].includes(k)) return 'tag-infra';
+  return 'tag-default';
+}
+function tagsHtml(id, max=2) {
+  const tags = NM[id] || [];
+  if (!tags.length) return '<span class="tag tag-default">Alt</span>';
+  return tags.slice(0,max).map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join('');
+}
+function allTagsHtml(id) {
+  const tags = NM[id] || [];
+  if (!tags.length) return '<span class="tag tag-default">Alt</span>';
+  return tags.map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join('');
+}
+
+// ── GEM SCORING (0-100) ────────────────────────────────────────
+function calcGemScore(coin) {
+  let s = 0;
+
+  // 1. Momentum — 7d + 30d (0-25)
+  const p7  = coin.price_change_percentage_7d_in_currency  || 0;
+  const p30 = coin.price_change_percentage_30d_in_currency || 0;
+  if      (p7 >  60) s += 13; else if (p7 > 25) s += 9;
+  else if  (p7 >  10) s +=  6; else if (p7 >  0) s += 3;
+  if      (p30 > 120) s += 12; else if (p30 > 60) s += 9;
+  else if  (p30 >  25) s +=  6; else if (p30 >  0) s += 3;
+
+  // 2. Volume Activity / MCap (0-20)
+  const vm = coin.market_cap > 0 ? coin.total_volume / coin.market_cap * 100 : 0;
+  if      (vm > 40) s += 20; else if (vm > 20) s += 16;
+  else if  (vm > 10) s += 11; else if (vm >  4) s +=  6;
+  else s += 1;
+
+  // 3. Size Sweet Spot (0-20) — rank 50-300 best for 100x; blue chips penalised
+  const rank = coin.market_cap_rank || 9999;
+  if      (rank >= 50  && rank <= 150) s += 20;
+  else if (rank >= 151 && rank <= 300) s += 17;
+  else if (rank >= 301 && rank <= 500) s += 12;
+  else if (rank >= 40  && rank <   50) s +=  8;
+  else if (rank <   40)                s +=  3; // too big
+  else                                 s +=  6; // > 500
+
+  // 4. ATH Recovery Room (0-15) — -60% to -88% sweet spot
+  const ath = coin.ath_change_percentage || 0;
+  if      (ath <= -60 && ath >= -88) s += 15;
+  else if (ath <= -40 && ath >  -60) s += 10;
+  else if (ath <  -88 && ath >= -97) s +=  5;
+  else if (ath >  -20)               s +=  2;
+  else if (ath <  -97)               s +=  1;
+  else                               s +=  7;
+
+  // 5. Narrative Strength (0-20)
+  const tags = NM[coin.id] || [];
+  const pm = tags.filter(t => PREMIUM_SET.has(t)).length;
+  const sm = tags.filter(t => SOLID_SET.has(t)).length;
+  const sp = tags.filter(t => SPECUL_SET.has(t)).length;
+  if      (pm >= 2)         s += 20;
+  else if (pm >= 1 && sm)   s += 17;
+  else if (pm >= 1)         s += 14;
+  else if (sm >= 2)         s += 11;
+  else if (sm >= 1)         s +=  8;
+  else if (sp >= 1)         s +=  4;
+  else if (tags.length > 0) s +=  5;
+  else                      s +=  2;
+
+  return Math.min(100, Math.round(s));
+}
+
+// ── POTENTIAL X CALCULATION ────────────────────────────────────
+function calcPotentialX(coin) {
+  const ath = coin.ath_change_percentage || 0;
+  if (ath >= -5) return { athX: '~1x', bullX: '~2x', bullRaw: 2 };
+
+  // X needed to recover ATH
+  const athRaw = 1 / (1 + ath / 100);
+
+  // Narrative multiplier — how much beyond ATH in next bull cycle?
+  const tags = NM[coin.id] || [];
+  let nm = 1.5;
+  if (tags.some(t => ['AI','Agent','GPU','RWA','ZK','Restaking','Modular'].includes(t))) nm = 3.0;
+  else if (tags.some(t => ['L1','L2','DeFi','Perps','Oracle'].includes(t)))              nm = 2.2;
+  else if (tags.includes('Meme'))                                                        nm = 1.8;
+
+  // Size multiplier — smaller rank = more room
+  const rank = coin.market_cap_rank || 999;
+  const sm = rank >= 200 ? 1.4 : rank >= 100 ? 1.2 : 1.0;
+
+  const bullRaw = athRaw * nm * sm;
+
+  const fmtX = v => {
+    const r = Math.round(v * 10) / 10;
+    if (r >= 50) return '~' + Math.round(r) + 'x';
+    return '~' + r + 'x';
+  };
+
+  return { athX: fmtX(Math.min(athRaw, 99)), bullX: fmtX(Math.min(bullRaw, 100)), bullRaw };
+}
+
+// ── TIER ──────────────────────────────────────────────────────
+function tierInfo(score) {
+  if (score >= 80) return { icon:'🔥', label:'Moonshot',  color:'var(--gold)'    };
+  if (score >= 65) return { icon:'⚡', label:'High Conv', color:'var(--bull)'    };
+  if (score >= 50) return { icon:'💎', label:'Emerging',  color:'#00e5ff'        };
+  if (score >= 38) return { icon:'📊', label:'Watchlist', color:'var(--neutral)' };
+  return               { icon:'💤', label:'Cold',      color:'var(--dim)'     };
+}
+
+// ── UTILS ─────────────────────────────────────────────────────
+const fmtP = v => {
+  if (!v) return '$0';
+  if (v >= 1000) return '$'+v.toLocaleString('en-US',{maximumFractionDigits:0});
+  if (v >= 1)    return '$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  if (v >= 0.01) return '$'+v.toFixed(4);
+  return '$'+v.toFixed(6);
+};
+const fmtPct = (v,d=1) => { if (v==null) return '—'; return (v>=0?'+':'')+v.toFixed(d)+'%'; };
+const fmtL   = v => {
+  if (!v) return '—';
+  if (v >= 1e12) return '$'+(v/1e12).toFixed(2)+'T';
+  if (v >= 1e9)  return '$'+(v/1e9).toFixed(2)+'B';
+  if (v >= 1e6)  return '$'+(v/1e6).toFixed(1)+'M';
+  return '$'+v.toLocaleString();
+};
+
+function sparkline(data, w, h) {
+  if (!data || data.length < 2) return '';
+  const mn = Math.min(...data), mx = Math.max(...data);
+  if (mx === mn) return '';
+  const pts = data.map((v,i)=>`${((i/(data.length-1))*w).toFixed(1)},${(h-((v-mn)/(mx-mn))*h).toFixed(1)}`).join(' ');
+  const col = data[data.length-1] >= data[0] ? '#00d97e' : '#ff3d5a';
+  return `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="${pts}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+function getDesc(id) {
+  return COIN_DESCS[id] || descCache[id] || '…';
+}
+
+// ── STATE ──────────────────────────────────────────────────────
+let gems = [], sortCol = 'score', sortDir = -1;
+
+function setProgress(pct, txt) {
+  const pf = document.getElementById('prog-fill');
+  const lt = document.getElementById('load-txt');
+  if (pf) pf.style.width = pct + '%';
+  if (lt) lt.textContent = txt;
+}
+
+// ── FILTERS ────────────────────────────────────────────────────
+const STABLE  = new Set(['tether','usd-coin','dai','true-usd','first-digital-usd','usde','frax','paxos-standard','binance-peg-busd','nusd','tether-eurt','eurc','tether-usd']);
+const WRAPPED = new Set(['wrapped-bitcoin','wrapped-ether','staked-ether','wrapped-steth','liquid-staked-ether','coinbase-wrapped-staked-eth']);
+
+function passesFilter(c) {
+  if (STABLE.has(c.id) || WRAPPED.has(c.id)) return false;
+  if (!c.market_cap || c.market_cap <= 0)    return false;
+  const tags = NM[c.id] || [];
+  const isMeme = tags.includes('Meme');
+  const rank   = c.market_cap_rank || 9999;
+  // Memes: only top-80 — established communities only
+  if (isMeme && rank > 80)  return false;
+  // Non-memes: exclude blue chips ranked < 40 (can't realistically 100x)
+  if (!isMeme && rank < 40) return false;
+  return true;
+}
+
+// ── MAIN SCAN ─────────────────────────────────────────────────
+async function runScan() {
+  const btn = document.getElementById('scan-btn');
+  btn.disabled = true; btn.textContent = '⏳ Scanning…';
+
+  document.getElementById('spotlight-content').innerHTML = `
+    <div class="load-wrap">
+      <div class="spinner"></div>
+      <div class="load-text" id="load-txt">Connecting to CoinGecko…</div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>`;
+
+  try {
+    const all = [];
+    for (let pg = 1; pg <= 5; pg++) {
+      setProgress(pg * 13, `Fetching page ${pg} of 5…`);
+      const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=${pg}&sparkline=true&price_change_percentage=7d,30d`;
+      const r   = await fetch(url);
+      if (!r.ok) throw new Error(`CoinGecko HTTP ${r.status} on page ${pg}`);
+      all.push(...await r.json());
+      if (pg < 5) await new Promise(res => setTimeout(res, 700));
+    }
+
+    setProgress(80, 'Calculating gem scores…');
+
+    gems = all
+      .filter(passesFilter)
+      .map(c => ({
+        ...c,
+        score : calcGemScore(c),
+        _vm   : c.market_cap > 0 ? c.total_volume / c.market_cap * 100 : 0,
+        _potX : calcPotentialX(c),
+      }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 50);
+
+    // Header stats
+    document.getElementById('stat-top').textContent  = gems[0]?.score ?? '—';
+    document.getElementById('stat-avg').textContent  = Math.round(gems.reduce((s,c)=>s+c.score,0)/gems.length);
+    document.getElementById('stat-moon').textContent = gems.filter(c=>c.score>=80).length;
+    const bestX = gems.reduce((mx,c)=>Math.max(mx,c._potX.bullRaw||0),0);
+    document.getElementById('stat-bestx').textContent = bestX > 0 ? '~'+Math.round(bestX)+'x' : '—';
+
+    // Insight bar
+    const avgVm    = gems.reduce((s,c)=>s+c._vm,0)/gems.length;
+    const narrCnt  = {};
+    gems.forEach(c => (NM[c.id]||[]).forEach(t => narrCnt[t]=(narrCnt[t]||0)+1));
+    const bestNarr = Object.entries(narrCnt).sort((a,b)=>b[1]-a[1])[0];
+    const avgP7    = gems.slice(0,10).reduce((s,c)=>s+(c.price_change_percentage_7d_in_currency||0),0)/10;
+    const ranks    = gems.map(c=>c.market_cap_rank).filter(Boolean);
+    document.getElementById('ib-scan').textContent  = all.length+' coins ('+gems.length+' qualify)';
+    document.getElementById('ib-narr').textContent  = bestNarr ? `${bestNarr[0]} (${bestNarr[1]})` : '—';
+    document.getElementById('ib-vol').textContent   = avgVm.toFixed(1)+'%';
+    document.getElementById('ib-phase').textContent = avgP7>20?'🚀 Hot Accumulation':avgP7>8?'📈 Early Bull':avgP7>-5?'😐 Sideways':'🩸 Bleeding';
+    document.getElementById('ib-range').textContent = `#${Math.min(...ranks)} – #${Math.max(...ranks)}`;
+    document.getElementById('insight-bar').style.display = 'flex';
+
+    setProgress(92, 'Rendering…');
+    renderSpotlight();
+    renderAll50();
+    renderNarratives();
+    setProgress(100, 'Done!');
+
+    document.getElementById('scan-meta').textContent =
+      `${all.length} scanned · ${gems.length} qualify · top 50 shown · ${new Date().toLocaleTimeString()}`;
+
+    // Async: fetch descriptions for coins not in hardcoded map
+    fetchMissingDescs(gems.slice(0, 20));
+
+  } catch (e) {
+    document.getElementById('spotlight-content').innerHTML =
+      `<div class="empty" style="color:var(--bear)">⚠ ${e.message}</div>`;
+  }
+
+  btn.disabled = false; btn.textContent = '💎 Run Gem Scan';
+}
+
+// ── ASYNC DESC FETCH ───────────────────────────────────────────
+async function fetchMissingDescs(topGems) {
+  for (const gem of topGems) {
+    if (COIN_DESCS[gem.id] || descCache[gem.id]) continue;
+    try {
+      await new Promise(r => setTimeout(r, 900));
+      const r = await fetch(`https://api.coingecko.com/api/v3/coins/${gem.id}?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false`);
+      if (!r.ok) continue;
+      const data = await r.json();
+      let desc = (data.description?.en || '').replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+      if (desc.length > 130) desc = desc.slice(0,127) + '…';
+      if (desc) {
+        descCache[gem.id] = desc;
+        document.querySelectorAll(`[data-desc="${gem.id}"]`).forEach(el => { el.textContent = desc; });
+      }
+    } catch(e) { /* skip */ }
+  }
+}
+
+// ── SPOTLIGHT ─────────────────────────────────────────────────
+function renderSpotlight() {
+  const top3 = gems.slice(0, 3);
+  const rest = gems.slice(3, 20);
+  document.getElementById('spotlight-content').innerHTML = `
+    <div>
+      <div class="sec-header">
+        <span class="sec-label">🔥 Moonshot Picks</span>
+        <span class="sec-sub">Top 3 by Gem Score — maximum conviction</span>
+      </div>
+      <div class="moonshot-grid">${top3.map(moonshotCard).join('')}</div>
+    </div>
+    <div>
+      <div class="sec-header">
+        <span class="sec-label">⚡ High Conviction Gems</span>
+        <span class="sec-sub">Ranks 4–20 — strong setups worth watching closely</span>
+      </div>
+      <div class="gem-grid">${rest.map((c,i)=>gemCard(c,i+4)).join('')}</div>
+    </div>`;
+}
+
+function moonshotCard(c, i) {
+  const tv   = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.symbol.toUpperCase()}USDT`;
+  const tier = tierInfo(c.score);
+  const potX = c._potX;
+  const p7   = c.price_change_percentage_7d_in_currency  || 0;
+  const p30  = c.price_change_percentage_30d_in_currency || 0;
+  const ath  = (c.ath_change_percentage || 0).toFixed(0);
+  const tags = NM[c.id] || [];
+  const sp   = sparkline(c.sparkline_in_7d?.price, 220, 32);
+  const spHtml = sp ? `<div style="margin:4px -2px 2px">${sp.replace('width="220"','width="100%"')}</div>` : '';
+  const medal  = ['🥇 #1 GEM','🥈 #2 GEM','🥉 #3 GEM'][i] || `#${i+1}`;
+  const desc   = getDesc(c.id);
+  return `<div class="moonshot-card" onclick="window.open('${tv}','_blank')">
+    <div class="mc-rank">${medal}</div>
+    <div class="mc-header">
+      <img class="mc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+      <div><div class="mc-sym">${c.symbol.toUpperCase()}</div><div class="mc-name">${c.name}</div></div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="gem-score-big" style="color:${tier.color}">${c.score}</div>
+        <div class="gem-tier-lbl" style="color:${tier.color}">${tier.icon} ${tier.label}</div>
+      </div>
+    </div>
+    <div class="mc-desc" data-desc="${c.id}">${desc}</div>
+    ${spHtml}
+    <div class="mc-row">
+      <div class="mc-price">${fmtP(c.current_price)}</div>
+      <div style="font-size:12px;font-weight:700;color:${p7>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p7)}</div>
+    </div>
+    <div class="mc-row">
+      <span class="mc-meta">MCap <b style="color:var(--text)">${fmtL(c.market_cap)}</b></span>
+      <span class="mc-meta">Rank <b style="color:var(--text)">#${c.market_cap_rank}</b></span>
+    </div>
+    <div class="mc-row">
+      <span class="mc-meta">30d <b style="color:${p30>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p30,1)}</b></span>
+      <span class="mc-meta">Vol/MCap <b style="color:var(--text)">${c._vm.toFixed(1)}%</b></span>
+    </div>
+    <div class="mc-row">
+      <span class="mc-meta">ATH Dist <b style="color:${Math.abs(parseFloat(ath))>60?'var(--bull)':'var(--neutral)'}">${ath}%</b></span>
+    </div>
+    <div class="pot-x-row">
+      <span style="color:var(--dim)">📐 Potential:</span>
+      <span class="pot-x-ath">ATH: ${potX.athX}</span>
+      <span style="color:var(--border)">·</span>
+      <span class="pot-x-bull">🚀 Bull case: ${potX.bullX}</span>
+    </div>
+    <div class="mc-bar"><div class="mc-fill" style="width:${c.score}%"></div></div>
+    <div class="tags">${tags.length ? tags.map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join('') : '<span class="tag tag-default">Alt</span>'}</div>
+  </div>`;
+}
+
+function gemCard(c, rank) {
+  const tv   = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.symbol.toUpperCase()}USDT`;
+  const tier = tierInfo(c.score);
+  const potX = c._potX;
+  const p7   = c.price_change_percentage_7d_in_currency || 0;
+  const ath  = (c.ath_change_percentage || 0).toFixed(0);
+  const desc = getDesc(c.id);
+  return `<div class="gem-card" onclick="window.open('${tv}','_blank')">
+    <div class="gc-header">
+      <img class="gc-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+      <div><div class="gc-sym">${c.symbol.toUpperCase()}</div><div class="gc-name">${c.name}</div></div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="gc-score" style="color:${tier.color}">${tier.icon} ${c.score}</div>
+        <div style="font-size:8px;color:var(--dim)">#${rank}</div>
+      </div>
+    </div>
+    <div class="gc-desc" data-desc="${c.id}">${desc}</div>
+    <div class="gc-row">
+      <div class="gc-price">${fmtP(c.current_price)}</div>
+      <div style="font-size:11px;font-weight:700;color:${p7>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p7)}</div>
+    </div>
+    <div class="gc-row">
+      <span class="gc-meta">#${c.market_cap_rank} · ${fmtL(c.market_cap)}</span>
+      <span class="gc-meta" style="color:${Math.abs(parseFloat(ath))>60?'var(--bull)':'var(--dim)'}">ATH ${ath}%</span>
+    </div>
+    <div class="gc-potx">${potX.athX} to ATH · 🚀 ${potX.bullX} bull</div>
+    <div class="gc-bar"><div style="height:100%;border-radius:2px;width:${c.score}%;background:${tier.color}"></div></div>
+    <div class="tags">${tagsHtml(c.id, 2)}</div>
+  </div>`;
+}
+
+// ── ALL 50 TABLE ───────────────────────────────────────────────
+const SORT_KEY = {
+  score:'score', rank:'market_cap_rank', price:'current_price',
+  p24h:'price_change_percentage_24h', p7d:'price_change_percentage_7d_in_currency',
+  p30d:'price_change_percentage_30d_in_currency', mcap:'market_cap',
+  vm:'_vm', ath:'ath_change_percentage'
+};
+
+function renderAll50() {
+  const sorted = [...gems].sort((a,b) => {
+    const ka = a[SORT_KEY[sortCol]] ?? (sortDir>0?Infinity:-Infinity);
+    const kb = b[SORT_KEY[sortCol]] ?? (sortDir>0?Infinity:-Infinity);
+    return sortDir*(kb-ka);
+  });
+  const th = (col,lbl) =>
+    `<th onclick="resort('${col}')" class="${sortCol===col?'sorted':''}">${lbl}${sortCol===col?(sortDir<0?' ▼':' ▲'):''}</th>`;
+
+  document.getElementById('all-content').innerHTML = `
+    <div class="table-wrap"><table>
+      <thead><tr>
+        ${th('rank','Rank')}
+        <th>Coin</th>
+        <th style="min-width:180px">What it does</th>
+        ${th('price','Price')}
+        ${th('p24h','24h')}
+        ${th('p7d','7d')}
+        ${th('p30d','30d')}
+        ${th('mcap','MCap')}
+        ${th('vm','Vol/MCap')}
+        ${th('ath','ATH Dist')}
+        <th>Potential X</th>
+        <th>Narratives</th>
+        ${th('score','Gem Score')}
+        <th>Chart</th>
+      </tr></thead>
+      <tbody>${sorted.map(tableRow).join('')}</tbody>
+    </table></div>`;
+}
+
+function resort(col) {
+  if (sortCol===col) sortDir *= -1;
+  else { sortCol=col; sortDir=['rank','ath'].includes(col)?1:-1; }
+  renderAll50();
+}
+
+function tableRow(c) {
+  const tv   = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.symbol.toUpperCase()}USDT`;
+  const tier = tierInfo(c.score);
+  const potX = c._potX;
+  const p24  = c.price_change_percentage_24h || 0;
+  const p7   = c.price_change_percentage_7d_in_currency  || 0;
+  const p30  = c.price_change_percentage_30d_in_currency || 0;
+  const ath  = c.ath_change_percentage || 0;
+  const vmColor = c._vm>15?'var(--bull)':c._vm>6?'var(--neutral)':'var(--dim)';
+  const desc = getDesc(c.id);
+  return `<tr onclick="window.open('${tv}','_blank')">
+    <td style="color:var(--dim);font-weight:700">#${c.market_cap_rank||'?'}</td>
+    <td><div class="coin-cell">
+      <img class="c-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+      <div><div class="c-sym">${c.symbol.toUpperCase()}</div><div class="c-name">${c.name}</div></div>
+    </div></td>
+    <td class="c-desc-td" data-desc="${c.id}">${desc}</td>
+    <td style="font-weight:700;color:#fff">${fmtP(c.current_price)}</td>
+    <td style="color:${p24>=0?'var(--bull)':'var(--bear)'};font-weight:600">${fmtPct(p24)}</td>
+    <td style="color:${p7>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p7)}</td>
+    <td style="color:${p30>=0?'var(--bull)':'var(--bear)'};font-weight:${Math.abs(p30)>30?700:400}">${fmtPct(p30,1)}</td>
+    <td style="color:var(--dim)">${fmtL(c.market_cap)}</td>
+    <td style="color:${vmColor};font-weight:600">${c._vm.toFixed(1)}%</td>
+    <td style="color:${ath<-60?'var(--bull)':ath<-30?'var(--neutral)':'var(--dim)'}">${ath.toFixed(0)}%</td>
+    <td style="white-space:nowrap">
+      <span style="color:var(--neutral);font-weight:700">${potX.athX}</span>
+      <span style="color:var(--dim)"> · </span>
+      <span style="color:var(--gold);font-weight:700">🚀 ${potX.bullX}</span>
+    </td>
+    <td>${allTagsHtml(c.id)}</td>
+    <td><div class="score-cell">
+      <div class="score-bar"><div class="score-fill" style="width:${c.score}%;background:${tier.color}"></div></div>
+      <span style="font-weight:700;color:${tier.color}">${tier.icon} ${c.score}</span>
+    </div></td>
+    <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
+  </tr>`;
+}
+
+// ── NARRATIVES PAGE ────────────────────────────────────────────
+const NARR_CATS = [
+  {key:'AI',     label:'🤖 AI & Agents',       cls:'tag-ai'    },
+  {key:'L1',     label:'⛓ Layer 1',            cls:'tag-l1'    },
+  {key:'L2',     label:'🔵 Layer 2 / ZK',      cls:'tag-l2'    },
+  {key:'DeFi',   label:'🏦 DeFi',              cls:'tag-defi'  },
+  {key:'RWA',    label:'🏛 Real World Assets', cls:'tag-rwa'   },
+  {key:'Gaming', label:'🎮 Gaming',            cls:'tag-gaming'},
+  {key:'Meme',   label:'🐸 Meme (top-80 only)',cls:'tag-meme'  },
+  {key:'Oracle', label:'🔮 Oracles',           cls:'tag-oracle'},
+  {key:'Infra',  label:'⚙ Infrastructure',    cls:'tag-infra' },
+];
+
+function renderNarratives() {
+  let html = '';
+  for (const cat of NARR_CATS) {
+    const coins = gems.filter(c=>(NM[c.id]||[]).includes(cat.key));
+    if (!coins.length) continue;
+    const avg = Math.round(coins.reduce((s,c)=>s+c.score,0)/coins.length);
+    html += `<div class="narr-section">
+      <div class="narr-hdr">
+        <span class="tag ${cat.cls}" style="font-size:10px;padding:3px 10px">${cat.label}</span>
+        <span style="font-size:9px;color:var(--dim)">${coins.length} coin${coins.length>1?'s':''} · avg gem score ${avg}</span>
+      </div>
+      <div class="narr-row">${coins.sort((a,b)=>b.score-a.score).map(c => {
+        const tv   = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.symbol.toUpperCase()}USDT`;
+        const tier = tierInfo(c.score);
+        const p7   = c.price_change_percentage_7d_in_currency || 0;
+        return `<div class="narr-mini" onclick="window.open('${tv}','_blank')">
+          <img class="nm-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+          <div>
+            <div class="nm-sym">${c.symbol.toUpperCase()}</div>
+            <div style="font-size:9px;color:${p7>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p7,1)}</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div style="font-size:11px;font-weight:700;color:${tier.color}">${tier.icon} ${c.score}</div>
+            <div style="font-size:9px;color:var(--gold);font-weight:700">${c._potX.bullX}</div>
+          </div>
+        </div>`;
+      }).join('')}</div>
+    </div>`;
+  }
+
+  const tagged = new Set(NARR_CATS.flatMap(cat=>gems.filter(c=>(NM[c.id]||[]).includes(cat.key)).map(c=>c.id)));
+  const others = gems.filter(c=>!tagged.has(c.id));
+  if (others.length) {
+    html += `<div class="narr-section">
+      <div class="narr-hdr">
+        <span class="tag tag-default" style="font-size:10px;padding:3px 10px">🪙 Other / Untagged</span>
+        <span style="font-size:9px;color:var(--dim)">${others.length} coins — add to NM map to classify</span>
+      </div>
+      <div class="narr-row">${others.map(c => {
+        const tv   = `https://www.tradingview.com/chart/?symbol=BINANCE:${c.symbol.toUpperCase()}USDT`;
+        const tier = tierInfo(c.score);
+        const p7   = c.price_change_percentage_7d_in_currency || 0;
+        return `<div class="narr-mini" onclick="window.open('${tv}','_blank')">
+          <img class="nm-img" src="${c.image}" alt="" onerror="this.style.display='none'">
+          <div>
+            <div class="nm-sym">${c.symbol.toUpperCase()}</div>
+            <div style="font-size:9px;color:${p7>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p7,1)}</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div style="font-size:11px;font-weight:700;color:${tier.color}">${tier.icon} ${c.score}</div>
+            <div style="font-size:9px;color:var(--gold);font-weight:700">${c._potX.bullX}</div>
+          </div>
+        </div>`;
+      }).join('')}</div>
+    </div>`;
+  }
+
+  document.getElementById('narr-content').innerHTML = html || '<div class="empty">No data.</div>';
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function setPage(page) {
+  ['spotlight','all','narr'].forEach(p => {
+    document.getElementById('page-'+p).classList.toggle('active', p===page);
+    document.getElementById('tab-'+p).className = 'tab'+(p===page?' tab-active':'');
+  });
+}
+</script>
+</body>
+</html>
