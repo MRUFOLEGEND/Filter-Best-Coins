@@ -103,19 +103,19 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .focus-card-short.fs-top{border-color:var(--bear)}
 .fc-header{display:flex;align-items:center;gap:7px}
 .fc-img{width:26px;height:26px;border-radius:50%;background:var(--surface2);flex-shrink:0}
-.fc-sym{font-size:13px;font-weight:700;color:#fff}
-.fc-name{font-size:9px;color:var(--dim)}
-.fc-price{font-size:14px;font-weight:700;color:#fff}
+.fc-sym{font-size:14px;font-weight:700;color:#fff}
+.fc-name{font-size:10px;color:var(--dim)}
+.fc-price{font-size:15px;font-weight:700;color:#fff}
 .fc-row{display:flex;justify-content:space-between;align-items:center}
-.fc-meta{font-size:9px;color:var(--dim)}
-.fc-mcap{font-size:9px;color:var(--dim)}
+.fc-meta{font-size:10px;color:var(--dim)}
+.fc-mcap{font-size:10px;color:var(--dim)}
 .fc-divider{height:1px;background:var(--border);margin:2px 0}
-.fc-setup{font-size:9px;color:var(--text);line-height:1.5;opacity:.85}
-.fc-desc{font-size:9px;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-style:italic}
+.fc-setup{font-size:10px;color:var(--text);line-height:1.5;opacity:.85}
+.fc-desc{font-size:10px;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-style:italic}
 .fc-bar{height:3px;background:var(--border);border-radius:2px;margin-top:3px}
 .fc-fill{height:100%;border-radius:2px;transition:width .4s}
-.fc-score{font-size:12px;font-weight:700}
-.ema-tag{font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px;background:var(--bear-bg);color:var(--bear);border:1px solid rgba(255,61,90,.3)}
+.fc-score{font-size:13px;font-weight:700}
+.ema-tag{font-size:10px;font-weight:700;padding:2px 5px;border-radius:3px;background:var(--bear-bg);color:var(--bear);border:1px solid rgba(255,61,90,.3)}
 
 /* ── DIVIDER ─────────────────────────────────────────────── */
 .section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:4px 0}
@@ -135,7 +135,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .table-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
 .table-wrap-bear{overflow-x:auto;border-radius:8px;border:1px solid rgba(255,61,90,.25)}
 table{width:100%;border-collapse:collapse}
-thead th{background:var(--surface2);padding:8px 9px;text-align:left;font-size:9px;font-weight:700;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+thead th{background:var(--surface2);padding:8px 9px;text-align:left;font-size:10px;font-weight:700;color:var(--dim);letter-spacing:1.5px;text-transform:uppercase;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
 thead th:hover{color:var(--text)}
 thead th.sorted{color:var(--accent)}
 thead th.sorted-bear{color:var(--bear)}
@@ -146,8 +146,8 @@ tbody tr.short-row:hover{background:rgba(255,61,90,.05)}
 td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
 .coin-cell{display:flex;align-items:center;gap:8px}
 .c-img{width:22px;height:22px;border-radius:50%;background:var(--surface2);flex-shrink:0}
-.c-sym{font-size:11px;font-weight:700;color:#fff}
-.c-name{font-size:9px;color:var(--dim)}
+.c-sym{font-size:12px;font-weight:700;color:#fff}
+.c-name{font-size:10px;color:var(--dim)}
 .ema-dots{display:flex;gap:2px}
 .ed{width:16px;height:14px;border-radius:3px;font-size:7px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .ed-up{background:var(--bull-bg);color:var(--bull)}
@@ -161,7 +161,7 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
 .s-short-hot{background:var(--bear)}
 .s-short-warm{background:var(--neutral)}
 .s-short-cold{background:var(--dim)}
-.tv-btn{display:inline-flex;align-items:center;gap:3px;color:var(--accent);text-decoration:none;font-size:10px;padding:3px 7px;border-radius:4px;border:1px solid transparent;transition:border-color .1s}
+.tv-btn{display:inline-flex;align-items:center;gap:3px;color:var(--accent);text-decoration:none;font-size:11px;padding:3px 7px;border-radius:4px;border:1px solid transparent;transition:border-color .1s}
 .tv-btn:hover{border-color:var(--accent)}
 
 /* ── LOADING ─────────────────────────────────────────────── */
@@ -1131,7 +1131,7 @@ function longFocusCard(c, i) {
   const knownDesc = COIN_DESCS[c.symbol]||descCache[c.id]||'';
   const showDesc  = !SKIP_DESC.has(c.symbol);
   const descHtml  = showDesc?`<div class="fc-desc" id="fc-desc-${c.id}">${knownDesc||'…'}</div>`:'';
-  const tlHtml    = i < 3 ? `<div class="fc-divider"></div><div data-tl="${c.id}-long" style="font-size:9px;color:var(--dim)">⏳ Fetching trade levels…</div>` : '';
+  const tlHtml    = i < 3 ? `<div class="fc-divider"></div><div data-tl="${c.id}-long" style="font-size:10px;color:var(--dim)">⏳ Fetching trade levels…</div>` : '';
   return `
     <div class="focus-card${i===0?' fc-top':''}" onclick="window.open('${tv}','_blank')">
       <div class="fc-header">
@@ -1141,13 +1141,13 @@ function longFocusCard(c, i) {
       ${spHtml}
       <div class="fc-row">
         <div class="fc-price">${fmtP(c.price)}</div>
-        <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
+        <div style="font-size:12px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
       </div>
       <div class="fc-row">
         <span class="fc-mcap">Cap: <b style="color:var(--text)">${fmtL(c.mcap)}</b></span>
-        <span style="font-size:9px;font-weight:700;color:${c.rsBTC>=0?'var(--bull)':'var(--bear)'}">RS ${fmtPct(c.rsBTC,1)}</span>
+        <span style="font-size:10px;font-weight:700;color:${c.rsBTC>=0?'var(--bull)':'var(--bear)'}">RS ${fmtPct(c.rsBTC,1)}</span>
       </div>
-      <div style="font-size:9px;color:var(--dim);display:flex;gap:8px">
+      <div style="font-size:10px;color:var(--dim);display:flex;gap:8px">
         <span>ADR:<b style="color:#fff"> ${c.adr}%</b></span>
         <span>Base:<b style="color:#fff"> ${c.tightness}%</b></span>
         <span>Vol:<b style="color:${c.volComp<0?'var(--bull)':'var(--bear)'}"> ${c.volComp<0?'↓':'↑'}${Math.abs(c.volComp).toFixed(0)}%</b></span>
@@ -1156,7 +1156,7 @@ function longFocusCard(c, i) {
       <div class="fc-setup">${setup}</div>
       ${descHtml}
       <div class="fc-divider"></div>
-      <div style="font-size:9px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+      <div style="font-size:10px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
         <span style="color:var(--dim)">⏱</span>
         <span style="color:var(--dim)">Entry:</span><b style="color:var(--accent)">${tf.entry}</b>
         <span style="color:var(--border)">·</span>
@@ -1200,7 +1200,7 @@ function shortFocusCard(c, i) {
   const showDesc  = !SKIP_DESC.has(c.symbol);
   const descHtml  = showDesc?`<div class="fc-desc" id="fs-desc-${c.id}">${knownDesc||'…'}</div>`:'';
   const emaTag = `<span class="ema-tag">${c.toEMAres.toFixed(1)}% to EMA resistance</span>`;
-  const tlHtml    = i < 3 ? `<div class="fc-divider"></div><div data-tl="${c.id}-short" style="font-size:9px;color:var(--dim)">⏳ Fetching trade levels…</div>` : '';
+  const tlHtml    = i < 3 ? `<div class="fc-divider"></div><div data-tl="${c.id}-short" style="font-size:10px;color:var(--dim)">⏳ Fetching trade levels…</div>` : '';
   return `
     <div class="focus-card-short${i===0?' fs-top':''}" onclick="window.open('${tv}','_blank')">
       <div class="fc-header">
@@ -1210,13 +1210,13 @@ function shortFocusCard(c, i) {
       ${spHtml}
       <div class="fc-row">
         <div class="fc-price">${fmtP(c.price)}</div>
-        <div style="font-size:11px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
+        <div style="font-size:12px;font-weight:700;color:${cc}">${fmtPct(c.change24h)}</div>
       </div>
       <div class="fc-row">
         <span class="fc-mcap">Cap: <b style="color:var(--text)">${fmtL(c.mcap)}</b></span>
-        <span style="font-size:9px;font-weight:700;color:var(--bear)">RS ${fmtPct(c.rsBTC,1)}</span>
+        <span style="font-size:10px;font-weight:700;color:var(--bear)">RS ${fmtPct(c.rsBTC,1)}</span>
       </div>
-      <div style="font-size:9px;color:var(--dim);display:flex;gap:8px">
+      <div style="font-size:10px;color:var(--dim);display:flex;gap:8px">
         <span>ADR:<b style="color:#fff"> ${c.adr}%</b></span>
         <span>7d:<b style="color:${c.change7d>=0?'var(--bull)':'var(--bear)'}"> ${fmtPct(c.change7d)}</b></span>
         <span>Vol:<b style="color:${c.volComp>0?'var(--bear)':'var(--dim)'}"> ${c.volComp>0?'↑':'↓'}${Math.abs(c.volComp).toFixed(0)}%</b></span>
@@ -1226,7 +1226,7 @@ function shortFocusCard(c, i) {
       <div class="fc-setup">${setup}</div>
       ${descHtml}
       <div class="fc-divider"></div>
-      <div style="font-size:9px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+      <div style="font-size:10px;display:flex;gap:5px;align-items:center;flex-wrap:wrap">
         <span style="color:var(--dim)">⏱</span>
         <span style="color:var(--dim)">Entry:</span><b style="color:var(--bear)">${tf.entry}</b>
         <span style="color:var(--border)">·</span>
@@ -1284,7 +1284,7 @@ function longRow(c, i) {
       <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
       <span style="font-weight:700;color:${sc}">${c.score}</span>
     </div></td>
-    <td style="white-space:nowrap"><b style="color:var(--accent)">${tf.entry}</b><br><span style="font-size:9px;color:var(--dim)">${tf.hold}</span></td>
+    <td style="white-space:nowrap"><b style="color:var(--accent)">${tf.entry}</b><br><span style="font-size:10px;color:var(--dim)">${tf.hold}</span></td>
     <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
   </tr>`;
 }
@@ -1332,7 +1332,7 @@ function shortRow(c, i) {
       <div class="score-bar"><div class="score-fill ${fcls}" style="width:${c.score}%"></div></div>
       <span style="font-weight:700;color:${sc}">${c.score}</span>
     </div></td>
-    <td style="white-space:nowrap"><b style="color:var(--bear)">${tf.entry}</b><br><span style="font-size:9px;color:var(--dim)">${tf.hold}</span></td>
+    <td style="white-space:nowrap"><b style="color:var(--bear)">${tf.entry}</b><br><span style="font-size:10px;color:var(--dim)">${tf.hold}</span></td>
     <td><a class="tv-btn" href="${tv}" target="_blank" onclick="event.stopPropagation()">📈 TV</a></td>
   </tr>`;
 }
