@@ -52,6 +52,8 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .tab.tab-active-long{color:var(--bull);border-bottom-color:var(--bull)}
 .tab.tab-active-short{color:var(--bear);border-bottom-color:var(--bear)}
 .tab.tab-active-all{color:var(--accent);border-bottom-color:var(--accent)}
+.tab.tab-active-mid{color:var(--neutral);border-bottom-color:var(--neutral)}
+.tab.tab-active-low{color:#b48eff;border-bottom-color:#b48eff}
 
 /* ── PAGES ───────────────────────────────────────────────── */
 .page{display:none}
@@ -222,13 +224,15 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
   <div class="tab tab-active-long" id="tab-longs"  onclick="setPage('longs')">📈 Longs</div>
   <div class="tab"                  id="tab-shorts" onclick="setPage('shorts')">📉 Shorts</div>
   <div class="tab"                  id="tab-all"    onclick="setPage('all')">📊 All</div>
+  <div class="tab"                  id="tab-mid"    onclick="setPage('mid')">📊 101–250</div>
+  <div class="tab"                  id="tab-low"    onclick="setPage('low')">📊 251–400</div>
 </div>
 
 <div class="main">
 
   <!-- ── STRATEGY BAR (always visible) ──────────────────── -->
   <div class="strategy-bar">
-    <div class="sb"><span class="sb-l">Universe</span><span class="sb-v">Top 100 by Market Cap</span></div>
+    <div class="sb"><span class="sb-l">Universe</span><span class="sb-v" id="strategy-universe">Top 100 by Market Cap</span></div>
     <div class="sb"><span class="sb-l">Longs</span><span class="sb-v">Above 21+50 EMA · RS vs BTC positive</span></div>
     <div class="sb"><span class="sb-l">Shorts</span><span class="sb-v">Below 21/50 EMA · RS vs BTC negative · bounce into resistance</span></div>
     <div class="sb"><span class="sb-l">Entry</span><span class="sb-v">Break of trigger level on volume</span></div>
@@ -423,6 +427,206 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
 
   </div><!-- /page-all -->
 
+  <!-- ══ PAGE: MID (101-250) ══════════════════════════════════ -->
+  <div class="page" id="page-mid">
+
+    <div style="background:var(--surface2);border:1px solid var(--neutral);border-left:3px solid var(--neutral);border-radius:6px;padding:9px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--neutral)">Ranks 101–250</div>
+        <div style="font-size:10px;color:var(--dim);margin-top:2px">Mid-cap breakout candidates · Same strategy · Lower Min Market Cap filter for best results</div>
+      </div>
+      <button class="scan-btn" id="scan-btn-mid" onclick="runScanMid()" style="background:var(--neutral);box-shadow:0 0 12px rgba(245,166,35,.4)">⟳ Scan 101–250</button>
+      <div class="scan-meta" id="scan-meta-mid">Not scanned yet</div>
+    </div>
+
+    <div class="load-wrap" id="load-block-mid" style="display:none">
+      <div class="spinner" style="border-top-color:var(--neutral)"></div>
+      <div class="load-text" id="load-text-mid">Initialising…</div>
+      <div class="prog-track"><div class="prog-fill" id="prog-mid" style="width:0%;background:var(--neutral)"></div></div>
+    </div>
+
+    <div>
+      <div class="sec-header">
+        <div class="sec-label">🎯 Focus List — Best Long Setups · Ranks 101–250</div>
+        <div class="sec-sub">Highest scout score · Tightest base · Closest to breakout · Click to open TradingView</div>
+      </div>
+      <div class="focus-grid" id="focus-grid-mid">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Click <strong>⟳ Scan 101–250</strong> to see long setups in this range</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-label" id="res-label-mid" style="margin-bottom:8px">RANKED BY OPPORTUNITY — LONGS (101–250)</div>
+      <div class="empty" id="empty-long-mid">Click <strong>⟳ Scan 101–250</strong> to find breakout candidates.</div>
+      <div class="table-wrap" id="table-long-mid" style="display:none">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th onclick="midSortBy('long','symbol',event)">COIN</th>
+              <th onclick="midSortBy('long','price',event)">PRICE</th>
+              <th onclick="midSortBy('long','change24h',event)">24H %</th>
+              <th onclick="midSortBy('long','change7d',event)">7D %</th>
+              <th onclick="midSortBy('long','rsBTC',event)">RS vs BTC</th>
+              <th onclick="midSortBy('long','mcap',event)">MKT CAP</th>
+              <th onclick="midSortBy('long','volMcapRatio',event)">VOL/MCAP</th>
+              <th onclick="midSortBy('long','adr',event)">ADR %</th>
+              <th>8/21/50</th>
+              <th onclick="midSortBy('long','tightness',event)">BASE %</th>
+              <th onclick="midSortBy('long','volComp',event)">VOL TREND</th>
+              <th onclick="midSortBy('long','nearTrigger',event)">→ TRIGGER</th>
+              <th onclick="midSortBy('long','score',event)" class="sorted">SCORE ▼</th>
+              <th>TIMEFRAME</th>
+              <th>CHART</th>
+            </tr>
+          </thead>
+          <tbody id="body-long-mid"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div>
+      <div class="sec-header">
+        <div class="sec-label-bear">🔴 Shorts — Best Short Setups · Ranks 101–250</div>
+        <div class="sec-sub">Below 21/50 EMA · Underperforming BTC · Futures only</div>
+      </div>
+      <div class="focus-grid" id="short-grid-mid">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Click <strong>⟳ Scan 101–250</strong> to see short candidates</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-label-bear" id="res-label-short-mid" style="margin-bottom:8px">RANKED BY SHORT OPPORTUNITY (101–250)</div>
+      <div class="empty" id="empty-short-mid">Click <strong>⟳ Scan 101–250</strong> to find short candidates.</div>
+      <div class="table-wrap-bear" id="table-short-mid" style="display:none">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th onclick="midSortBy('short','symbol',event)">COIN</th>
+              <th onclick="midSortBy('short','price',event)">PRICE</th>
+              <th onclick="midSortBy('short','change24h',event)">24H %</th>
+              <th onclick="midSortBy('short','change7d',event)">7D %</th>
+              <th onclick="midSortBy('short','rsBTC',event)">RS vs BTC</th>
+              <th onclick="midSortBy('short','mcap',event)">MKT CAP</th>
+              <th onclick="midSortBy('short','adr',event)">ADR %</th>
+              <th>8/21/50</th>
+              <th onclick="midSortBy('short','toEMAres',event)">TO EMA RES</th>
+              <th onclick="midSortBy('short','volComp',event)">VOL TREND</th>
+              <th onclick="midSortBy('short','score',event)" class="sorted-bear">SHORT SCORE ▼</th>
+              <th>TIMEFRAME</th>
+              <th>CHART</th>
+            </tr>
+          </thead>
+          <tbody id="body-short-mid"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /page-mid -->
+
+  <!-- ══ PAGE: LOW (251-400) ══════════════════════════════════ -->
+  <div class="page" id="page-low">
+
+    <div style="background:var(--surface2);border:1px solid #b48eff;border-left:3px solid #b48eff;border-radius:6px;padding:9px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#b48eff">Ranks 251–400</div>
+        <div style="font-size:10px;color:var(--dim);margin-top:2px">Small-mid cap breakout candidates · Same strategy · Lower Min Market Cap filter for best results</div>
+      </div>
+      <button class="scan-btn" id="scan-btn-low" onclick="runScanLow()" style="background:#8b5cf6;box-shadow:0 0 12px rgba(139,92,246,.4)">⟳ Scan 251–400</button>
+      <div class="scan-meta" id="scan-meta-low">Not scanned yet</div>
+    </div>
+
+    <div class="load-wrap" id="load-block-low" style="display:none">
+      <div class="spinner" style="border-top-color:#b48eff"></div>
+      <div class="load-text" id="load-text-low">Initialising…</div>
+      <div class="prog-track"><div class="prog-fill" id="prog-low" style="width:0%;background:#b48eff"></div></div>
+    </div>
+
+    <div>
+      <div class="sec-header">
+        <div class="sec-label">🎯 Focus List — Best Long Setups · Ranks 251–400</div>
+        <div class="sec-sub">Highest scout score · Tightest base · Closest to breakout · Click to open TradingView</div>
+      </div>
+      <div class="focus-grid" id="focus-grid-low">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Click <strong>⟳ Scan 251–400</strong> to see long setups in this range</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-label" id="res-label-low" style="margin-bottom:8px">RANKED BY OPPORTUNITY — LONGS (251–400)</div>
+      <div class="empty" id="empty-long-low">Click <strong>⟳ Scan 251–400</strong> to find breakout candidates.</div>
+      <div class="table-wrap" id="table-long-low" style="display:none">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th onclick="lowSortBy('long','symbol',event)">COIN</th>
+              <th onclick="lowSortBy('long','price',event)">PRICE</th>
+              <th onclick="lowSortBy('long','change24h',event)">24H %</th>
+              <th onclick="lowSortBy('long','change7d',event)">7D %</th>
+              <th onclick="lowSortBy('long','rsBTC',event)">RS vs BTC</th>
+              <th onclick="lowSortBy('long','mcap',event)">MKT CAP</th>
+              <th onclick="lowSortBy('long','volMcapRatio',event)">VOL/MCAP</th>
+              <th onclick="lowSortBy('long','adr',event)">ADR %</th>
+              <th>8/21/50</th>
+              <th onclick="lowSortBy('long','tightness',event)">BASE %</th>
+              <th onclick="lowSortBy('long','volComp',event)">VOL TREND</th>
+              <th onclick="lowSortBy('long','nearTrigger',event)">→ TRIGGER</th>
+              <th onclick="lowSortBy('long','score',event)" class="sorted">SCORE ▼</th>
+              <th>TIMEFRAME</th>
+              <th>CHART</th>
+            </tr>
+          </thead>
+          <tbody id="body-long-low"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div>
+      <div class="sec-header">
+        <div class="sec-label-bear">🔴 Shorts — Best Short Setups · Ranks 251–400</div>
+        <div class="sec-sub">Below 21/50 EMA · Underperforming BTC · Futures only</div>
+      </div>
+      <div class="focus-grid" id="short-grid-low">
+        <div style="color:var(--dim);font-size:11px;padding:8px 0">Click <strong>⟳ Scan 251–400</strong> to see short candidates</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-label-bear" id="res-label-short-low" style="margin-bottom:8px">RANKED BY SHORT OPPORTUNITY (251–400)</div>
+      <div class="empty" id="empty-short-low">Click <strong>⟳ Scan 251–400</strong> to find short candidates.</div>
+      <div class="table-wrap-bear" id="table-short-low" style="display:none">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th onclick="lowSortBy('short','symbol',event)">COIN</th>
+              <th onclick="lowSortBy('short','price',event)">PRICE</th>
+              <th onclick="lowSortBy('short','change24h',event)">24H %</th>
+              <th onclick="lowSortBy('short','change7d',event)">7D %</th>
+              <th onclick="lowSortBy('short','rsBTC',event)">RS vs BTC</th>
+              <th onclick="lowSortBy('short','mcap',event)">MKT CAP</th>
+              <th onclick="lowSortBy('short','adr',event)">ADR %</th>
+              <th>8/21/50</th>
+              <th onclick="lowSortBy('short','toEMAres',event)">TO EMA RES</th>
+              <th onclick="lowSortBy('short','volComp',event)">VOL TREND</th>
+              <th onclick="lowSortBy('short','score',event)" class="sorted-bear">SHORT SCORE ▼</th>
+              <th>TIMEFRAME</th>
+              <th>CHART</th>
+            </tr>
+          </thead>
+          <tbody id="body-short-low"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /page-low -->
+
   <!-- ── FILTERS (always visible below pages) ────────────── -->
   <div class="filter-bar">
     <div class="fg">
@@ -449,7 +653,7 @@ td{padding:7px 9px;white-space:nowrap;vertical-align:middle}
       <div class="fl">Min Short Score</div>
       <input type="number" class="fi narrow" id="f-sscore" value="25" step="5">
     </div>
-    <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
+    <button class="apply-btn" onclick="applyAllFilters()">Apply Filters</button>
     <div class="filter-note">Filters re-apply to stored results instantly.<br>Set RS vs BTC ≥ 0 to show only outperformers.</div>
   </div>
 
@@ -596,14 +800,32 @@ let _btc7dChange = 0;
 let _currentPage = 'longs';
 let _scanDone    = false;
 
+let rawLongsMid = [], rawShortsMid = [];
+let dispLongsMid = [], dispShortsMid = [];
+let midLongSortKey = 'score', midLongSortDir = -1;
+let midShortSortKey = 'score', midShortSortDir = -1;
+let _scanDoneMid = false;
+
+let rawLongsLow = [], rawShortsLow = [];
+let dispLongsLow = [], dispShortsLow = [];
+let lowLongSortKey = 'score', lowLongSortDir = -1;
+let lowShortSortKey = 'score', lowShortSortDir = -1;
+let _scanDoneLow = false;
+
 // ── PAGE NAVIGATION ────────────────────────────────────────
+const _universeLabels = {
+  longs:'Top 100 by Market Cap', shorts:'Top 100 by Market Cap', all:'Top 100 by Market Cap',
+  mid:'Ranks 101–250 by Market Cap', low:'Ranks 251–400 by Market Cap'
+};
 function setPage(page) {
   _currentPage = page;
-  ['longs','shorts','all'].forEach(p => {
+  ['longs','shorts','all','mid','low'].forEach(p => {
     document.getElementById('page-'+p).classList.toggle('active', p===page);
     const tab = document.getElementById('tab-'+p);
     tab.className = 'tab' + (p===page ? ' tab-active-'+p : '');
   });
+  const su = document.getElementById('strategy-universe');
+  if (su) su.textContent = _universeLabels[page] || 'Top 100 by Market Cap';
 }
 
 // ── FETCH ──────────────────────────────────────────────────
@@ -1477,6 +1699,215 @@ async function fetchDescs(coins) {
     } catch(e) {}
     await new Promise(r => setTimeout(r,300));
   }
+}
+
+// ── MID/LOW SCAN ───────────────────────────────────────────
+function setProgressRanked(tier, pct, text) {
+  document.getElementById('prog-'+tier).style.width = pct+'%';
+  document.getElementById('load-text-'+tier).textContent = text;
+}
+
+async function runScanMid() {
+  const btn = document.getElementById('scan-btn-mid');
+  btn.disabled = true; btn.textContent = '⟲ Scanning…';
+  ['empty-long-mid','empty-short-mid'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
+  ['table-long-mid','table-short-mid'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
+  document.getElementById('load-block-mid').style.display = 'block';
+  setProgressRanked('mid', 0, 'Fetching market condition…');
+  await analyzeMarket().catch(e => console.warn('market', e));
+  setProgressRanked('mid', 5, 'Fetching ranks 101–250 from CoinGecko…');
+
+  let coins = [];
+  try {
+    const page1 = await fetchJSON(
+      `${CG}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=true`,
+      30000
+    );
+    coins = Array.isArray(page1) ? page1.slice(100) : [];
+  } catch(e) {
+    setProgressRanked('mid', 100, '✗ CoinGecko unreachable — check connection and retry.');
+    btn.disabled=false; btn.textContent='⟳ Scan 101–250'; return;
+  }
+
+  rawLongsMid=[]; rawShortsMid=[];
+  const BATCH=8; let done=0;
+  for (let i=0; i<coins.length; i+=BATCH) {
+    const batch = coins.slice(i, i+BATCH);
+    const res = await Promise.all(batch.map(c => analyzeOneCoin(c).catch(()=>({long:null,short:null}))));
+    res.forEach(({long,short}) => {
+      if (long)  rawLongsMid.push(long);
+      if (short) rawShortsMid.push(short);
+    });
+    done += batch.length;
+    setProgressRanked('mid', 8 + Math.round((done/coins.length)*87),
+      `Scanned ${done}/${coins.length} — ${rawLongsMid.length} longs · ${rawShortsMid.length} shorts`);
+  }
+
+  setProgressRanked('mid', 98, 'Rendering…');
+  _scanDoneMid = true;
+  applyFiltersMid();
+  document.getElementById('load-block-mid').style.display = 'none';
+  document.getElementById('scan-meta-mid').textContent =
+    `Last scan: ${new Date().toLocaleTimeString()} · ${rawLongsMid.length} longs · ${rawShortsMid.length} shorts`;
+  btn.disabled=false; btn.textContent='⟳ Scan 101–250';
+}
+
+async function runScanLow() {
+  const btn = document.getElementById('scan-btn-low');
+  btn.disabled = true; btn.textContent = '⟲ Scanning…';
+  ['empty-long-low','empty-short-low'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
+  ['table-long-low','table-short-low'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display='none'; });
+  document.getElementById('load-block-low').style.display = 'block';
+  setProgressRanked('low', 0, 'Fetching market condition…');
+  await analyzeMarket().catch(e => console.warn('market', e));
+  setProgressRanked('low', 5, 'Fetching ranks 251–400 from CoinGecko…');
+
+  let coins = [];
+  try {
+    const page2 = await fetchJSON(
+      `${CG}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=2&sparkline=true`,
+      30000
+    );
+    coins = Array.isArray(page2) ? page2.slice(0, 150) : [];
+  } catch(e) {
+    setProgressRanked('low', 100, '✗ CoinGecko unreachable — check connection and retry.');
+    btn.disabled=false; btn.textContent='⟳ Scan 251–400'; return;
+  }
+
+  rawLongsLow=[]; rawShortsLow=[];
+  const BATCH=8; let done=0;
+  for (let i=0; i<coins.length; i+=BATCH) {
+    const batch = coins.slice(i, i+BATCH);
+    const res = await Promise.all(batch.map(c => analyzeOneCoin(c).catch(()=>({long:null,short:null}))));
+    res.forEach(({long,short}) => {
+      if (long)  rawLongsLow.push(long);
+      if (short) rawShortsLow.push(short);
+    });
+    done += batch.length;
+    setProgressRanked('low', 8 + Math.round((done/coins.length)*87),
+      `Scanned ${done}/${coins.length} — ${rawLongsLow.length} longs · ${rawShortsLow.length} shorts`);
+  }
+
+  setProgressRanked('low', 98, 'Rendering…');
+  _scanDoneLow = true;
+  applyFiltersLow();
+  document.getElementById('load-block-low').style.display = 'none';
+  document.getElementById('scan-meta-low').textContent =
+    `Last scan: ${new Date().toLocaleTimeString()} · ${rawLongsLow.length} longs · ${rawShortsLow.length} shorts`;
+  btn.disabled=false; btn.textContent='⟳ Scan 251–400';
+}
+
+// ── MID/LOW FILTERS ────────────────────────────────────────
+function applyFiltersMid() {
+  const minMcap  = parseFloat(document.getElementById('f-mcap').value)   || 0;
+  const minVol   = parseFloat(document.getElementById('f-vol').value)    || 0;
+  const minADR   = parseFloat(document.getElementById('f-adr').value)    || 0;
+  const minRS    = parseFloat(document.getElementById('f-rs').value)     || -999;
+  const minScore = parseFloat(document.getElementById('f-score').value)  || 0;
+  const minSS    = parseFloat(document.getElementById('f-sscore').value) || 0;
+  dispLongsMid  = rawLongsMid.filter(c  => c.mcap>=minMcap && c.vol24h>=minVol && c.adr>=minADR && c.rsBTC>=minRS  && c.score>=minScore);
+  dispShortsMid = rawShortsMid.filter(c => c.mcap>=minMcap && c.vol24h>=minVol && c.adr>=minADR && c.score>=minSS);
+  sortLongsMid(); sortShortsMid();
+  renderMid();
+}
+
+function applyFiltersLow() {
+  const minMcap  = parseFloat(document.getElementById('f-mcap').value)   || 0;
+  const minVol   = parseFloat(document.getElementById('f-vol').value)    || 0;
+  const minADR   = parseFloat(document.getElementById('f-adr').value)    || 0;
+  const minRS    = parseFloat(document.getElementById('f-rs').value)     || -999;
+  const minScore = parseFloat(document.getElementById('f-score').value)  || 0;
+  const minSS    = parseFloat(document.getElementById('f-sscore').value) || 0;
+  dispLongsLow  = rawLongsLow.filter(c  => c.mcap>=minMcap && c.vol24h>=minVol && c.adr>=minADR && c.rsBTC>=minRS  && c.score>=minScore);
+  dispShortsLow = rawShortsLow.filter(c => c.mcap>=minMcap && c.vol24h>=minVol && c.adr>=minADR && c.score>=minSS);
+  sortLongsLow(); sortShortsLow();
+  renderLow();
+}
+
+function applyAllFilters() {
+  applyFilters();
+  if (_scanDoneMid) applyFiltersMid();
+  if (_scanDoneLow) applyFiltersLow();
+}
+
+// ── MID/LOW SORT ───────────────────────────────────────────
+function midSortBy(side, key, e) {
+  if (side==='long') { midLongSortDir=midLongSortKey===key?midLongSortDir*-1:-1; midLongSortKey=key; sortLongsMid(); }
+  else               { midShortSortDir=midShortSortKey===key?midShortSortDir*-1:-1; midShortSortKey=key; sortShortsMid(); }
+  if (e&&e.target) { document.querySelectorAll('#table-long-mid thead th,#table-short-mid thead th').forEach(th=>th.classList.remove('sorted','sorted-bear')); e.target.classList.add(side==='long'?'sorted':'sorted-bear'); }
+  renderTablesMid();
+}
+function lowSortBy(side, key, e) {
+  if (side==='long') { lowLongSortDir=lowLongSortKey===key?lowLongSortDir*-1:-1; lowLongSortKey=key; sortLongsLow(); }
+  else               { lowShortSortDir=lowShortSortKey===key?lowShortSortDir*-1:-1; lowShortSortKey=key; sortShortsLow(); }
+  if (e&&e.target) { document.querySelectorAll('#table-long-low thead th,#table-short-low thead th').forEach(th=>th.classList.remove('sorted','sorted-bear')); e.target.classList.add(side==='long'?'sorted':'sorted-bear'); }
+  renderTablesLow();
+}
+function sortLongsMid()  { dispLongsMid.sort((a,b)  => sDir(a,b,midLongSortKey,midLongSortDir)); }
+function sortShortsMid() { dispShortsMid.sort((a,b) => sDir(a,b,midShortSortKey,midShortSortDir)); }
+function sortLongsLow()  { dispLongsLow.sort((a,b)  => sDir(a,b,lowLongSortKey,lowLongSortDir)); }
+function sortShortsLow() { dispShortsLow.sort((a,b) => sDir(a,b,lowShortSortKey,lowShortSortDir)); }
+
+// ── MID RENDER ─────────────────────────────────────────────
+function renderMid() {
+  const topL = [...dispLongsMid].sort((a,b)=>b.score-a.score).slice(0,5);
+  document.getElementById('focus-grid-mid').innerHTML = topL.length
+    ? topL.map((c,i)=>longFocusCard(c,i)).join('')
+    : '<div style="color:var(--dim);font-size:11px;padding:8px 0">No qualifying long setups in ranks 101–250 with current filters.</div>';
+  const topS = [...dispShortsMid].sort((a,b)=>b.score-a.score).slice(0,5);
+  document.getElementById('short-grid-mid').innerHTML = topS.length
+    ? topS.map((c,i)=>shortFocusCard(c,i)).join('')
+    : '<div style="color:var(--dim);font-size:11px;padding:8px 0">No short candidates in ranks 101–250 with current filters.</div>';
+  renderTablesMid();
+  const hasL = dispLongsMid.length>0, hasS = dispShortsMid.length>0;
+  document.getElementById('table-long-mid').style.display  = hasL?'block':'none';
+  document.getElementById('empty-long-mid').style.display  = hasL?'none':'block';
+  if (!hasL) document.getElementById('empty-long-mid').innerHTML = !_scanDoneMid
+    ? 'Click <strong>⟳ Scan 101–250</strong> to find breakout candidates.'
+    : rawLongsMid.length ? 'No longs match current filters.' : 'No long setups found in ranks 101–250.';
+  document.getElementById('table-short-mid').style.display = hasS?'block':'none';
+  document.getElementById('empty-short-mid').style.display = hasS?'none':'block';
+  if (!hasS) document.getElementById('empty-short-mid').innerHTML = !_scanDoneMid
+    ? 'Click <strong>⟳ Scan 101–250</strong> to find short candidates.'
+    : rawShortsMid.length ? 'No shorts match current filters.' : 'No short setups found in ranks 101–250.';
+  document.getElementById('res-label-mid').textContent = labelFor(midLongSortKey, dispLongsMid.length, 'LONGS · 101–250');
+  document.getElementById('res-label-short-mid').textContent = labelFor(midShortSortKey, dispShortsMid.length, 'SHORTS · 101–250');
+}
+
+function renderTablesMid() {
+  const b1=document.getElementById('body-long-mid');  if(b1) b1.innerHTML=dispLongsMid.map((c,i)=>longRow(c,i)).join('');
+  const b2=document.getElementById('body-short-mid'); if(b2) b2.innerHTML=dispShortsMid.map((c,i)=>shortRow(c,i)).join('');
+}
+
+// ── LOW RENDER ─────────────────────────────────────────────
+function renderLow() {
+  const topL = [...dispLongsLow].sort((a,b)=>b.score-a.score).slice(0,5);
+  document.getElementById('focus-grid-low').innerHTML = topL.length
+    ? topL.map((c,i)=>longFocusCard(c,i)).join('')
+    : '<div style="color:var(--dim);font-size:11px;padding:8px 0">No qualifying long setups in ranks 251–400 with current filters.</div>';
+  const topS = [...dispShortsLow].sort((a,b)=>b.score-a.score).slice(0,5);
+  document.getElementById('short-grid-low').innerHTML = topS.length
+    ? topS.map((c,i)=>shortFocusCard(c,i)).join('')
+    : '<div style="color:var(--dim);font-size:11px;padding:8px 0">No short candidates in ranks 251–400 with current filters.</div>';
+  renderTablesLow();
+  const hasL = dispLongsLow.length>0, hasS = dispShortsLow.length>0;
+  document.getElementById('table-long-low').style.display  = hasL?'block':'none';
+  document.getElementById('empty-long-low').style.display  = hasL?'none':'block';
+  if (!hasL) document.getElementById('empty-long-low').innerHTML = !_scanDoneLow
+    ? 'Click <strong>⟳ Scan 251–400</strong> to find breakout candidates.'
+    : rawLongsLow.length ? 'No longs match current filters.' : 'No long setups found in ranks 251–400.';
+  document.getElementById('table-short-low').style.display = hasS?'block':'none';
+  document.getElementById('empty-short-low').style.display = hasS?'none':'block';
+  if (!hasS) document.getElementById('empty-short-low').innerHTML = !_scanDoneLow
+    ? 'Click <strong>⟳ Scan 251–400</strong> to find short candidates.'
+    : rawShortsLow.length ? 'No shorts match current filters.' : 'No short setups found in ranks 251–400.';
+  document.getElementById('res-label-low').textContent = labelFor(lowLongSortKey, dispLongsLow.length, 'LONGS · 251–400');
+  document.getElementById('res-label-short-low').textContent = labelFor(lowShortSortKey, dispShortsLow.length, 'SHORTS · 251–400');
+}
+
+function renderTablesLow() {
+  const b1=document.getElementById('body-long-low');  if(b1) b1.innerHTML=dispLongsLow.map((c,i)=>longRow(c,i)).join('');
+  const b2=document.getElementById('body-short-low'); if(b2) b2.innerHTML=dispShortsLow.map((c,i)=>shortRow(c,i)).join('');
 }
 
 // Auto-scan on load
