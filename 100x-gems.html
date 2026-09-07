@@ -495,6 +495,7 @@ function getDesc(id) {
 
 // ── STATE ──────────────────────────────────────────────────────
 let gems = [], allGems = [], sortCol = 'score', sortDir = -1;
+let _btc7d = 0, _btc30d = 0;
 
 function setProgress(pct, txt) {
   const pf = document.getElementById('prog-fill');
@@ -560,13 +561,18 @@ async function runScan() {
 
     setProgress(80, 'Calculating gem scores…');
 
+    const btc = all.find(c => c.id === 'bitcoin');
+    _btc7d  = btc?.price_change_percentage_7d_in_currency  || 0;
+    _btc30d = btc?.price_change_percentage_30d_in_currency || 0;
+
     allGems = all
       .filter(passesFilter)
       .map(c => ({
         ...c,
-        score : calcGemScore(c),
-        _vm   : c.market_cap > 0 ? c.total_volume / c.market_cap * 100 : 0,
-        _potX : calcPotentialX(c),
+        score  : calcGemScore(c),
+        _vm    : c.market_cap > 0 ? c.total_volume / c.market_cap * 100 : 0,
+        _potX  : calcPotentialX(c),
+        _rsBTC : (c.price_change_percentage_7d_in_currency || 0) - _btc7d,
       }))
       .sort((a, b) => b.score - a.score);
 
@@ -687,18 +693,22 @@ function moonshotCard(c, i) {
     ${spHtml}
     <div class="mc-row">
       <div class="mc-price">${fmtP(c.current_price)}</div>
-      <div style="font-size:12px;font-weight:700;color:${p7>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p7)}</div>
+      <div style="font-size:12px;font-weight:700;color:${p7>=0?'var(--bull)':'var(--bear)'}">Week ${fmtPct(p7)}</div>
     </div>
     <div class="mc-row">
       <span class="mc-meta">MCap <b style="color:var(--text)">${fmtL(c.market_cap)}</b></span>
       <span class="mc-meta">Rank <b style="color:var(--text)">#${c.market_cap_rank}</b></span>
     </div>
     <div class="mc-row">
-      <span class="mc-meta">30d <b style="color:${p30>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p30,1)}</b></span>
+      <span class="mc-meta">Month <b style="color:${p30>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p30,1)}</b></span>
       <span class="mc-meta">Vol/MCap <b style="color:var(--text)">${c._vm.toFixed(1)}%</b></span>
     </div>
     <div class="mc-row">
-      <span class="mc-meta">ATH Dist <b style="color:${Math.abs(parseFloat(ath))>60?'var(--bull)':'var(--neutral)'}">${ath}%</b></span>
+      <span class="mc-meta">ATH <b style="color:var(--text)">${fmtP(c.ath)}</b></span>
+      <span class="mc-meta">Dist <b style="color:${Math.abs(parseFloat(ath))>60?'var(--bull)':'var(--neutral)'}">${ath}%</b></span>
+    </div>
+    <div class="mc-row">
+      <span class="mc-meta">RS vs BTC (Week) <b style="color:${(c._rsBTC||0)>=0?'var(--bull)':'var(--bear)'}">${fmtPct(c._rsBTC,1)}</b></span>
     </div>
     <div class="pot-x-row">
       <span style="color:var(--dim)">📐 Potential:</span>
@@ -730,11 +740,14 @@ function gemCard(c, rank) {
     <div class="gc-desc" data-desc="${c.id}">${desc}</div>
     <div class="gc-row">
       <div class="gc-price">${fmtP(c.current_price)}</div>
-      <div style="font-size:11px;font-weight:700;color:${p7>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p7)}</div>
+      <div style="font-size:11px;font-weight:700;color:${p7>=0?'var(--bull)':'var(--bear)'}">Week ${fmtPct(p7)}</div>
     </div>
     <div class="gc-row">
       <span class="gc-meta">#${c.market_cap_rank} · ${fmtL(c.market_cap)}</span>
-      <span class="gc-meta" style="color:${Math.abs(parseFloat(ath))>60?'var(--bull)':'var(--dim)'}">ATH ${ath}%</span>
+      <span class="gc-meta" style="color:${Math.abs(parseFloat(ath))>60?'var(--bull)':'var(--dim)'}">ATH ${fmtP(c.ath)} (${ath}%)</span>
+    </div>
+    <div class="gc-row">
+      <span class="gc-meta" style="color:${(c._rsBTC||0)>=0?'var(--bull)':'var(--bear)'}">RS vs BTC (Week) ${fmtPct(c._rsBTC,1)}</span>
     </div>
     <div class="gc-potx">${potX.athX} to ATH · 🚀 ${potX.bullX} bull</div>
     <div class="gc-bar"><div style="height:100%;border-radius:2px;width:${c.score}%;background:${tier.color}"></div></div>
@@ -747,7 +760,7 @@ const SORT_KEY = {
   score:'score', rank:'market_cap_rank', price:'current_price',
   p24h:'price_change_percentage_24h', p7d:'price_change_percentage_7d_in_currency',
   p30d:'price_change_percentage_30d_in_currency', mcap:'market_cap',
-  vm:'_vm', ath:'ath_change_percentage'
+  vm:'_vm', ath:'ath_change_percentage', athp:'ath', rs:'_rsBTC'
 };
 
 function renderAll50() {
@@ -771,7 +784,9 @@ function renderAll50() {
         ${th('p30d','30d')}
         ${th('mcap','MCap')}
         ${th('vm','Vol/MCap')}
+        ${th('athp','ATH')}
         ${th('ath','ATH Dist')}
+        ${th('rs','RS vs BTC (Wk)')}
         <th>Potential X</th>
         <th>Narratives</th>
         ${th('score','Gem Score')}
@@ -795,6 +810,7 @@ function tableRow(c) {
   const p7   = c.price_change_percentage_7d_in_currency  || 0;
   const p30  = c.price_change_percentage_30d_in_currency || 0;
   const ath  = c.ath_change_percentage || 0;
+  const rs   = c._rsBTC || 0;
   const vmColor = c._vm>15?'var(--bull)':c._vm>6?'var(--neutral)':'var(--dim)';
   const desc = getDesc(c.id);
   return `<tr onclick="window.open('${tv}','_blank')">
@@ -810,7 +826,9 @@ function tableRow(c) {
     <td style="color:${p30>=0?'var(--bull)':'var(--bear)'};font-weight:${Math.abs(p30)>30?700:400}">${fmtPct(p30,1)}</td>
     <td style="color:var(--dim)">${fmtL(c.market_cap)}</td>
     <td style="color:${vmColor};font-weight:600">${c._vm.toFixed(1)}%</td>
+    <td style="color:var(--dim)">${fmtP(c.ath)}</td>
     <td style="color:${ath<-60?'var(--bull)':ath<-30?'var(--neutral)':'var(--dim)'}">${ath.toFixed(0)}%</td>
+    <td style="color:${rs>=0?'var(--bull)':'var(--bear)'};font-weight:600">${fmtPct(rs,1)}</td>
     <td style="white-space:nowrap">
       <span style="color:var(--neutral);font-weight:700">${potX.athX}</span>
       <span style="color:var(--dim)"> · </span>
@@ -857,7 +875,7 @@ function renderNarratives() {
           <img class="nm-img" src="${c.image}" alt="" onerror="this.style.display='none'">
           <div>
             <div class="nm-sym">${c.symbol.toUpperCase()}</div>
-            <div style="font-size:9px;color:${p7>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p7,1)}</div>
+            <div style="font-size:9px;color:${p7>=0?'var(--bull)':'var(--bear)'}">Week ${fmtPct(p7,1)}</div>
           </div>
           <div style="margin-left:auto;text-align:right">
             <div style="font-size:11px;font-weight:700;color:${tier.color}">${tier.icon} ${c.score}</div>
@@ -884,7 +902,7 @@ function renderNarratives() {
           <img class="nm-img" src="${c.image}" alt="" onerror="this.style.display='none'">
           <div>
             <div class="nm-sym">${c.symbol.toUpperCase()}</div>
-            <div style="font-size:9px;color:${p7>=0?'var(--bull)':'var(--bear)'}">${fmtPct(p7,1)}</div>
+            <div style="font-size:9px;color:${p7>=0?'var(--bull)':'var(--bear)'}">Week ${fmtPct(p7,1)}</div>
           </div>
           <div style="margin-left:auto;text-align:right">
             <div style="font-size:11px;font-weight:700;color:${tier.color}">${tier.icon} ${c.score}</div>
