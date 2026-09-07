@@ -582,8 +582,11 @@ async function runScan() {
     document.getElementById('stat-top').textContent  = gems[0]?.score ?? '—';
     document.getElementById('stat-avg').textContent  = Math.round(gems.reduce((s,c)=>s+c.score,0)/gems.length);
     document.getElementById('stat-moon').textContent = gems.filter(c=>c.score>=80).length;
-    const bestX = gems.reduce((mx,c)=>Math.max(mx,c._potX.bullRaw||0),0);
-    document.getElementById('stat-bestx').textContent = bestX > 0 ? '~'+Math.round(bestX)+'x' : '—';
+    const bestXCoin = gems.reduce((best,c) => (c._potX.bullRaw||0) > (best?._potX.bullRaw||0) ? c : best, null);
+    const bestX = bestXCoin?._potX.bullRaw || 0;
+    document.getElementById('stat-bestx').innerHTML = bestX > 0
+      ? '~'+Math.round(bestX)+'x <span style="font-size:9px;color:var(--dim)">('+bestXCoin.symbol.toUpperCase()+')</span>'
+      : '—';
 
     // Insight bar
     const avgVm    = gems.reduce((s,c)=>s+c._vm,0)/gems.length;
@@ -998,7 +1001,8 @@ function renderRangeTab(tier, rankMin, rankMax) {
   const rest  = rangeGems.slice(3, 20);
   const color = tier==='mid' ? 'var(--gem)' : 'var(--accent2)';
   const avg   = Math.round(rangeGems.reduce((s,c)=>s+c.score,0)/rangeGems.length);
-  const bestX = rangeGems.reduce((mx,c)=>Math.max(mx,c._potX.bullRaw||0),0);
+  const bestXCoin = rangeGems.reduce((best,c) => (c._potX.bullRaw||0) > (best?._potX.bullRaw||0) ? c : best, null);
+  const bestX = bestXCoin?._potX.bullRaw || 0;
   const moon  = rangeGems.filter(c=>c.score>=80).length;
 
   document.getElementById(containerId).innerHTML = `
@@ -1017,7 +1021,7 @@ function renderRangeTab(tier, rankMin, rankMax) {
       </div>
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 12px;text-align:center">
         <div style="font-size:8px;color:var(--dim);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px">Best Bull X</div>
-        <div style="font-size:13px;font-weight:700;color:${color}">${bestX>0?'~'+Math.round(bestX)+'x':'—'}</div>
+        <div style="font-size:13px;font-weight:700;color:${color}">${bestX>0?'~'+Math.round(bestX)+'x <span style=\'font-size:9px;color:var(--dim)\'>('+bestXCoin.symbol.toUpperCase()+')</span>':'—'}</div>
       </div>
     </div>
     <div>
