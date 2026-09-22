@@ -80,6 +80,15 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:1
 .pot-x-ath{color:var(--neutral);font-weight:700}
 .pot-x-bull{color:var(--gold);font-weight:700}
 
+/* ── TRADE SETUP ────────────────────────── */
+.ts-block{margin-top:2px;padding:8px 9px;background:rgba(0,217,126,.06);border:1px solid rgba(0,217,126,.25);border-radius:6px;display:flex;flex-direction:column;gap:4px}
+.ts-hdr{font-size:8px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--bull)}
+.ts-row{display:flex;justify-content:space-between;gap:6px;font-size:9px;color:var(--dim)}
+.ts-row b{color:var(--text);font-weight:700}
+.ts-rr{color:var(--gold)!important;font-weight:700}
+.ts-note{font-size:8px;color:var(--dim);line-height:1.5;font-style:italic;margin-top:2px}
+.ts-loading{font-size:9px;color:var(--dim)}
+
 /* ── GEM CARDS (4-20) ───────────────────── */
 .gem-grid{display:flex;gap:10px;flex-wrap:wrap}
 .gem-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;min-width:175px;max-width:235px;flex:1;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:5px}
@@ -657,6 +666,94 @@ async function fetchMissingDescs(topGems) {
   }
 }
 
+// ── TRADE SETUP (pullback-long, computed from live 4H OHLC) ────
+// Same method used throughout the crypto-analyst workflow: entry at the
+// 0.5 fib of the recent swing, stop below the 0.618 fib with an ATR
+// buffer, target at the 1.618 extension. Spot OHLC from CoinGecko —
+// structure only, not an execution price. Verify the pair/liquidity on
+// OKX (or wherever you'll actually trade it) before sizing anything.
+async function fetchOHLC(id, days = 30) {
+  try {
+    const r = await fetch(`https://api.coingecko.com/api/v3/coins/${id}/ohlc?vs_currency=usd&days=${days}`);
+    if (!r.ok) return null;
+    return await r.json(); // [[t,o,h,l,c], ...] — ~4H candles at days=30
+  } catch (e) { return null; }
+}
+
+function computeTradeSetup(candles) {
+  if (!candles || candles.length < 20) return null;
+  const n = candles.length;
+  const last = candles[n - 1][4];
+
+  const lookN = Math.min(60, n); // ~last 10 days of 4H candles
+  const win = candles.slice(-lookN);
+  const hi = Math.max(...win.map(c => c[2]));
+  const hiAbsIdx = n - lookN + win.findIndex(c => c[2] === hi);
+
+  const preWin = candles.slice(Math.max(0, hiAbsIdx - 40), hiAbsIdx + 1);
+  const lo = preWin.length ? Math.min(...preWin.map(c => c[3])) : Math.min(...win.map(c => c[3]));
+
+  const range = hi - lo;
+  if (range <= 0) return null;
+
+  let atrSum = 0, atrN = 0;
+  for (let i = Math.max(1, n - 14); i < n; i++) {
+    const tr = Math.max(
+      candles[i][2] - candles[i][3],
+      Math.abs(candles[i][2] - candles[i - 1][4]),
+      Math.abs(candles[i][3] - candles[i - 1][4])
+    );
+    atrSum += tr; atrN++;
+  }
+  const atr = atrN ? atrSum / atrN : range * 0.05;
+
+  const entry  = hi - range * 0.5;
+  const stop   = hi - range * 0.618 - atr * 0.5;
+  const target = lo + range * 1.618;
+  const risk   = entry - stop;
+  if (risk <= 0) return null;
+
+  return {
+    hi, lo, last, entry, stop, target,
+    rr:     (target - entry) / risk,
+    pbPct:  (hi - last) / range * 100,
+    runPct: (hi / lo - 1) * 100,
+  };
+}
+
+function renderTradeSetup(id, ts) {
+  const el = document.getElementById('ts-' + id);
+  if (!el) return;
+  if (!ts) {
+    el.innerHTML = `<div class="ts-note">⚠ No clean pullback structure in the last 30 days on spot — skip or wait for one.</div>`;
+    return;
+  }
+  const inZone  = ts.last <= ts.entry * 1.01 && ts.last >= ts.stop;
+  const broken  = ts.last < ts.stop;
+  const distPct = (ts.last - ts.entry) / ts.last * 100;
+  const status  = broken
+    ? '<b style="color:var(--bear)">stop already broken — invalid</b>'
+    : inZone
+      ? '<b style="color:var(--bull)">in zone now</b>'
+      : `<b>${distPct.toFixed(0)}% above entry</b>`;
+  el.innerHTML = `
+    <div class="ts-hdr">📐 Pullback Long Setup (4H, spot)</div>
+    <div class="ts-row"><span>Entry zone</span><b>${fmtP(ts.entry)}</b></div>
+    <div class="ts-row"><span>Status</span>${status}</div>
+    <div class="ts-row"><span>Stop</span><b>${fmtP(ts.stop)}</b></div>
+    <div class="ts-row"><span>Target (1.618 ext)</span><b>${fmtP(ts.target)}</b></div>
+    <div class="ts-row"><span>Risk:Reward</span><b class="ts-rr">${ts.rr >= 1 ? ts.rr.toFixed(1) + 'R' : '<1R'}</b></div>
+    <div class="ts-note">Ran ${ts.runPct.toFixed(0)}% into the high, now ${ts.pbPct.toFixed(0)}% pulled back. Not backtested — verify the pair on OKX before sizing.</div>`;
+}
+
+async function fetchTradeSetups(coins) {
+  for (const c of coins) {
+    const candles = await fetchOHLC(c.id, 30);
+    renderTradeSetup(c.id, computeTradeSetup(candles));
+    await new Promise(r => setTimeout(r, 900)); // respect CoinGecko free-tier rate limit
+  }
+}
+
 // ── SPOTLIGHT ─────────────────────────────────────────────────
 function renderSpotlight() {
   const top3 = gems.slice(0, 3);
@@ -676,6 +773,7 @@ function renderSpotlight() {
       </div>
       <div class="gem-grid">${rest.map((c,i)=>gemCard(c,i+4)).join('')}</div>
     </div>`;
+  fetchTradeSetups(top3);
 }
 
 function moonshotCard(c, i) {
@@ -729,6 +827,9 @@ function moonshotCard(c, i) {
     </div>
     <div class="mc-bar"><div class="mc-fill" style="width:${c.score}%"></div></div>
     <div class="tags">${tags.length ? tags.map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join('') : '<span class="tag tag-default">Alt</span>'}</div>
+    <div class="ts-block" id="ts-${c.id}" onclick="event.stopPropagation()">
+      <div class="ts-loading">⏳ Loading trade setup…</div>
+    </div>
   </div>`;
 }
 
